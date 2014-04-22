@@ -23,6 +23,8 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 			camera.name = "PlanetUnityCamera";
 			camera.transform.parent = scene.gameObject.transform;
 
+			original.camera.cullingMask &= 0x7FFFFFFF;
+
 
 			foreach(Component comp in camera.GetComponents(typeof(Component))) {
 				if(comp is Transform)

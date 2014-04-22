@@ -39,6 +39,10 @@ public class PlanetUnity_LinkButton : PlanetUnity_LinkButtonBase, iPlanetUnity_B
 	{
 		base.gaxb_load(reader, _parent);
 
+		if (titleExists == false) {
+			gameObject.name = "\""+value+"\"";
+		}
+
 		text = gameObject.AddComponent(typeof(CCText)) as CCText;
 
 		CCFont ccfont = Resources.Load ("bmfonts/"+font, typeof(CCFont)) as CCFont;
