@@ -3,7 +3,6 @@
 .DS_Store
 Library
 Temp
-*.csproj
 *.pidb
 *.unityproj
 *.userprefs

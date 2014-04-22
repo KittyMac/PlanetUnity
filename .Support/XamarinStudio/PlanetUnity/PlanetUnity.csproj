@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5AF20D2D-A952-49A2-9569-128F760D1E76}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PlanetUnity</RootNamespace>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <AssemblyName>PlanetUnity</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <LinkMode>Full</LinkMode>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <CodeSigningKey>Developer ID Application</CodeSigningKey>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <CreatePackage>true</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <LinkMode>Full</LinkMode>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <CreatePackage>true</CreatePackage>
+    <CodeSigningKey>3rd Party Mac Developer Application</CodeSigningKey>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <EnablePackageSigning>true</EnablePackageSigning>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="MonoMac" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="STUFF\" />
+    <Folder Include="STUFF\Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="STUFF\AppDelegate.cs" />
+    <Compile Include="STUFF\AppDelegate.designer.cs">
+      <DependentUpon>AppDelegate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="STUFF\Main.cs" />
+    <Compile Include="STUFF\MainWindow.cs" />
+    <Compile Include="STUFF\MainWindow.designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="STUFF\MainWindowController.cs" />
+    <Compile Include="..\..\..\Assets\PlanetUnity\cColor.cs">
+      <Link>cColor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\cRect.cs">
+      <Link>cRect.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\cVector2.cs">
+      <Link>cVector2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\cVector3.cs">
+      <Link>cVector3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\cVector4.cs">
+      <Link>cVector4.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\MathParser.cs">
+      <Link>MathParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\NotificationCenter.cs">
+      <Link>NotificationCenter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Button.cs">
+      <Link>PlanetUnity_Button.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ButtonBase.cs">
+      <Link>PlanetUnity_ButtonBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Controller.cs">
+      <Link>PlanetUnity_Controller.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ControllerBase.cs">
+      <Link>PlanetUnity_ControllerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Entity.cs">
+      <Link>PlanetUnity_Entity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_EntityBase.cs">
+      <Link>PlanetUnity_EntityBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_GhostEntity.cs">
+      <Link>PlanetUnity_GhostEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_GhostEntityBase.cs">
+      <Link>PlanetUnity_GhostEntityBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Image.cs">
+      <Link>PlanetUnity_Image.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ImageBase.cs">
+      <Link>PlanetUnity_ImageBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_LinkButton.cs">
+      <Link>PlanetUnity_LinkButton.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_LinkButtonBase.cs">
+      <Link>PlanetUnity_LinkButtonBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ObservableObject.cs">
+      <Link>PlanetUnity_ObservableObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ObservableObjectBase.cs">
+      <Link>PlanetUnity_ObservableObjectBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Scene.cs">
+      <Link>PlanetUnity_Scene.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_SceneBase.cs">
+      <Link>PlanetUnity_SceneBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Subscribe.cs">
+      <Link>PlanetUnity_Subscribe.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_SubscribeBase.cs">
+      <Link>PlanetUnity_SubscribeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity.cs">
+      <Link>PlanetUnity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnityGameObject.cs">
+      <Link>PlanetUnityGameObject.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="STUFF\MainMenu.xib" />
+    <InterfaceDefinition Include="STUFF\MainWindow.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="STUFF\Info.plist" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
