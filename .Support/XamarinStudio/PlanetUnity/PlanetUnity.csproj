@@ -83,85 +83,85 @@
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="STUFF\MainWindowController.cs" />
-    <Compile Include="..\..\..\Assets\PlanetUnity\cColor.cs">
-      <Link>cColor.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\cRect.cs">
-      <Link>cRect.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\cVector2.cs">
-      <Link>cVector2.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\cVector3.cs">
-      <Link>cVector3.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\cVector4.cs">
-      <Link>cVector4.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\MathParser.cs">
-      <Link>MathParser.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\NotificationCenter.cs">
-      <Link>NotificationCenter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Button.cs">
+    <Compile Include="..\..\..\PlanetUnity_Button.cs">
       <Link>PlanetUnity_Button.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ButtonBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_ButtonBase.cs">
       <Link>PlanetUnity_ButtonBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Controller.cs">
+    <Compile Include="..\..\..\PlanetUnity_Controller.cs">
       <Link>PlanetUnity_Controller.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ControllerBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_ControllerBase.cs">
       <Link>PlanetUnity_ControllerBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Entity.cs">
+    <Compile Include="..\..\..\PlanetUnity_Entity.cs">
       <Link>PlanetUnity_Entity.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_EntityBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_EntityBase.cs">
       <Link>PlanetUnity_EntityBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_GhostEntity.cs">
+    <Compile Include="..\..\..\PlanetUnity_GhostEntity.cs">
       <Link>PlanetUnity_GhostEntity.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_GhostEntityBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_GhostEntityBase.cs">
       <Link>PlanetUnity_GhostEntityBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Image.cs">
+    <Compile Include="..\..\..\PlanetUnity_Image.cs">
       <Link>PlanetUnity_Image.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ImageBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_ImageBase.cs">
       <Link>PlanetUnity_ImageBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_LinkButton.cs">
+    <Compile Include="..\..\..\PlanetUnity_LinkButton.cs">
       <Link>PlanetUnity_LinkButton.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_LinkButtonBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_LinkButtonBase.cs">
       <Link>PlanetUnity_LinkButtonBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ObservableObject.cs">
+    <Compile Include="..\..\..\PlanetUnity_ObservableObject.cs">
       <Link>PlanetUnity_ObservableObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_ObservableObjectBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_ObservableObjectBase.cs">
       <Link>PlanetUnity_ObservableObjectBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Scene.cs">
+    <Compile Include="..\..\..\PlanetUnity_Scene.cs">
       <Link>PlanetUnity_Scene.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_SceneBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_SceneBase.cs">
       <Link>PlanetUnity_SceneBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_Subscribe.cs">
+    <Compile Include="..\..\..\PlanetUnity_Subscribe.cs">
       <Link>PlanetUnity_Subscribe.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity_SubscribeBase.cs">
+    <Compile Include="..\..\..\PlanetUnity_SubscribeBase.cs">
       <Link>PlanetUnity_SubscribeBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnity.cs">
+    <Compile Include="..\..\..\PlanetUnity.cs">
       <Link>PlanetUnity.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\PlanetUnity\PlanetUnityGameObject.cs">
+    <Compile Include="..\..\..\Utility\cColor.cs">
+      <Link>cColor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Utility\cRect.cs">
+      <Link>cRect.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Utility\cVector2.cs">
+      <Link>cVector2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Utility\cVector3.cs">
+      <Link>cVector3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Utility\cVector4.cs">
+      <Link>cVector4.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Utility\MathParser.cs">
+      <Link>MathParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Utility\NotificationCenter.cs">
+      <Link>NotificationCenter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Utility\PlanetUnityGameObject.cs">
       <Link>PlanetUnityGameObject.cs</Link>
     </Compile>
   </ItemGroup>
