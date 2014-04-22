@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:planet="http://schema.smallplanet.com/PlanetUnity"
+    targetNamespace="http://schema.smallplanet.com/PlanetUnity">
+
+	<!-- Type declarations for custom classes -->
+	<simpleType name="color">
+		<annotation>
+			<appinfo>cColor</appinfo>
+		</annotation>
+        <restriction base="string" />
+    </simpleType>
+
+	<simpleType name="vec2">
+		<annotation>
+			<appinfo>cVector2</appinfo>
+		</annotation>
+        <restriction base="string" />
+    </simpleType>
+
+	<simpleType name="vec3">
+		<annotation>
+			<appinfo>cVector3</appinfo>
+		</annotation>
+        <restriction base="string" />
+    </simpleType>
+
+	<simpleType name="vec4">
+		<annotation>
+			<appinfo>cVector4</appinfo>
+		</annotation>
+        <restriction base="string" />
+    </simpleType>
+
+	<simpleType name="rect">
+		<annotation>
+			<appinfo>cRect</appinfo>
+		</annotation>
+        <restriction base="string" />
+    </simpleType>
+
+	<simpleType name="json">
+		<annotation>
+			<appinfo>tJSON</appinfo>
+		</annotation>
+		<restriction base="string"/>
+	</simpleType>
+
+	<!-- Super Classes -->
+
+	<element name="ObservableObject" type="planet:ObservableObject" />
+	<complexType name="ObservableObject">
+		<sequence>
+			<any minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+		<attribute name="title" type="string" />
+		<attribute name="tag" type="string" />
+		<attribute name="tag1" type="string" />
+		<attribute name="tag2" type="string" />
+		<attribute name="tag3" type="string" />
+		<attribute name="tag4" type="string" />
+		<attribute name="tag5" type="string" />
+		<attribute name="tag6" type="string" />
+	</complexType>
+
+
+	<element name="GhostEntity" type="planet:GhostEntity"/>
+	<complexType name="GhostEntity">
+		<complexContent>
+			<extension base="planet:ObservableObject">
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<element name="Entity" type="planet:Entity"/>
+	<complexType name="Entity">
+		<complexContent>
+			<extension base="planet:ObservableObject">
+				<attribute name="bounds" type="planet:rect" />
+				<attribute name="hidden" type="boolean" />
+				<attribute name="lastY" type="float" />
+		        <attribute name="lastX" type="float" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<!-- Ghost Entities -->
+
+	<!-- Entities -->
+
+	<element name="Scene" type="planet:Scene"/>
+	<complexType name="Scene" >
+		<complexContent>
+			<extension base="planet:Entity">
+				<attribute name="adjustCamera" type="boolean" default="true" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<element name="Image" type="planet:Image"/>
+	<complexType name="Image">
+		<complexContent>
+			<extension base="planet:Entity">
+				<attribute name="resourcePath" type="string" />
+				<attribute name="shader" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<element name="Button" type="planet:Button"/>
+	<complexType name="Button">
+		<complexContent>
+			<extension base="planet:Image">
+				<attribute name="normalResourcePath" type="string" />
+				<attribute name="highlightedResourcePath" type="string" />
+				<attribute name="onTouchUp" type="string" />
+				<attribute name="onTouchDown" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<element name="LinkButton" type="planet:LinkButton" />
+	<complexType name="LinkButton">
+		<complexContent>
+			<extension base="planet:Entity">
+				<attribute name="font" type="string" />
+				<attribute name="size" type="int" />
+				<attribute name="textColor" type="planet:color" default="1,1,1,1" />
+				<attribute name="value" type="string" />
+				<attribute name="onTouchUp" type="string" />
+				<attribute name="onTouchDown" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	
+	<element name="Subscribe" type="planet:Subscribe" />
+	<complexType name="Subscribe">
+		<attribute name="name" type="string" use="required" />
+	</complexType>
+
+	<element name="Controller">
+		<complexType>
+			<complexContent>
+				<extension base="planet:Entity">
+					<sequence>
+						<element ref="planet:Subscribe" minOccurs="0" maxOccurs="unbounded" />
+					</sequence>
+					<attribute name="class" type="string"/>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+</schema>
