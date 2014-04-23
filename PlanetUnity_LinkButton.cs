@@ -86,8 +86,9 @@ public class PlanetUnity_LinkButton : PlanetUnity_LinkButtonBase, iPlanetUnity_B
 		text.LineHeight = 0.8f;
 		text.Bounding = CCText.BoundingMode.Margin;
 		text.Alignment = CCText.AlignmentMode.Center;
+		text.VerticalAnchor = CCText.VerticalAnchorMode.Middle;
 
-		gameObject.transform.position = new Vector3(bounds.x, bounds.y+bounds.h, 1.0f);
+		gameObject.transform.localPosition += new Vector3(0, bounds.h/2, 0.0f);
 		gameObject.transform.localScale = new Vector3 (1.0f/pxScale, 1.0f/pxScale, 1.0f);
 
 		// Re-use the button code from PlanetUnity_Button

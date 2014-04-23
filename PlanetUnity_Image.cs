@@ -24,10 +24,16 @@ public class PlanetUnity_Image : PlanetUnity_ImageBase {
 
 		Vector3[] vertices = new Vector3[]
 		{
+			/*
 			new Vector3( bounds.w*0.5f, 	bounds.h*0.5f, 		0),
 			new Vector3( bounds.w*0.5f, 	bounds.h*-0.5f,   	0),
 			new Vector3( bounds.w*-0.5f,	bounds.h*0.5f, 		0),
 			new Vector3( bounds.w*-0.5f,   	bounds.h*-0.5f,   	0),
+			*/
+			new Vector3( bounds.w, 	bounds.h, 		0),
+			new Vector3( bounds.w, 	0.0f,		   	0),
+			new Vector3( 0.0f,		bounds.h, 		0),
+			new Vector3( 0.0f,   	0.0f,		   	0),
 		};
 
 		Vector2[] uv = new Vector2[]
@@ -79,10 +85,5 @@ public class PlanetUnity_Image : PlanetUnity_ImageBase {
 		gameObject.renderer.material.color = new Color (1, 1, 1, 1);
 		gameObject.renderer.material.shader = shaderObj;
 		gameObject.renderer.material.renderQueue = scope().getRenderQueue();
-
-		// Set position
-		gameObject.transform.position = new Vector3(bounds.x+bounds.w/2, bounds.y+bounds.h/2, 1);
-		gameObject.transform.parent = gameObject.transform;
-
 	}
 }

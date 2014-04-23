@@ -24,6 +24,11 @@ public class PlanetUnity_Entity : PlanetUnity_EntityBase {
 		base.gaxb_unload ();
 	}
 
+	public void setParentGameObject(GameObject p)
+	{
+		gameObject.transform.parent = p.transform;
+	}
+
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
@@ -36,16 +41,18 @@ public class PlanetUnity_Entity : PlanetUnity_EntityBase {
 			}
 		}
 
-		if (_parent is PlanetUnity_Entity) {
+		if (_parent is GameObject) {
+			setParentGameObject (_parent as GameObject);
+		}
+		else if (_parent is PlanetUnity_Entity) {
 			PlanetUnity_Entity parentEntity = (PlanetUnity_Entity)_parent;
-			gameObject.transform.parent = parentEntity.gameObject.transform;
+
+			setParentGameObject (parentEntity.gameObject);
 
 			if (boundsExists) {
 				bounds.y = (parentEntity.bounds.h - bounds.y) - bounds.h;
+				gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0.0f);
 			}
-		}
-		if (_parent is GameObject) {
-			gameObject.transform.parent = (_parent as GameObject).transform;
 		}
 
 		gameObject.layer = 31;
