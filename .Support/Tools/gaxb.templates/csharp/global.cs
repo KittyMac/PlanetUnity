@@ -87,7 +87,8 @@ end
 
 	static public object loadXML(string xmlString, object parentObject)
 	{
-		object rootEntity = null;
+		object rootEntity = parentObject;
+		object returnEntity = null;
 		string xmlNamespace;
 
 		// Create an XmlReader
@@ -115,6 +116,10 @@ end
 
 						if (rootEntity == null) {
 							rootEntity = entityObject;
+						}
+						
+						if(returnEntity == null) {
+							returnEntity = entityObject;
 						}
 					}
 					catch(TypeLoadException e) {
@@ -173,6 +178,6 @@ end
 			}
 		}
 
-		return rootEntity;
+		return returnEntity;
 	}
 }

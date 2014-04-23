@@ -53,6 +53,8 @@ public class PlanetUnity_ObservableObject : PlanetUnity_ObservableObjectBase {
 			return this;
 		if (parent == null)
 			return this;
+		if ((parent is PlanetUnity_ObservableObject) == false)
+			return this;
 		return (parent as PlanetUnity_ObservableObject).scope();
 	}
 

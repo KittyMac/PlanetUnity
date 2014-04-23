@@ -101,7 +101,11 @@ end
 				}
 				if(parentChildren == null)
 				{
-					parentChildren = (List<object>)(_parent.GetType().GetField("children").GetValue(_parent));
+					FieldInfo childrenField = _parent.GetType().GetField("children");
+					if(childrenField != null)
+					{
+						parentChildren = (List<object>)childrenField.GetValue(_parent);
+					}
 				}
 				if(parentChildren != null)
 				{

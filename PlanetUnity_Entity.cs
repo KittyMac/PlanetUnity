@@ -44,7 +44,14 @@ public class PlanetUnity_Entity : PlanetUnity_EntityBase {
 				bounds.y = (parentEntity.bounds.h - bounds.y) - bounds.h;
 			}
 		}
+		if (_parent is GameObject) {
+			gameObject.transform.parent = (_parent as GameObject).transform;
+		}
 
 		gameObject.layer = 31;
+
+		if (hidden) {
+			gameObject.renderer.enabled = false;
+		}
 	}
 }

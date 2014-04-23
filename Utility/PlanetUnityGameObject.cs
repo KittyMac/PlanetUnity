@@ -122,10 +122,10 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		#if UNITY_EDITOR
 		string basePath = Path.GetFullPath("Assets/Resources");
 		string xmlString = System.IO.File.ReadAllText(basePath+"/"+xmlPath+".xml");
-		scene = (PlanetUnity_Scene)PlanetUnity.loadXML(xmlString, null);
+		scene = (PlanetUnity_Scene)PlanetUnity.loadXML(xmlString, gameObject);
 		#else
 		TextAsset stringData = Resources.Load(xmlPath) as TextAsset;
-		scene = (PlanetUnity_Scene)PlanetUnity.loadXML(stringData.text, null);
+		scene = (PlanetUnity_Scene)PlanetUnity.loadXML(stringData.text, gameObject);
 		#endif
 
 		sw.Stop();
