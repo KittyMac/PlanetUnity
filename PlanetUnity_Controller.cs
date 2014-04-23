@@ -30,6 +30,7 @@ public class PlanetUnity_Controller : PlanetUnity_ControllerBase {
 	public void gaxb_loadComplete()
 	{
 		if (_classExists) {
+			// Attach all of the PlanetUnity objects
 			try {
 				controller = (IPlanetUnity_Controller)gameObject.AddComponent(Type.GetType (_class, true));
 
@@ -48,6 +49,19 @@ public class PlanetUnity_Controller : PlanetUnity_ControllerBase {
 								}
 							}
 						});
+				}
+			}
+			catch(Exception e) {
+				UnityEngine.Debug.Log ("Controller error: " + e);
+			}
+
+			try {
+				// Attach all of the named GameObjects
+				FieldInfo[] fields = controller.GetType().GetFields();
+				foreach (FieldInfo field in fields) {
+					if (field.FieldType == typeof(GameObject)) {
+						field.SetValue(controller, GameObject.Find(field.Name) );
+					}
 				}
 			}
 			catch(Exception e) {
