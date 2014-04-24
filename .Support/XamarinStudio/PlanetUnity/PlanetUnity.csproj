@@ -164,6 +164,12 @@
     <Compile Include="..\..\..\Utility\PlanetUnityGameObject.cs">
       <Link>PlanetUnityGameObject.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\PlanetUnity_Prefab.cs">
+      <Link>PlanetUnity_Prefab.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\PlanetUnity_PrefabBase.cs">
+      <Link>PlanetUnity_PrefabBase.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="STUFF\MainMenu.xib" />

@@ -10,18 +10,15 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_ImageBase : PlanetUnity_Entity {
+public class PlanetUnity_PrefabBase : PlanetUnity_Entity {
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
 
 
 
 	// XML Attributes
-	public string resourcePath;
-	public bool resourcePathExists;
-
-	public string shader;
-	public bool shaderExists;
+	public string name;
+	public bool nameExists;
 
 
 
@@ -34,11 +31,11 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_Image ))
+		if(this.GetType() == typeof( PlanetUnity_Prefab ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Images");
+				FieldInfo parentField = _parent.GetType().GetField("Prefabs");
 				List<object> parentChildren = null;
 				if(parentField != null)
 				{
@@ -63,13 +60,9 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 		
 
 		string attr;
-		attr = reader.GetAttribute("resourcePath");
+		attr = reader.GetAttribute("name");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { resourcePath = attr; resourcePathExists = true; } 
-		
-		attr = reader.GetAttribute("shader");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { shader = attr; shaderExists = true; } 
+		if(attr != null) { name = attr; nameExists = true; } 
 		
 
 	}
@@ -84,8 +77,7 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(resourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "resourcePath", resourcePath); }
-		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
+		if(nameExists) { sb.AppendFormat (" {0}=\"{1}\"", "name", name); }
 
 	}
 	
@@ -103,7 +95,7 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Image");
+		sb.AppendFormat ("<{0}", "Prefab");
 		
 		if(xmlns != null)
 		{
@@ -123,7 +115,7 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Image");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Prefab");
 		}
 	}
 }

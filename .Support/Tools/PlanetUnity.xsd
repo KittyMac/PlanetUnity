@@ -133,6 +133,15 @@
 		</complexContent>
 	</complexType>
 	
+	<element name="Prefab" type="planet:Prefab" />
+	<complexType name="Prefab">
+		<complexContent>
+			<extension base="planet:Entity">
+				<attribute name="name" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
 	
 	<element name="Subscribe" type="planet:Subscribe" />
 	<complexType name="Subscribe">
