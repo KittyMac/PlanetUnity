@@ -74,11 +74,11 @@ public class PlanetUnity_LinkButton : PlanetUnity_LinkButtonBase, iPlanetUnity_B
 		var tex = (Texture) Resources.Load ("bmfonts/"+font, typeof(Texture));
 		text.renderer.material.mainTexture = tex;
 
-		var shaderObj = Shader.Find("Somian/Unlit/Transparent");
+		var shaderObj = Shader.Find("Custom/Unlit/Transparent");
 
 		text.renderer.material.color = new Color (1, 1, 1, 1);
 		text.renderer.material.shader = shaderObj;
-		text.renderer.material.renderQueue = scope().getRenderQueue();
+		text.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
 
 		float pxScale = ccfont.pixelScale;
 

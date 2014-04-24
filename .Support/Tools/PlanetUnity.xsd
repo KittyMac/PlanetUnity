@@ -80,6 +80,7 @@
 				<attribute name="hidden" type="boolean" />
 				<attribute name="lastY" type="float" />
 		        <attribute name="lastX" type="float" />
+				<attribute name="renderQueueOffset" type="int" />
 			</extension>
 		</complexContent>
 	</complexType>

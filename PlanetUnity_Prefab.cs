@@ -42,7 +42,7 @@ public class PlanetUnity_Prefab : PlanetUnity_PrefabBase {
 		clone.transform.localPosition = Vector3.zero;
 		clone.transform.localRotation = Quaternion.identity;
 
-		clone.renderer.material.renderQueue = scope().getRenderQueue();
+		clone.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
 
 	}
 
