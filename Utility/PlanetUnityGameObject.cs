@@ -83,6 +83,9 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		NotificationCenter.addObserver (this, "ReloadScene", "PlanetUnityReloadScene", null);
+
 		ReloadScene ();
 
 		#if UNITY_EDITOR
@@ -91,6 +94,9 @@ public class PlanetUnityGameObject : MonoBehaviour {
 	}
 
 	void OnDestroy () {
+
+		NotificationCenter.removeObserver (this);
+
 		scene.peformOnChildren(val =>
 			{
 				MethodInfo method = val.GetType().GetMethod ("gaxb_unload");
@@ -105,14 +111,14 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		}
 	}
 
-	void RemoveScene () {
+	public void RemoveScene () {
 		if (scene != null) {
 			Destroy (scene.gameObject);
 			scene = null;
 		}
 	}
 
-	void ReloadScene () {
+	public void ReloadScene () {
 
 		RemoveScene ();
 

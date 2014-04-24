@@ -58,7 +58,7 @@ public class PlanetUnity_Entity : PlanetUnity_EntityBase {
 		gameObject.layer = 31;
 
 		if (hidden) {
-			gameObject.renderer.enabled = false;
+			gameObject.SetActive (false);
 		}
 	}
 }

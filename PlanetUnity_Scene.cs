@@ -27,12 +27,12 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 		const float depth = 1024;
 
 		if (camera == null) {
-			var original = GameObject.FindWithTag("MainCamera");
+			var original = GameObject.FindWithTag ("MainCamera");
 
-			camera = (Camera) Camera.Instantiate(
+			camera = (Camera)Camera.Instantiate (
 				original.camera, 
-				new Vector3(0, 0, 0), 
-				Quaternion.FromToRotation(new Vector3(0, 0, 0), new Vector3(0, 0, 1)));
+				new Vector3 (0, 0, 0), 
+				Quaternion.FromToRotation (new Vector3 (0, 0, 0), new Vector3 (0, 0, 1)));
 
 			camera.name = "PlanetUnityCamera";
 			camera.transform.parent = scene.gameObject.transform;
@@ -40,13 +40,22 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 			original.camera.cullingMask &= 0x7FFFFFFF;
 
 
-			foreach(Component comp in camera.GetComponents(typeof(Component))) {
-				if(comp is Transform)
+			foreach (Component comp in camera.GetComponents(typeof(Component))) {
+				if (comp is Transform)
 					continue;
-				if(comp is Camera)
+				if (comp is Camera)
 					continue;
-				Destroy(comp);
+				Destroy (comp);
 			}
+		} else {
+			// ************************ EDITOR ONLY *******************************
+			#if UNITY_EDITOR
+			// Force the scene to reload so we can easily test different screen resolutions
+			if (camera.aspect != currentAspectRatio)
+			{
+				NotificationCenter.postNotification (null, "PlanetUnityReloadScene");
+			}
+			#endif
 		}
 
 		if (camera.aspect == currentAspectRatio)
@@ -89,13 +98,10 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 		}
 	}
 
-	void OnPreRender () {
+	void LateUpdate () {
 		AdjustCamera ();
 	}
 
-	void OnPostRender () {
-		AdjustCamera ();
-	}
 }
 
 public class PlanetUnity_Scene : PlanetUnity_SceneBase {

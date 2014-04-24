@@ -18,7 +18,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-
 public class NotificationObserver
 {
 	public string name;
@@ -30,6 +29,8 @@ public class NotificationObserver
 		MethodInfo method = observer.GetType().GetMethod (methodName);
 		if (method != null) {
 			method.Invoke (observer, null);
+		} else {
+			UnityEngine.Debug.Log ("Warning: NotificationCenter attempting to deliver notification, but object does not implement public method "+methodName);
 		}
 	}
 }
@@ -37,13 +38,17 @@ public class NotificationObserver
 public class NotificationCenter
 {
 	private static Dictionary<object, List<NotificationObserver>> observersByScope = new Dictionary<object, List<NotificationObserver>> ();
-
+	private static string globalScope = "GlobalScope";
 
 	public static void addObserver(object observer, string methodName, string name, object scope)
 	{
-		if (observer == null || name == null || scope == null) {
-			UnityEngine.Debug.Log ("Warning: NotificationCenter.addObserver() called with null arguments");
+		if (observer == null || name == null) {
+			UnityEngine.Debug.Log ("Warning: NotificationCenter.addObserver() called with null observer or name");
 			return;
+		}
+
+		if (scope == null) {
+			scope = globalScope;
 		}
 
 		NotificationObserver obv = new NotificationObserver ();
@@ -62,6 +67,15 @@ public class NotificationCenter
 
 	public static void postNotification(object scope, string name)
 	{
+		if (name == null) {
+			UnityEngine.Debug.Log ("Warning: NotificationCenter.postNotification() called with null notification name");
+			return;
+		}
+
+		if (scope == null) {
+			scope = globalScope;
+		}
+
 		List<NotificationObserver> list;
 		if (observersByScope.TryGetValue(scope, out list))
 		{
