@@ -12,42 +12,23 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-using System;
-using System.Globalization;
 
-public class cColor {
+public class cUUID {
 
-	public float r, g, b, a;
+	public string uuidString;
 
-	public cColor(float r, float g, float b, float a)
+	public cUUID(string s)
 	{
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
+		uuidString = s;
 	}
 
-	public static implicit operator cColor(string value)
+	public static implicit operator cUUID(string value)
 	{
-		if (value.StartsWith ("#")) {
-			int argb = Int32.Parse(value.Substring(1), NumberStyles.HexNumber);
-			return new cColor (
-				(argb & 0xFF000000) >> 24,
-				(argb & 0x00FF0000) >> 16,
-				(argb & 0x0000FF00) >> 8,
-				(argb & 0x000000FF) >> 0);
-		}
-
-		var elements = value.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
-		return new cColor(
-			float.Parse(elements[0], System.Globalization.CultureInfo.InvariantCulture),
-			float.Parse(elements[1], System.Globalization.CultureInfo.InvariantCulture),
-			float.Parse(elements[2], System.Globalization.CultureInfo.InvariantCulture),
-			float.Parse(elements[3], System.Globalization.CultureInfo.InvariantCulture));
+		return new cUUID(value);
 	}
 
 	public override string ToString ()
 	{
-		return string.Format ("{0},{1},{2},{3}", r, g, b, a);
+		return uuidString;
 	}
 }

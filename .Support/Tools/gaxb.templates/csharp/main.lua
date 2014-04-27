@@ -156,6 +156,11 @@ function classNameFromRef(r)
 	end
 end
 
+function nameWithoutNamespace(r)
+	local parts = string.split(r,":");
+	return parts[2];
+end
+
 function simpleTypeForItem(v)
 	local t = TYPEMAP[v.type];
 	if (t ~= nil) then
@@ -241,7 +246,7 @@ function typeForItem(v)
 			end
 			
 			if(appinfo == "ENUM" or appinfo == "ENUM_MASK" or appinfo == "NAMED_ENUM") then
-				return capitalizedString(this.namespace).."."..t.name;
+				return capitalizedString(t.namespace).."."..t.name;
 			end
 			if(appinfo == "TYPEDEF") then
 				return "string"
@@ -271,7 +276,19 @@ function typeForItem(v)
 			
 			return "N/A_typeForItem"
 		end
-		--print(table.tostring(v));
+		
+		if(t.maxOccurs == "1") then
+			
+			for k,v in pairs(schema.simpleTypes) do
+				if (nameWithoutNamespace(t.type) == v.name) then
+					local appinfo = gaxb_xpath(v.xml, "./XMLSchema:annotation/XMLSchema:appinfo");
+					if(appinfo ~= nil) then
+						return appinfo[1].content;
+					end
+				end
+			end
+		end
+		
 		return "UNDEFINED_typeForItem";
 	end
 	

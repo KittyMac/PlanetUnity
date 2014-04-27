@@ -179,4 +179,7 @@
     <None Include="STUFF\Info.plist" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <BundleResource Include="Info.plist" />
+  </ItemGroup>
 </Project>

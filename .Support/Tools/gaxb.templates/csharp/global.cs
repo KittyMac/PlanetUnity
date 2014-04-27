@@ -122,7 +122,7 @@ end
 							returnEntity = entityObject;
 						}
 					}
-					catch(TypeLoadException e) {
+					catch(TypeLoadException) {
 						if (rootEntity != null) {
 							// If we get here, this is not a unique object but perhaps a field on the parent...
 							string valueName = reader.Name;
@@ -172,7 +172,7 @@ end
 								rootEntity = parent;
 							}
 						}
-					}catch(TypeLoadException e) { }
+					}catch(TypeLoadException) { }
 					break;
 				}
 			}

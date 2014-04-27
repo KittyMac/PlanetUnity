@@ -41,7 +41,9 @@ using System.Collections.Generic;
 
 public class <%= FULL_NAME_CAMEL %> : <%= superclassForItem(this) %> {
 
+<%  if (# this.attributes > 0) then %>
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
+<% end %>
 
 <%	if(hasSuperclass(this) == false) then
 		gaxb_print("\tpublic object parent;\n")
@@ -174,7 +176,7 @@ end
 			if (typeNameForItem(v)=="bool") then
 				gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat (" {0}=\\"{1}\\"", "'..v.name..'", '..v.name..'.ToString().ToLower()); }\n')
 			elseif (typeNameForItem(v)=="float") then
-				gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat (" {0}=\\"{1}\\"", "'..v.name..'", '..v.name..'); }\n')
+				gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat (" {0}=\\"{1}\\"", "'..v.name..'", '..v.name..'.ToString ("0.##")); }\n')
 			elseif (typeNameForItem(v)=="short") then
 				gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat (" {0}=\\"{1}\\"", "'..v.name..'", '..v.name..'); }\n')
 			elseif (typeNameForItem(v)=="int") then
@@ -182,7 +184,7 @@ end
 			elseif (typeNameForItem(v)=="long") then
 				gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat (" {0}=\\"{1}\\"", "'..v.name..'", '..v.name..'); }\n')
 			elseif (typeNameForItem(v)=="double") then
-				gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat (" {0}=\\"{1}\\"", "'..v.name..'", '..v.name..'); }\n')
+				gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat (" {0}=\\"{1}\\"", "'..v.name..'", '..v.name..'.ToString ("0.##")); }\n')
 			elseif (typeNameForItem(v)=="char") then
 				gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat (" {0}=\\"{1}\\"", "'..v.name..'", '..v.name..'); }\n')
 			elseif (typeNameForItem(v)=="DateTime") then
