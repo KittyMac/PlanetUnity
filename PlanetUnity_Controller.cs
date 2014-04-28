@@ -27,6 +27,11 @@ public class PlanetUnity_Controller : PlanetUnity_ControllerBase {
 
 	IPlanetUnity_Controller controller;
 
+	public object GetObject()
+	{
+		return controller;
+	}
+
 	public void gaxb_unload()
 	{
 		base.gaxb_unload ();
@@ -42,6 +47,8 @@ public class PlanetUnity_Controller : PlanetUnity_ControllerBase {
 
 	public void gaxb_loadComplete()
 	{
+		UnityEngine.Debug.Log ("Controller gaxb load");
+
 		if (_classExists) {
 			// Attach all of the PlanetUnity objects
 			try {

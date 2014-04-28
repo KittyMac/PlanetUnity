@@ -112,6 +112,9 @@ end
 						
 						if (reader.IsEmptyElement == false) {
 							rootEntity = entityObject;
+						} else {
+							method = entityClass.GetMethod ("gaxb_loadComplete");
+							if(method != null) { method.Invoke (entityObject, null); }
 						}
 
 						if (rootEntity == null) {
