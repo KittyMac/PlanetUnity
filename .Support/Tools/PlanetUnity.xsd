@@ -114,6 +114,7 @@
 			<extension base="planet:Image">
 				<attribute name="normalResourcePath" type="string" />
 				<attribute name="highlightedResourcePath" type="string" />
+				<attribute name="touchSize" type="planet:vec2" />
 				<attribute name="onTouchUp" type="string" />
 				<attribute name="onTouchDown" type="string" />
 			</extension>
@@ -128,6 +129,7 @@
 				<attribute name="size" type="int" />
 				<attribute name="textColor" type="planet:color" default="1,1,1,1" />
 				<attribute name="value" type="string" />
+				<attribute name="touchSize" type="planet:vec2" />
 				<attribute name="onTouchUp" type="string" />
 				<attribute name="onTouchDown" type="string" />
 			</extension>

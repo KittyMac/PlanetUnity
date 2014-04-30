@@ -93,7 +93,10 @@ public class PlanetUnity_LinkButton : PlanetUnity_LinkButtonBase, iPlanetUnity_B
 
 		// Re-use the button code from PlanetUnity_Button
 		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
-		collider.size = new Vector3(bounds.w*pxScale, bounds.h*pxScale, 1.0f);
+		if(touchSizeExists)
+			collider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w)*pxScale, (touchSize.y != 0 ? touchSize.y : bounds.h)*pxScale, 1.0f);
+		else
+			collider.size = new Vector3(bounds.w*pxScale, bounds.h*pxScale, 1.0f);
 
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;

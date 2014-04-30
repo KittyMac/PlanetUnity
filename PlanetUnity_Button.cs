@@ -106,7 +106,10 @@ public class PlanetUnity_Button : PlanetUnity_ButtonBase, iPlanetUnity_Button {
 		base.gaxb_load(reader, _parent);
 
 		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
-		collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+		if(touchSizeExists)
+			collider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+		else
+			collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;
