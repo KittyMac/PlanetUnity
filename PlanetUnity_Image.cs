@@ -24,16 +24,10 @@ public class PlanetUnity_Image : PlanetUnity_ImageBase {
 
 		Vector3[] vertices = new Vector3[]
 		{
-			/*
-			new Vector3( bounds.w*0.5f, 	bounds.h*0.5f, 		0),
-			new Vector3( bounds.w*0.5f, 	bounds.h*-0.5f,   	0),
-			new Vector3( bounds.w*-0.5f,	bounds.h*0.5f, 		0),
-			new Vector3( bounds.w*-0.5f,   	bounds.h*-0.5f,   	0),
-			*/
-			new Vector3( bounds.w, 	bounds.h, 		0),
-			new Vector3( bounds.w, 	0.0f,		   	0),
-			new Vector3( 0.0f,		bounds.h, 		0),
-			new Vector3( 0.0f,   	0.0f,		   	0),
+			new Vector3( bounds.w-bounds.w*anchor.x, 	bounds.h-bounds.h*anchor.y, 		0.0f),
+			new Vector3( bounds.w-bounds.w*anchor.x, 	-bounds.h*anchor.y,		   			0.0f),
+			new Vector3( 0.0f-bounds.w*anchor.x,		bounds.h-bounds.h*anchor.y, 		0.0f),
+			new Vector3( 0.0f-bounds.w*anchor.x,   		-bounds.h*anchor.y,		   			0.0f),
 		};
 
 		Vector2[] uv = new Vector2[]
@@ -63,7 +57,9 @@ public class PlanetUnity_Image : PlanetUnity_ImageBase {
 		// Create our specific GameObject, set any defaults
 		gameObject = (GameObject) new GameObject("<Image/>", typeof(MeshRenderer), typeof(MeshFilter));
 
-		shader = "Custom/Unlit/Transparent";
+		if (shaderExists == false) {
+			shader = "Custom/Unlit/Transparent";
+		}
 
 		base.gaxb_load(reader, _parent);
 

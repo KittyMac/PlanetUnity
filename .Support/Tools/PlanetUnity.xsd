@@ -104,6 +104,7 @@
 			<extension base="planet:Entity">
 				<attribute name="resourcePath" type="string" />
 				<attribute name="shader" type="string" />
+				<attribute name="anchor" type="planet:vec2" default="0,0" />
 			</extension>
 		</complexContent>
 	</complexType>

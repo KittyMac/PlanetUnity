@@ -84,6 +84,9 @@ end
 
 	public <%=NEW_KEYWORD%>void gaxb_load(XmlReader reader, object _parent)
 	{
+		if(reader == null && _parent == null)
+			return;
+			
 <%		if(hasSuperclass(this)) then
 			gaxb_print("\t\tbase.gaxb_load(reader, _parent);\n")
 		end

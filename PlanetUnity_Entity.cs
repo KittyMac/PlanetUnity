@@ -55,7 +55,9 @@ public class PlanetUnity_Entity : PlanetUnity_EntityBase {
 			}
 		}
 
-		gameObject.layer = 31;
+		if (reader != null) {
+			gameObject.layer = 31;
+		}
 
 		if (hidden) {
 			gameObject.SetActive (false);

@@ -78,7 +78,14 @@ public class PlanetUnity_Controller : PlanetUnity_ControllerBase {
 				FieldInfo[] fields = controller.GetType().GetFields();
 				foreach (FieldInfo field in fields) {
 					if (field.FieldType == typeof(GameObject)) {
-						field.SetValue(controller, GameObject.Find(field.Name) );
+
+						GameObject[] pAllObjects = (GameObject[])Resources.FindObjectsOfTypeAll(typeof(GameObject));
+
+						foreach (GameObject pObject in pAllObjects) {
+							if(pObject.name.Equals(field.Name)) {
+								field.SetValue(controller, pObject);
+							}
+						}
 					}
 				}
 			}
