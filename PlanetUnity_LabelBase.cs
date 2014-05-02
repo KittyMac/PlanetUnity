@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
+public class PlanetUnity_LabelBase : PlanetUnity_Entity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,20 +19,20 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 
 
 	// XML Attributes
-	public cRect bounds;
-	public bool boundsExists;
+	public string shader;
+	public bool shaderExists;
 
-	public bool hidden;
-	public bool hiddenExists;
+	public string font;
+	public bool fontExists;
 
-	public float lastY;
-	public bool lastYExists;
+	public int size;
+	public bool sizeExists;
 
-	public float lastX;
-	public bool lastXExists;
+	public cColor textColor;
+	public bool textColorExists;
 
-	public int renderQueueOffset;
-	public bool renderQueueOffsetExists;
+	public string value;
+	public bool valueExists;
 
 
 
@@ -47,11 +47,11 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_Entity ))
+		if(this.GetType() == typeof( PlanetUnity_Label ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Entitys");
+				FieldInfo parentField = _parent.GetType().GetField("Labels");
 				List<object> parentChildren = null;
 				if(parentField != null)
 				{
@@ -76,25 +76,26 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 		
 
 		string attr;
-		attr = reader.GetAttribute("bounds");
+		attr = reader.GetAttribute("shader");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { bounds = attr; boundsExists = true; } 
+		if(attr != null) { shader = attr; shaderExists = true; } 
 		
-		attr = reader.GetAttribute("hidden");
+		attr = reader.GetAttribute("font");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { hidden = bool.Parse(attr); hiddenExists = true; } 
+		if(attr != null) { font = attr; fontExists = true; } 
 		
-		attr = reader.GetAttribute("lastY");
+		attr = reader.GetAttribute("size");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { lastY = float.Parse(attr); lastYExists = true; } 
+		if(attr != null) { size = int.Parse(attr); sizeExists = true; } 
 		
-		attr = reader.GetAttribute("lastX");
+		attr = reader.GetAttribute("textColor");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { lastX = float.Parse(attr); lastXExists = true; } 
+		if(attr == null) { attr = "1,1,1,1"; }
+		if(attr != null) { textColor = attr; textColorExists = true; } 
 		
-		attr = reader.GetAttribute("renderQueueOffset");
+		attr = reader.GetAttribute("value");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { renderQueueOffset = int.Parse(attr); renderQueueOffsetExists = true; } 
+		if(attr != null) { value = attr; valueExists = true; } 
 		
 
 	}
@@ -109,11 +110,11 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(boundsExists) { sb.AppendFormat (" {0}=\"{1}\"", "bounds", bounds); }
-		if(hiddenExists) { sb.AppendFormat (" {0}=\"{1}\"", "hidden", hidden.ToString().ToLower()); }
-		if(lastYExists) { sb.AppendFormat (" {0}=\"{1}\"", "lastY", lastY.ToString ("0.##")); }
-		if(lastXExists) { sb.AppendFormat (" {0}=\"{1}\"", "lastX", lastX.ToString ("0.##")); }
-		if(renderQueueOffsetExists) { sb.AppendFormat (" {0}=\"{1}\"", "renderQueueOffset", renderQueueOffset); }
+		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
+		if(fontExists) { sb.AppendFormat (" {0}=\"{1}\"", "font", font); }
+		if(sizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "size", size); }
+		if(textColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "textColor", textColor); }
+		if(valueExists) { sb.AppendFormat (" {0}=\"{1}\"", "value", value); }
 
 	}
 	
@@ -131,7 +132,7 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Entity");
+		sb.AppendFormat ("<{0}", "Label");
 		
 		if(xmlns != null)
 		{
@@ -151,7 +152,7 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Entity");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Label");
 		}
 	}
 }

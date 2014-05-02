@@ -126,6 +126,7 @@
 	<complexType name="LinkButton">
 		<complexContent>
 			<extension base="planet:Entity">
+				<attribute name="shader" type="string" />
 				<attribute name="font" type="string" />
 				<attribute name="size" type="int" />
 				<attribute name="textColor" type="planet:color" default="1,1,1,1" />
@@ -133,6 +134,19 @@
 				<attribute name="touchSize" type="planet:vec2" />
 				<attribute name="onTouchUp" type="string" />
 				<attribute name="onTouchDown" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<element name="Label" type="planet:Label" />
+	<complexType name="Label">
+		<complexContent>
+			<extension base="planet:Entity">
+				<attribute name="shader" type="string" />
+				<attribute name="font" type="string" />
+				<attribute name="size" type="int" />
+				<attribute name="textColor" type="planet:color" default="1,1,1,1" />
+				<attribute name="value" type="string" />
 			</extension>
 		</complexContent>
 	</complexType>
