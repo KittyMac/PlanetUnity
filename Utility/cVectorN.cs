@@ -17,8 +17,8 @@ using System.Text;
 
 public class cVectorN {
 
-	float[] vector;
-	int length;
+	public float[] vector;
+	public int length;
 
 	public cVectorN(float[] v)
 	{
