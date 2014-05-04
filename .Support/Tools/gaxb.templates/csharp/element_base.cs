@@ -14,6 +14,7 @@
 -- WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  %>
 <%
+SUPER_PLURAL_NAME = pluralName(superclassFieldNameForItem(this));
 PLURAL_NAME = pluralName(this.name);
 FULL_NAME_CAPS = "_"..string.upper(this.namespace).."_"..string.upper(this.name).."BASE".."_";
 CAP_NAME = capitalizedString(this.name);
@@ -83,7 +84,7 @@ end
 %>
 
 	public <%=NEW_KEYWORD%>void gaxb_load(XmlReader reader, object _parent)
-	{	
+	{
 <%		if(hasSuperclass(this)) then
 			gaxb_print("\t\tbase.gaxb_load(reader, _parent);\n")
 		end
@@ -97,23 +98,45 @@ end
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("<%= PLURAL_NAME %>");
+				FieldInfo parentField = _parent.GetType().GetField("<%= CAP_NAME %>");
 				List<object> parentChildren = null;
+				
 				if(parentField != null)
 				{
-					parentChildren = (List<object>)(parentField.GetValue(_parent));
+					parentField.SetValue(_parent, this);
+					
+					parentField = _parent.GetType().GetField("<%= CAP_NAME %>Exists");
+					parentField.SetValue(_parent, true);
 				}
-				if(parentChildren == null)
+				else
 				{
-					FieldInfo childrenField = _parent.GetType().GetField("children");
-					if(childrenField != null)
+					parentField = _parent.GetType().GetField("<%= PLURAL_NAME %>");
+					
+					if(parentField != null)
 					{
-						parentChildren = (List<object>)childrenField.GetValue(_parent);
+						parentChildren = (List<object>)(parentField.GetValue(_parent));
 					}
-				}
-				if(parentChildren != null)
-				{
-					parentChildren.Add(this);
+					else
+					{
+						parentField = _parent.GetType().GetField("<%= SUPER_PLURAL_NAME %>");
+						if(parentField != null)
+						{
+							parentChildren = (List<object>)(parentField.GetValue(_parent));
+						}
+					}
+					if(parentChildren == null)
+					{
+						FieldInfo childrenField = _parent.GetType().GetField("children");
+						if(childrenField != null)
+						{
+							parentChildren = (List<object>)childrenField.GetValue(_parent);
+						}
+					}
+					if(parentChildren != null)
+					{
+						parentChildren.Add(this);
+					}
+					
 				}
 			}
 		}
@@ -208,17 +231,16 @@ end
 		end %>
 <%
 		if (# this.sequences > 0) then
+			gaxb_print('\t\tMethodInfo mInfo;');
 			for k,v in pairs(this.sequences) do
 				if (v.name == "any") then
-					gaxb_print('\t\tforeach(object o in children) { MethodInfo mInfo = o.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke (o, new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "'..v.name..'", o); } }\n');
+					gaxb_print('\t\tforeach(object o in children) { mInfo = o.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke (o, new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "'..v.name..'", o); } }\n');
 				elseif(isPlural(v)) then
-					gaxb_print('\t\tforeach(object o in '..pluralName(v.name)..') { MethodInfo mInfo = o.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke (o, new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "'..v.name..'", o); } }\n');
+					gaxb_print('\t\tforeach(object o in '..pluralName(v.name)..') { mInfo = o.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke (o, new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "'..v.name..'", o); } }\n');
 				else
-					if(isObject(v)) then
-						gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat ("<{0}>{1}</{0}>", "'..v.name..'", '..v.name..'); }\n')
-					else
-						gaxb_print('\t\tif('..v.name..'Exists) { sb.AppendFormat ("<{0}>{1}</{0}>", "'..v.name..'", '..v.name..'); }\n')
-					end
+					gaxb_print('\t\tif('..v.name..'Exists) {\n');
+					gaxb_print('\t\t\tmInfo = '..v.name..'.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke ('..v.name..', new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "'..v.name..'", '..v.name..'); } \n');
+					gaxb_print('\t\t}\n');
 				end
 				gaxb_print("\t\n")
 			end

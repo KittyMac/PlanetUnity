@@ -143,6 +143,13 @@ function superclassForItem(v)
 	return "I"..capitalizedString(v.namespace);
 end
 
+function superclassFieldNameForItem(v)
+	if(v.extension ~= nil) then
+		return capitalizedString(v.extension.name);
+	end
+	return capitalizedString(v.namespace);
+end
+
 function hasSuperclass(v)
 	return (v.extension ~= nil)
 end
