@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_ImageBase : PlanetUnity_Entity {
+public class PlanetUnity_GradientBase : PlanetUnity_Entity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,11 +19,11 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 
 
 	// XML Attributes
-	public string resourcePath;
-	public bool resourcePathExists;
+	public cColor colorTop;
+	public bool colorTopExists;
 
-	public string shader;
-	public bool shaderExists;
+	public cColor colorBottom;
+	public bool colorBottomExists;
 
 	public cVector2 anchor;
 	public bool anchorExists;
@@ -41,23 +41,23 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_Image ))
+		if(this.GetType() == typeof( PlanetUnity_Gradient ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Image");
+				FieldInfo parentField = _parent.GetType().GetField("Gradient");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("ImageExists");
+					parentField = _parent.GetType().GetField("GradientExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Images");
+					parentField = _parent.GetType().GetField("Gradients");
 					
 					if(parentField != null)
 					{
@@ -92,13 +92,13 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 		
 
 		string attr;
-		attr = reader.GetAttribute("resourcePath");
+		attr = reader.GetAttribute("colorTop");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { resourcePath = attr; resourcePathExists = true; } 
+		if(attr != null) { colorTop = attr; colorTopExists = true; } 
 		
-		attr = reader.GetAttribute("shader");
+		attr = reader.GetAttribute("colorBottom");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { shader = attr; shaderExists = true; } 
+		if(attr != null) { colorBottom = attr; colorBottomExists = true; } 
 		
 		attr = reader.GetAttribute("anchor");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
@@ -118,8 +118,8 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(resourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "resourcePath", resourcePath); }
-		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
+		if(colorTopExists) { sb.AppendFormat (" {0}=\"{1}\"", "colorTop", colorTop); }
+		if(colorBottomExists) { sb.AppendFormat (" {0}=\"{1}\"", "colorBottom", colorBottom); }
 		if(anchorExists) { sb.AppendFormat (" {0}=\"{1}\"", "anchor", anchor); }
 
 	}
@@ -138,7 +138,7 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Image");
+		sb.AppendFormat ("<{0}", "Gradient");
 		
 		if(xmlns != null)
 		{
@@ -158,7 +158,7 @@ public class PlanetUnity_ImageBase : PlanetUnity_Entity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Image");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Gradient");
 		}
 	}
 }

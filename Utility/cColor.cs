@@ -32,10 +32,10 @@ public class cColor {
 		if (value.StartsWith ("#")) {
 			int argb = Int32.Parse(value.Substring(1), NumberStyles.HexNumber);
 			return new cColor (
-				(argb & 0xFF000000) >> 24,
-				(argb & 0x00FF0000) >> 16,
-				(argb & 0x0000FF00) >> 8,
-				(argb & 0x000000FF) >> 0);
+				(float)((argb & 0xFF000000) >> 24) / 255.0f,
+				(float)((argb & 0x00FF0000) >> 16) / 255.0f,
+				(float)((argb & 0x0000FF00) >> 8) / 255.0f,
+				(float)((argb & 0x000000FF) >> 0) / 255.0f);
 		}
 
 		var elements = value.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);

@@ -97,6 +97,27 @@
 			</extension>
 		</complexContent>
 	</complexType>
+	
+	<element name="Color" type="planet:Color"/>
+	<complexType name="Color">
+		<complexContent>
+			<extension base="planet:Entity">
+				<attribute name="color" type="planet:color" />
+				<attribute name="anchor" type="planet:vec2" default="0,0" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<element name="Gradient" type="planet:Gradient"/>
+	<complexType name="Gradient">
+		<complexContent>
+			<extension base="planet:Entity">
+				<attribute name="colorTop" type="planet:color" />
+				<attribute name="colorBottom" type="planet:color" />
+				<attribute name="anchor" type="planet:vec2" default="0,0" />
+			</extension>
+		</complexContent>
+	</complexType>
 
 	<element name="Image" type="planet:Image"/>
 	<complexType name="Image">
