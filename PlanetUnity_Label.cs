@@ -17,7 +17,7 @@ using UnityEngine;
 using System.Xml;
 
 public class PlanetUnity_Label : PlanetUnity_LabelBase {
-	protected CCText text;
+	public CCText text;
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
@@ -44,7 +44,7 @@ public class PlanetUnity_Label : PlanetUnity_LabelBase {
 
 
 		if (shaderExists == false) {
-			shader = "Custom/Unlit/Transparent";
+			shader = "Custom/Unlit/NoDepth";
 		}
 
 		var shaderObj = Shader.Find(shader);
@@ -58,11 +58,20 @@ public class PlanetUnity_Label : PlanetUnity_LabelBase {
 		text.Width = bounds.w * pxScale;
 		text.LineHeight = 0.8f;
 		text.Bounding = CCText.BoundingMode.Margin;
-		text.Alignment = CCText.AlignmentMode.Center;
+
+		if(this.alignment == PlanetUnity.LabelAlignment.left)
+			text.Alignment = CCText.AlignmentMode.Left;
+		if(this.alignment == PlanetUnity.LabelAlignment.center)
+			text.Alignment = CCText.AlignmentMode.Center;
+		if(this.alignment == PlanetUnity.LabelAlignment.right)
+			text.Alignment = CCText.AlignmentMode.Right;
+		if(this.alignment == PlanetUnity.LabelAlignment.justify)
+			text.Alignment = CCText.AlignmentMode.Justify;
+
 		text.VerticalAnchor = CCText.VerticalAnchorMode.Middle;
 		text.HorizontalAnchor = CCText.HorizontalAnchorMode.Center;
 
-		gameObject.transform.localPosition += new Vector3(0, bounds.h/2, 0.0f);
+		gameObject.transform.localPosition += new Vector3(bounds.w/2, bounds.h/2, 0);
 		gameObject.transform.localScale = new Vector3 (1.0f/pxScale, 1.0f/pxScale, 1.0f);
 	}
 }

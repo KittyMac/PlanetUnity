@@ -75,7 +75,7 @@ public class PlanetUnity_LinkButton : PlanetUnity_LinkButtonBase, iPlanetUnity_B
 		text.renderer.material.mainTexture = tex;
 
 		if (shaderExists == false) {
-			shader = "Custom/Unlit/Transparent";
+						shader = "Custom/Unlit/NoDepth";
 		}
 
 		var shaderObj = Shader.Find(shader);

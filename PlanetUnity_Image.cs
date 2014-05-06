@@ -57,7 +57,7 @@ public class PlanetUnity_Image : PlanetUnity_ImageBase {
 		gameObject = (GameObject) new GameObject("<Image/>", typeof(MeshRenderer), typeof(MeshFilter));
 
 		if (shaderExists == false) {
-			shader = "Custom/Unlit/Transparent";
+						shader = "Custom/Unlit/NoDepth";
 		}
 
 		base.gaxb_load(reader, _parent);
@@ -80,5 +80,7 @@ public class PlanetUnity_Image : PlanetUnity_ImageBase {
 		gameObject.renderer.material.color = new Color (1, 1, 1, 1);
 		gameObject.renderer.material.shader = shaderObj;
 		gameObject.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
+
+		Debug.Log ("scope().getRenderQueue(): " + scope ().getRenderQueue ());
 	}
 }

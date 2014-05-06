@@ -159,13 +159,26 @@
 		</complexContent>
 	</complexType>
 	
+	
+	<simpleType name="LabelAlignment">
+		<annotation>
+			<appinfo>ENUM</appinfo>
+		</annotation>
+        <restriction base="string">
+			<enumeration value = "left"/>
+			<enumeration value = "center"/>
+			<enumeration value = "right"/>
+			<enumeration value = "justify"/>
+		</restriction>
+    </simpleType>
+	
 	<element name="Label" type="planet:Label" />
 	<complexType name="Label">
 		<complexContent>
 			<extension base="planet:Entity">
 				<attribute name="shader" type="string" />
 				<attribute name="font" type="string" />
-				<attribute name="size" type="int" />
+				<attribute name="alignment" type="planet:LabelAlignment" default="center"/>
 				<attribute name="textColor" type="planet:color" default="1,1,1,1" />
 				<attribute name="value" type="string" />
 			</extension>

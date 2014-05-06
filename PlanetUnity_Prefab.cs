@@ -16,6 +16,7 @@
 using UnityEngine;
 using System.Xml;
 using System;
+using System.CodeDom;
 
 
 public class PlanetUnity_Prefab : PlanetUnity_PrefabBase {
@@ -44,6 +45,9 @@ public class PlanetUnity_Prefab : PlanetUnity_PrefabBase {
 
 		clone.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
 
+		foreach (Transform t in clone.transform) {
+			t.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
+		}
 	}
 
 	// var go = Instantiate(InstantiateMe, Vector3.Zero, Quaternion.identity);
