@@ -28,7 +28,12 @@ public class NotificationObserver
 	{
 		MethodInfo method = observer.GetType().GetMethod (methodName);
 		if (method != null) {
-			method.Invoke (observer, new [] { args });
+			if (method.GetParameters().Length > 0) {
+				method.Invoke (observer, new [] { args });
+			} else {
+				method.Invoke (observer, null);
+			}
+
 		} else {
 			UnityEngine.Debug.Log ("Warning: NotificationCenter attempting to deliver notification, but object does not implement public method "+methodName);
 		}
