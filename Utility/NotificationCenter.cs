@@ -24,11 +24,11 @@ public class NotificationObserver
 	public string methodName;
 	public object observer;
 
-	public void callObserver()
+	public void callObserver(Hashtable args)
 	{
 		MethodInfo method = observer.GetType().GetMethod (methodName);
 		if (method != null) {
-			method.Invoke (observer, null);
+			method.Invoke (observer, new [] { args });
 		} else {
 			UnityEngine.Debug.Log ("Warning: NotificationCenter attempting to deliver notification, but object does not implement public method "+methodName);
 		}
@@ -39,6 +39,20 @@ public class NotificationCenter
 {
 	private static Dictionary<object, List<NotificationObserver>> observersByScope = new Dictionary<object, List<NotificationObserver>> ();
 	private static string globalScope = "GlobalScope";
+
+	public static Hashtable Args(params object[] args){
+		Hashtable hashTable = new Hashtable(args.Length/2);
+		if (args.Length %2 != 0){
+			return null;
+		}else{
+			int i = 0;
+			while(i < args.Length - 1) {
+				hashTable.Add(args[i], args[i+1]);
+				i += 2;
+			}
+			return hashTable;
+		}
+	}
 
 	public static void addObserver(object observer, string methodName, string name, object scope)
 	{
@@ -65,7 +79,7 @@ public class NotificationCenter
 		list.Add(obv);
 	}
 
-	public static void postNotification(object scope, string name)
+	public static void postNotification(object scope, string name, Hashtable args)
 	{
 		if (name == null) {
 			UnityEngine.Debug.Log ("Warning: NotificationCenter.postNotification() called with null notification name");
@@ -81,10 +95,15 @@ public class NotificationCenter
 		{
 			foreach (NotificationObserver o in list) {
 				if (o.name.Equals (name)) {
-					o.callObserver ();
+					o.callObserver (args);
 				}
 			}
 		}
+	}
+
+	public static void postNotification(object scope, string name)
+	{
+		postNotification (scope, name, null);
 	}
 
 	public static void removeObserver(object obv)

@@ -46,6 +46,16 @@
 		<restriction base="string"/>
 	</simpleType>
 
+	<simpleType name="PlanetNotification">
+		<annotation>
+			<appinfo>TYPEDEF</appinfo>
+		</annotation>
+        <restriction base="string">
+			<enumeration value = "UserStringInput"/>
+			<enumeration value = "UserCharInput"/>
+		</restriction>
+    </simpleType>
+	
 	<!-- Super Classes -->
 
 	<element name="ObservableObject" type="planet:ObservableObject" />
