@@ -64,8 +64,16 @@ public class PlanetUnityOverride {
 			}
 
 			return string.Join(",", results.ToArray());
-		}
 
+		} else if(s.StartsWith("@")) {
+
+			string localizedString = PlanetLanguage.translate(s);
+			if(localizedString.Equals(s) == false)
+			{
+				return localizedString;
+			}
+		}
+		
 		return s;
 	}
 
@@ -83,6 +91,8 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		PlanetLanguage.reload ();
 
 		NotificationCenter.addObserver (this, "ReloadScene", "PlanetUnityReloadScene", null);
 
