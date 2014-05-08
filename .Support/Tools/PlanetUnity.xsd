@@ -110,6 +110,17 @@
 		</complexContent>
 	</complexType>
 	
+	<element name="ColorButton" type="planet:ColorButton"/>
+	<complexType name="ColorButton">
+		<complexContent>
+			<extension base="planet:Color">
+				<attribute name="touchSize" type="planet:vec2" />
+				<attribute name="onTouchUp" type="string" />
+				<attribute name="onTouchDown" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
 	<element name="Gradient" type="planet:Gradient"/>
 	<complexType name="Gradient">
 		<complexContent>

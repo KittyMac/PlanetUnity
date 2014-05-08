@@ -28,9 +28,14 @@ public class PlanetKeyboardInput : MonoBehaviour
 
 	public static void OpenKeyboard(string text, TouchScreenKeyboardType keyboardType, bool autocorrection, bool multiline, bool secure, bool alert, bool hideInput)
 	{
-		keyboard = TouchScreenKeyboard.Open(text, keyboardType, autocorrection, multiline, secure, alert);
-		TouchScreenKeyboard.hideInput = hideInput;
-		lastMobileKeyboardText = "";
+		#if UNITY_IPHONE || UNITY_ANDROID
+		if( !Application.isEditor )
+		{
+			keyboard = TouchScreenKeyboard.Open(text, keyboardType, autocorrection, multiline, secure, alert);
+			TouchScreenKeyboard.hideInput = hideInput;
+			lastMobileKeyboardText = "";
+		}
+		#endif
 	}
 
 	public static void CloseKeyboard()
@@ -66,6 +71,7 @@ public class PlanetKeyboardInput : MonoBehaviour
 		// Also, support mobile seamlessly...
 		if(keyboard != null)
 		{
+			Debug.Log ("********* HERE ********");
 			if(keyboard.text.Equals(lastMobileKeyboardText) == false)
 			{
 				NotificationCenter.postNotification (null, PlanetUnity.USERCHARINPUT, NotificationCenter.Args("string", keyboard.text));
