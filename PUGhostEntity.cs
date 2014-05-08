@@ -13,6 +13,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-public class PlanetUnity_Subscribe : PlanetUnity_SubscribeBase {
+public class PUGhostEntity : PUGhostEntityBase {
+
+	public new void gaxb_unload()
+	{
+		base.gaxb_unload ();
+	}
 
 }

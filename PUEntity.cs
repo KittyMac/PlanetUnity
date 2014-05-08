@@ -16,7 +16,7 @@
 using UnityEngine;
 using System.Xml;
 
-public class PlanetUnity_Entity : PlanetUnity_EntityBase {
+public class PUEntity : PUEntityBase {
 	public GameObject gameObject;
 
 	public new void gaxb_unload()
@@ -44,8 +44,8 @@ public class PlanetUnity_Entity : PlanetUnity_EntityBase {
 		if (_parent is GameObject) {
 			setParentGameObject (_parent as GameObject);
 		}
-		else if (_parent is PlanetUnity_Entity) {
-			PlanetUnity_Entity parentEntity = (PlanetUnity_Entity)_parent;
+		else if (_parent is PUEntity) {
+			PUEntity parentEntity = (PUEntity)_parent;
 
 			setParentGameObject (parentEntity.gameObject);
 

@@ -10,18 +10,13 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_SceneBase : PlanetUnity_Entity {
+public class PUGhostEntityBase : PUObservableObject {
 
-
-	private Type planetOverride = Type.GetType("PlanetUnityOverride");
 
 
 
 
 	// XML Attributes
-	public bool adjustCamera;
-	public bool adjustCameraExists;
-
 
 
 
@@ -35,23 +30,23 @@ public class PlanetUnity_SceneBase : PlanetUnity_Entity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_Scene ))
+		if(this.GetType() == typeof( PUGhostEntity ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Scene");
+				FieldInfo parentField = _parent.GetType().GetField("GhostEntity");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("SceneExists");
+					parentField = _parent.GetType().GetField("GhostEntityExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Scenes");
+					parentField = _parent.GetType().GetField("GhostEntitys");
 					
 					if(parentField != null)
 					{
@@ -59,7 +54,7 @@ public class PlanetUnity_SceneBase : PlanetUnity_Entity {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("Entitys");
+						parentField = _parent.GetType().GetField("ObservableObjects");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -85,13 +80,6 @@ public class PlanetUnity_SceneBase : PlanetUnity_Entity {
 		xmlns = reader.GetAttribute("xmlns");
 		
 
-		string attr;
-		attr = reader.GetAttribute("adjustCamera");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "true"; }
-		if(attr != null) { adjustCamera = bool.Parse(attr); adjustCameraExists = true; } 
-		
-
 	}
 	
 	
@@ -104,7 +92,6 @@ public class PlanetUnity_SceneBase : PlanetUnity_Entity {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(adjustCameraExists) { sb.AppendFormat (" {0}=\"{1}\"", "adjustCamera", adjustCamera.ToString().ToLower()); }
 
 	}
 	
@@ -122,7 +109,7 @@ public class PlanetUnity_SceneBase : PlanetUnity_Entity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Scene");
+		sb.AppendFormat ("<{0}", "GhostEntity");
 		
 		if(xmlns != null)
 		{
@@ -142,7 +129,7 @@ public class PlanetUnity_SceneBase : PlanetUnity_Entity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Scene");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "GhostEntity");
 		}
 	}
 }

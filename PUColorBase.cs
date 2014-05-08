@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_LabelBase : PlanetUnity_Entity {
+public class PUColorBase : PUEntity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,20 +19,11 @@ public class PlanetUnity_LabelBase : PlanetUnity_Entity {
 
 
 	// XML Attributes
-	public string shader;
-	public bool shaderExists;
+	public cColor color;
+	public bool colorExists;
 
-	public string font;
-	public bool fontExists;
-
-	public PlanetUnity.LabelAlignment alignment;
-	public bool alignmentExists;
-
-	public cColor textColor;
-	public bool textColorExists;
-
-	public string value;
-	public bool valueExists;
+	public cVector2 anchor;
+	public bool anchorExists;
 
 
 
@@ -47,23 +38,23 @@ public class PlanetUnity_LabelBase : PlanetUnity_Entity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_Label ))
+		if(this.GetType() == typeof( PUColor ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Label");
+				FieldInfo parentField = _parent.GetType().GetField("Color");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("LabelExists");
+					parentField = _parent.GetType().GetField("ColorExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Labels");
+					parentField = _parent.GetType().GetField("Colors");
 					
 					if(parentField != null)
 					{
@@ -98,27 +89,14 @@ public class PlanetUnity_LabelBase : PlanetUnity_Entity {
 		
 
 		string attr;
-		attr = reader.GetAttribute("shader");
+		attr = reader.GetAttribute("color");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { shader = attr; shaderExists = true; } 
+		if(attr != null) { color = attr; colorExists = true; } 
 		
-		attr = reader.GetAttribute("font");
+		attr = reader.GetAttribute("anchor");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { font = attr; fontExists = true; } 
-		
-		attr = reader.GetAttribute("alignment");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "center"; }
-		if(attr != null) { alignment = (PlanetUnity.LabelAlignment)System.Enum.Parse(typeof(PlanetUnity.LabelAlignment), attr); alignmentExists = true; } 
-		
-		attr = reader.GetAttribute("textColor");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "1,1,1,1"; }
-		if(attr != null) { textColor = attr; textColorExists = true; } 
-		
-		attr = reader.GetAttribute("value");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { value = attr; valueExists = true; } 
+		if(attr == null) { attr = "0,0"; }
+		if(attr != null) { anchor = attr; anchorExists = true; } 
 		
 
 	}
@@ -133,11 +111,8 @@ public class PlanetUnity_LabelBase : PlanetUnity_Entity {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
-		if(fontExists) { sb.AppendFormat (" {0}=\"{1}\"", "font", font); }
-		if(alignmentExists) { sb.AppendFormat (" {0}=\"{1}\"", "alignment", (int)alignment); }
-		if(textColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "textColor", textColor); }
-		if(valueExists) { sb.AppendFormat (" {0}=\"{1}\"", "value", value); }
+		if(colorExists) { sb.AppendFormat (" {0}=\"{1}\"", "color", color); }
+		if(anchorExists) { sb.AppendFormat (" {0}=\"{1}\"", "anchor", anchor); }
 
 	}
 	
@@ -155,7 +130,7 @@ public class PlanetUnity_LabelBase : PlanetUnity_Entity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Label");
+		sb.AppendFormat ("<{0}", "Color");
 		
 		if(xmlns != null)
 		{
@@ -175,7 +150,7 @@ public class PlanetUnity_LabelBase : PlanetUnity_Entity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Label");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Color");
 		}
 	}
 }

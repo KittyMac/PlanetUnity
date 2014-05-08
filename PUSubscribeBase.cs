@@ -10,43 +10,49 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_GhostEntityBase : PlanetUnity_ObservableObject {
+public class PUSubscribeBase : IPlanetUnity {
 
 
+	private Type planetOverride = Type.GetType("PlanetUnityOverride");
 
+
+	public object parent;
+	public string xmlns;
 
 
 	// XML Attributes
+	public string name;
+	public bool nameExists;
 
 
 
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+
+	public void gaxb_load(XmlReader reader, object _parent)
 	{
-		base.gaxb_load(reader, _parent);
 
 		if(reader == null && _parent == null)
 			return;
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_GhostEntity ))
+		if(this.GetType() == typeof( PUSubscribe ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("GhostEntity");
+				FieldInfo parentField = _parent.GetType().GetField("Subscribe");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("GhostEntityExists");
+					parentField = _parent.GetType().GetField("SubscribeExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("GhostEntitys");
+					parentField = _parent.GetType().GetField("Subscribes");
 					
 					if(parentField != null)
 					{
@@ -54,7 +60,7 @@ public class PlanetUnity_GhostEntityBase : PlanetUnity_ObservableObject {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("ObservableObjects");
+						parentField = _parent.GetType().GetField("PlanetUnitys");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -80,6 +86,12 @@ public class PlanetUnity_GhostEntityBase : PlanetUnity_ObservableObject {
 		xmlns = reader.GetAttribute("xmlns");
 		
 
+		string attr;
+		attr = reader.GetAttribute("name");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { name = attr; nameExists = true; } 
+		
+
 	}
 	
 	
@@ -88,28 +100,27 @@ public class PlanetUnity_GhostEntityBase : PlanetUnity_ObservableObject {
 	
 	
 	
-	public new void gaxb_appendXMLAttributes(StringBuilder sb)
+	public void gaxb_appendXMLAttributes(StringBuilder sb)
 	{
-		base.gaxb_appendXMLAttributes(sb);
 
+		if(nameExists) { sb.AppendFormat (" {0}=\"{1}\"", "name", name); }
 
 	}
 	
-	public new void gaxb_appendXMLSequences(StringBuilder sb)
+	public void gaxb_appendXMLSequences(StringBuilder sb)
 	{
-		base.gaxb_appendXMLSequences(sb);
 
 
 	}
 	
-	public new void gaxb_appendXML(StringBuilder sb)
+	public void gaxb_appendXML(StringBuilder sb)
 	{
 		if(sb.Length == 0)
 		{
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "GhostEntity");
+		sb.AppendFormat ("<{0}", "Subscribe");
 		
 		if(xmlns != null)
 		{
@@ -129,7 +140,7 @@ public class PlanetUnity_GhostEntityBase : PlanetUnity_ObservableObject {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "GhostEntity");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Subscribe");
 		}
 	}
 }

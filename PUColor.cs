@@ -17,9 +17,10 @@ using UnityEngine;
 using System.Xml;
 using System;
 
-public class PlanetUnity_Image : PlanetUnity_ImageBase {
+public class PUColor : PUColorBase
+{
 
-	protected Mesh CreateMesh ()
+	public static void CreateGradient (GameObject gameObject, cRect bounds, cVector2 anchor, Color a, Color b)
 	{
 
 		Mesh mesh = new Mesh ();
@@ -30,55 +31,44 @@ public class PlanetUnity_Image : PlanetUnity_ImageBase {
 			new Vector3 (0.0f - bounds.w * anchor.x, bounds.h - bounds.h * anchor.y, 0.0f),
 			new Vector3 (0.0f - bounds.w * anchor.x, -bounds.h * anchor.y, 0.0f),
 		};
-
-		Vector2[] uv = new Vector2[] {
-			new Vector2 (1, 1),
-			new Vector2 (1, 0),
-			new Vector2 (0, 1),
-			new Vector2 (0, 0),
-		};
-
+			
 		int[] triangles = new int[] {
 			0, 1, 2,
 			2, 1, 3,
 		};
 
 		mesh.vertices = vertices;
-		mesh.uv = uv;
+		mesh.colors = new Color[4] {a, b, a, b};
 		mesh.triangles = triangles;
 		mesh.RecalculateNormals ();
 
-		return mesh;
+		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
+		filter.mesh = mesh;
+
+		var shaderObj = Shader.Find ("Custom/Unlit/SolidColor");
+		Material mat = new Material (shaderObj);
+		gameObject.renderer.material = mat;
+		gameObject.renderer.material.color = Color.white;
+
 	}
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public new void gaxb_load (XmlReader reader, object _parent)
 	{
-		// Create our specific GameObject, set any defaults
-		gameObject = (GameObject) new GameObject("<Image/>", typeof(MeshRenderer), typeof(MeshFilter));
+		if(gameObject == null)
+			gameObject = (GameObject)new GameObject ("<Color/>", typeof(MeshRenderer), typeof(MeshFilter));
 
-		if (shaderExists == false) {
-						shader = "Custom/Unlit/NoDepth";
-		}
+		base.gaxb_load (reader, _parent);
 
-		base.gaxb_load(reader, _parent);
+		if (reader == null && _parent == null)
+			return;
 
 		if (titleExists) {
 			gameObject.name = title;
 		}
 
-		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
-		filter.mesh = CreateMesh();
+		Color c = new Color (color.r, color.g, color.b, color.a);
+		PUColor.CreateGradient (gameObject, bounds, anchor, c, c);
 
-		// Set texture
-		Texture2D tex = (Texture2D) Resources.Load (resourcePath);
-		tex.filterMode = FilterMode.Bilinear;
-
-
-		gameObject.renderer.material.mainTexture = tex;
-
-		var shaderObj = Shader.Find(shader);
-		gameObject.renderer.material.color = new Color (1, 1, 1, 1);
-		gameObject.renderer.material.shader = shaderObj;
-		gameObject.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
+		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}
 }

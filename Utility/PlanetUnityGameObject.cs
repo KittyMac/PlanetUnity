@@ -38,8 +38,8 @@ public class PlanetUnityOverride {
 			var parts = evalListString.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
 			List<string> results = new List<string> ();
 
-			if (o is PlanetUnity_Entity) {
-				PlanetUnity_Entity entity = (PlanetUnity_Entity)o;
+			if (o is PUEntity) {
+				PUEntity entity = (PUEntity)o;
 				mathParser.LocalVariables.Clear ();
 
 				mathParser.LocalVariables.Add ("top", Convert.ToDecimal(sceneTop));
@@ -56,9 +56,9 @@ public class PlanetUnityOverride {
 				results.Add (mathParser.Parse(part).ToString());
 			}
 
-			if(results.Count == 4 && o is PlanetUnity_Entity)
+			if(results.Count == 4 && o is PUEntity)
 			{
-				PlanetUnity_Entity entity = (PlanetUnity_Entity)o;
+				PUEntity entity = (PUEntity)o;
 				entity.lastY = float.Parse (results [1]) + float.Parse (results [3]);
 				entity.lastX = float.Parse (results [0]) + float.Parse (results [2]);
 			}
@@ -76,7 +76,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 	public string xmlPath;
 
-	private PlanetUnity_Scene scene;
+	private PUScene scene;
 
 	private static FileSystemWatcher watcher;
 	private bool shouldReloadMainXML = false;
@@ -129,10 +129,10 @@ public class PlanetUnityGameObject : MonoBehaviour {
 			#if UNITY_EDITOR
 			string basePath = Path.GetFullPath("Assets/Resources");
 			string xmlString = System.IO.File.ReadAllText(basePath+"/"+xmlPath+".xml");
-			scene = (PlanetUnity_Scene)PlanetUnity.loadXML(xmlString, gameObject);
+			scene = (PUScene)PlanetUnity.loadXML(xmlString, gameObject);
 			#else
 			TextAsset stringData = Resources.Load(xmlPath) as TextAsset;
-			scene = (PlanetUnity_Scene)PlanetUnity.loadXML(stringData.text, gameObject);
+			scene = (PUScene)PlanetUnity.loadXML(stringData.text, gameObject);
 			#endif
 
 			sw.Stop();

@@ -19,7 +19,7 @@ using System;
 using System.Reflection;
 
 public class PlanetUnityCameraObject : MonoBehaviour {
-	public PlanetUnity_Scene scene;
+	public PUScene scene;
 	public new Camera camera;
 	protected float currentAspectRatio;
 
@@ -104,7 +104,7 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 }
 
-public class PlanetUnity_Scene : PlanetUnity_SceneBase {
+public class PUScene : PUSceneBase {
 
 	private PlanetUnityCameraObject cameraObject = null;
 

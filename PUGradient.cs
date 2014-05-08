@@ -13,11 +13,26 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-public class PlanetUnity_GhostEntity : PlanetUnity_GhostEntityBase {
+using UnityEngine;
+using System.Xml;
 
-	public new void gaxb_unload()
+public class PUGradient : PUGradientBase
+{
+	public new void gaxb_load (XmlReader reader, object _parent)
 	{
-		base.gaxb_unload ();
-	}
+		// Create our specific GameObject, set any defaults
+		gameObject = (GameObject)new GameObject ("<Gradient/>", typeof(MeshRenderer), typeof(MeshFilter));
 
+		base.gaxb_load (reader, _parent);
+
+		if (titleExists) {
+			gameObject.name = title;
+		}
+
+		Color cTop = new Color (colorTop.r, colorTop.g, colorTop.b, colorTop.a);
+		Color cBottom = new Color (colorBottom.r, colorBottom.g, colorBottom.b, colorBottom.a);
+		PUColor.CreateGradient (gameObject, bounds, anchor, cTop, cBottom);
+
+		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
+	}
 }

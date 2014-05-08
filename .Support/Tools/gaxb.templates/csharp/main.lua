@@ -103,6 +103,12 @@ function capitalizedString(x)
 	return (x:gsub("^%l", string.upper));
 end
 
+function namespaceInitials(x)
+	if (x == nil) then return nil; end
+	x = capitalizedString(x);
+	return (x:gsub("[^A-Z]", ""));
+end
+
 function lowercasedString(x)
 	return (x:gsub("^.", string.lower,1));
 end
@@ -122,7 +128,7 @@ end
 
 function className(x)
 	--printAllKeys(x)
-	return capitalizedString(x.namespace).."_"..capitalizedString(x.name);
+	return namespaceInitials(x.namespace)..capitalizedString(x.name);
 end
 
 function pluralName(n)
@@ -157,7 +163,7 @@ end
 function classNameFromRef(r)
 	local parts = string.split(r,":");
 	if (#parts == 2) then
-		return capitalizedString(parts[1]).."_"..capitalizedString(parts[2]);
+		return namespaceInitials(parts[1])..capitalizedString(parts[2]);
 	else
 		return "UNKNOWN_REF"
 	end

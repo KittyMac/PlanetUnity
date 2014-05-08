@@ -19,7 +19,7 @@ using System;
 using System.CodeDom;
 
 
-public class PlanetUnity_Prefab : PlanetUnity_PrefabBase {
+public class PUPrefab : PUPrefabBase {
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
@@ -49,6 +49,4 @@ public class PlanetUnity_Prefab : PlanetUnity_PrefabBase {
 			t.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
 		}
 	}
-
-	// var go = Instantiate(InstantiateMe, Vector3.Zero, Quaternion.identity);
 }

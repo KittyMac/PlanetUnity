@@ -26,6 +26,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 interface I<%=CAP_NAME%>
 {
@@ -83,7 +84,10 @@ end
 
 %>
 
-
+	static public string ConvertClassName(string xmlNamespace, string name)
+	{
+		return Regex.Replace(xmlNamespace, "[^A-Z]", "")+name;
+	}
 
 	static public object loadXML(string xmlString, object parentObject)
 	{
@@ -103,7 +107,7 @@ end
 					xmlNamespace = Path.GetFileName (reader.NamespaceURI);
 					try
 					{
-						Type entityClass = Type.GetType (xmlNamespace + "_" + reader.Name, true);
+						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
 
 						object entityObject = (Activator.CreateInstance (entityClass));						
 						
@@ -162,7 +166,7 @@ end
 				case XmlNodeType.EndElement:
 					try{
 						xmlNamespace = Path.GetFileName (reader.NamespaceURI);
-						Type entityClass = Type.GetType (xmlNamespace + "_" + reader.Name, true);
+						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
 						
 						MethodInfo method = entityClass.GetMethod ("gaxb_loadComplete");
 						if(method != null) { method.Invoke (rootEntity, null); }

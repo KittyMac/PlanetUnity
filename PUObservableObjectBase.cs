@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_ObservableObjectBase : IPlanetUnity {
+public class PUObservableObjectBase : IPlanetUnity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -61,7 +61,7 @@ public class PlanetUnity_ObservableObjectBase : IPlanetUnity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_ObservableObject ))
+		if(this.GetType() == typeof( PUObservableObject ))
 		{
 			if(parent != null)
 			{

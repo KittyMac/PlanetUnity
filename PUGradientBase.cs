@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_LabelButtonBase : PlanetUnity_Label {
+public class PUGradientBase : PUEntity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,14 +19,14 @@ public class PlanetUnity_LabelButtonBase : PlanetUnity_Label {
 
 
 	// XML Attributes
-	public cVector2 touchSize;
-	public bool touchSizeExists;
+	public cColor colorTop;
+	public bool colorTopExists;
 
-	public string onTouchUp;
-	public bool onTouchUpExists;
+	public cColor colorBottom;
+	public bool colorBottomExists;
 
-	public string onTouchDown;
-	public bool onTouchDownExists;
+	public cVector2 anchor;
+	public bool anchorExists;
 
 
 
@@ -41,23 +41,23 @@ public class PlanetUnity_LabelButtonBase : PlanetUnity_Label {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_LabelButton ))
+		if(this.GetType() == typeof( PUGradient ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("LabelButton");
+				FieldInfo parentField = _parent.GetType().GetField("Gradient");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("LabelButtonExists");
+					parentField = _parent.GetType().GetField("GradientExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("LabelButtons");
+					parentField = _parent.GetType().GetField("Gradients");
 					
 					if(parentField != null)
 					{
@@ -65,7 +65,7 @@ public class PlanetUnity_LabelButtonBase : PlanetUnity_Label {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("Labels");
+						parentField = _parent.GetType().GetField("Entitys");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -92,17 +92,18 @@ public class PlanetUnity_LabelButtonBase : PlanetUnity_Label {
 		
 
 		string attr;
-		attr = reader.GetAttribute("touchSize");
+		attr = reader.GetAttribute("colorTop");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { touchSize = attr; touchSizeExists = true; } 
+		if(attr != null) { colorTop = attr; colorTopExists = true; } 
 		
-		attr = reader.GetAttribute("onTouchUp");
+		attr = reader.GetAttribute("colorBottom");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { onTouchUp = attr; onTouchUpExists = true; } 
+		if(attr != null) { colorBottom = attr; colorBottomExists = true; } 
 		
-		attr = reader.GetAttribute("onTouchDown");
+		attr = reader.GetAttribute("anchor");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { onTouchDown = attr; onTouchDownExists = true; } 
+		if(attr == null) { attr = "0,0"; }
+		if(attr != null) { anchor = attr; anchorExists = true; } 
 		
 
 	}
@@ -117,9 +118,9 @@ public class PlanetUnity_LabelButtonBase : PlanetUnity_Label {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(touchSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchSize", touchSize); }
-		if(onTouchUpExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchUp", onTouchUp); }
-		if(onTouchDownExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchDown", onTouchDown); }
+		if(colorTopExists) { sb.AppendFormat (" {0}=\"{1}\"", "colorTop", colorTop); }
+		if(colorBottomExists) { sb.AppendFormat (" {0}=\"{1}\"", "colorBottom", colorBottom); }
+		if(anchorExists) { sb.AppendFormat (" {0}=\"{1}\"", "anchor", anchor); }
 
 	}
 	
@@ -137,7 +138,7 @@ public class PlanetUnity_LabelButtonBase : PlanetUnity_Label {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "LabelButton");
+		sb.AppendFormat ("<{0}", "Gradient");
 		
 		if(xmlns != null)
 		{
@@ -157,7 +158,7 @@ public class PlanetUnity_LabelButtonBase : PlanetUnity_Label {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "LabelButton");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Gradient");
 		}
 	}
 }

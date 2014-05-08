@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
+public class PULabelButtonBase : PULabel {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,15 +19,17 @@ public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
 
 
 	// XML Attributes
-	public string _class;
-	public bool _classExists;
+	public cVector2 touchSize;
+	public bool touchSizeExists;
+
+	public string onTouchUp;
+	public bool onTouchUpExists;
+
+	public string onTouchDown;
+	public bool onTouchDownExists;
 
 
 
-
-	// XML Sequences
-	public List<object> Subscribes = new List<object>();
-	
 
 
 	public new void gaxb_load(XmlReader reader, object _parent)
@@ -39,23 +41,23 @@ public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_Controller ))
+		if(this.GetType() == typeof( PULabelButton ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Controller");
+				FieldInfo parentField = _parent.GetType().GetField("LabelButton");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("ControllerExists");
+					parentField = _parent.GetType().GetField("LabelButtonExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Controllers");
+					parentField = _parent.GetType().GetField("LabelButtons");
 					
 					if(parentField != null)
 					{
@@ -63,7 +65,7 @@ public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("Entitys");
+						parentField = _parent.GetType().GetField("Labels");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -90,9 +92,17 @@ public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
 		
 
 		string attr;
-		attr = reader.GetAttribute("class");
+		attr = reader.GetAttribute("touchSize");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { _class = attr; _classExists = true; } 
+		if(attr != null) { touchSize = attr; touchSizeExists = true; } 
+		
+		attr = reader.GetAttribute("onTouchUp");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { onTouchUp = attr; onTouchUpExists = true; } 
+		
+		attr = reader.GetAttribute("onTouchDown");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { onTouchDown = attr; onTouchDownExists = true; } 
 		
 
 	}
@@ -107,7 +117,9 @@ public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(_classExists) { sb.AppendFormat (" {0}=\"{1}\"", "_class", _class); }
+		if(touchSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchSize", touchSize); }
+		if(onTouchUpExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchUp", onTouchUp); }
+		if(onTouchDownExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchDown", onTouchDown); }
 
 	}
 	
@@ -115,8 +127,6 @@ public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
 	{
 		base.gaxb_appendXMLSequences(sb);
 
-		MethodInfo mInfo;		foreach(object o in Subscribes) { mInfo = o.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke (o, new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "Subscribe", o); } }
-	
 
 	}
 	
@@ -127,7 +137,7 @@ public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Controller");
+		sb.AppendFormat ("<{0}", "LabelButton");
 		
 		if(xmlns != null)
 		{
@@ -147,7 +157,7 @@ public class PlanetUnity_ControllerBase : PlanetUnity_Entity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Controller");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "LabelButton");
 		}
 	}
 }

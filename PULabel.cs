@@ -16,7 +16,7 @@
 using UnityEngine;
 using System.Xml;
 
-public class PlanetUnity_Label : PlanetUnity_LabelBase {
+public class PULabel : PULabelBase {
 	public CCText text;
 	public CCFont ccfont;
 

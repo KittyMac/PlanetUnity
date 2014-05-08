@@ -19,7 +19,7 @@ using System;
 
 public enum PlanetUnityButtonState {Normal, Highlighted};
 
-public interface iPlanetUnity_Button {
+public interface IPUButton {
 	void updateButtonToState(PlanetUnityButtonState newState);
 	void performTouchUp();
 	void performTouchDown();
@@ -27,7 +27,7 @@ public interface iPlanetUnity_Button {
 
 public class PlanetUnityButtonScript : MonoBehaviour {
 
-	public iPlanetUnity_Button entity;
+	public IPUButton entity;
 
 	private bool trackingMouse = false;
 	private PlanetUnityButtonState btnState; 
@@ -66,7 +66,7 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 	}
 }
 
-public class PlanetUnity_ImageButton : PlanetUnity_ImageButtonBase, iPlanetUnity_Button {
+public class PUImageButton : PUImageButtonBase, IPUButton {
 
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
 

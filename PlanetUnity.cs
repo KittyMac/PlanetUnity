@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 interface IPlanetUnity
 {
@@ -32,7 +33,10 @@ public class PlanetUnity {
 
 
 
-
+	static public string ConvertClassName(string xmlNamespace, string name)
+	{
+		return Regex.Replace(xmlNamespace, "[^A-Z]", "")+name;
+	}
 
 	static public object loadXML(string xmlString, object parentObject)
 	{
@@ -52,7 +56,7 @@ public class PlanetUnity {
 					xmlNamespace = Path.GetFileName (reader.NamespaceURI);
 					try
 					{
-						Type entityClass = Type.GetType (xmlNamespace + "_" + reader.Name, true);
+						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
 
 						object entityObject = (Activator.CreateInstance (entityClass));						
 						
@@ -111,7 +115,7 @@ public class PlanetUnity {
 				case XmlNodeType.EndElement:
 					try{
 						xmlNamespace = Path.GetFileName (reader.NamespaceURI);
-						Type entityClass = Type.GetType (xmlNamespace + "_" + reader.Name, true);
+						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
 						
 						MethodInfo method = entityClass.GetMethod ("gaxb_loadComplete");
 						if(method != null) { method.Invoke (rootEntity, null); }

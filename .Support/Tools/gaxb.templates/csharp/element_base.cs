@@ -18,10 +18,10 @@ SUPER_PLURAL_NAME = pluralName(superclassFieldNameForItem(this));
 PLURAL_NAME = pluralName(this.name);
 FULL_NAME_CAPS = "_"..string.upper(this.namespace).."_"..string.upper(this.name).."BASE".."_";
 CAP_NAME = capitalizedString(this.name);
-INTERFACE = "I"..capitalizedString(this.namespace);
-FULL_NAME_CAMEL = capitalizedString(this.namespace).."_"..capitalizedString(this.name).."Base";
+INTERFACE = "I"..namespaceInitials(this.namespace);
+FULL_NAME_CAMEL = namespaceInitials(this.namespace)..capitalizedString(this.name).."Base";
 
-FULL_NAME_CAMEL_NON_BASE = capitalizedString(this.namespace).."_"..capitalizedString(this.name);
+FULL_NAME_CAMEL_NON_BASE = namespaceInitials(this.namespace)..capitalizedString(this.name);
 
 if(hasSuperclass(this)) then
 	NEW_KEYWORD = "new "

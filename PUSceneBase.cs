@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_GradientBase : PlanetUnity_Entity {
+public class PUSceneBase : PUEntity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,14 +19,8 @@ public class PlanetUnity_GradientBase : PlanetUnity_Entity {
 
 
 	// XML Attributes
-	public cColor colorTop;
-	public bool colorTopExists;
-
-	public cColor colorBottom;
-	public bool colorBottomExists;
-
-	public cVector2 anchor;
-	public bool anchorExists;
+	public bool adjustCamera;
+	public bool adjustCameraExists;
 
 
 
@@ -41,23 +35,23 @@ public class PlanetUnity_GradientBase : PlanetUnity_Entity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_Gradient ))
+		if(this.GetType() == typeof( PUScene ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Gradient");
+				FieldInfo parentField = _parent.GetType().GetField("Scene");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("GradientExists");
+					parentField = _parent.GetType().GetField("SceneExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Gradients");
+					parentField = _parent.GetType().GetField("Scenes");
 					
 					if(parentField != null)
 					{
@@ -92,18 +86,10 @@ public class PlanetUnity_GradientBase : PlanetUnity_Entity {
 		
 
 		string attr;
-		attr = reader.GetAttribute("colorTop");
+		attr = reader.GetAttribute("adjustCamera");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { colorTop = attr; colorTopExists = true; } 
-		
-		attr = reader.GetAttribute("colorBottom");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { colorBottom = attr; colorBottomExists = true; } 
-		
-		attr = reader.GetAttribute("anchor");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "0,0"; }
-		if(attr != null) { anchor = attr; anchorExists = true; } 
+		if(attr == null) { attr = "true"; }
+		if(attr != null) { adjustCamera = bool.Parse(attr); adjustCameraExists = true; } 
 		
 
 	}
@@ -118,9 +104,7 @@ public class PlanetUnity_GradientBase : PlanetUnity_Entity {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(colorTopExists) { sb.AppendFormat (" {0}=\"{1}\"", "colorTop", colorTop); }
-		if(colorBottomExists) { sb.AppendFormat (" {0}=\"{1}\"", "colorBottom", colorBottom); }
-		if(anchorExists) { sb.AppendFormat (" {0}=\"{1}\"", "anchor", anchor); }
+		if(adjustCameraExists) { sb.AppendFormat (" {0}=\"{1}\"", "adjustCamera", adjustCamera.ToString().ToLower()); }
 
 	}
 	
@@ -138,7 +122,7 @@ public class PlanetUnity_GradientBase : PlanetUnity_Entity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Gradient");
+		sb.AppendFormat ("<{0}", "Scene");
 		
 		if(xmlns != null)
 		{
@@ -158,7 +142,7 @@ public class PlanetUnity_GradientBase : PlanetUnity_Entity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Gradient");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Scene");
 		}
 	}
 }

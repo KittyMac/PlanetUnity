@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
+public class PUImageBase : PUEntity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,20 +19,14 @@ public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
 
 
 	// XML Attributes
-	public string normalResourcePath;
-	public bool normalResourcePathExists;
+	public string resourcePath;
+	public bool resourcePathExists;
 
-	public string highlightedResourcePath;
-	public bool highlightedResourcePathExists;
+	public string shader;
+	public bool shaderExists;
 
-	public cVector2 touchSize;
-	public bool touchSizeExists;
-
-	public string onTouchUp;
-	public bool onTouchUpExists;
-
-	public string onTouchDown;
-	public bool onTouchDownExists;
+	public cVector2 anchor;
+	public bool anchorExists;
 
 
 
@@ -47,23 +41,23 @@ public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_ImageButton ))
+		if(this.GetType() == typeof( PUImage ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("ImageButton");
+				FieldInfo parentField = _parent.GetType().GetField("Image");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("ImageButtonExists");
+					parentField = _parent.GetType().GetField("ImageExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("ImageButtons");
+					parentField = _parent.GetType().GetField("Images");
 					
 					if(parentField != null)
 					{
@@ -71,7 +65,7 @@ public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("Images");
+						parentField = _parent.GetType().GetField("Entitys");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -98,25 +92,18 @@ public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
 		
 
 		string attr;
-		attr = reader.GetAttribute("normalResourcePath");
+		attr = reader.GetAttribute("resourcePath");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { normalResourcePath = attr; normalResourcePathExists = true; } 
+		if(attr != null) { resourcePath = attr; resourcePathExists = true; } 
 		
-		attr = reader.GetAttribute("highlightedResourcePath");
+		attr = reader.GetAttribute("shader");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { highlightedResourcePath = attr; highlightedResourcePathExists = true; } 
+		if(attr != null) { shader = attr; shaderExists = true; } 
 		
-		attr = reader.GetAttribute("touchSize");
+		attr = reader.GetAttribute("anchor");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { touchSize = attr; touchSizeExists = true; } 
-		
-		attr = reader.GetAttribute("onTouchUp");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { onTouchUp = attr; onTouchUpExists = true; } 
-		
-		attr = reader.GetAttribute("onTouchDown");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { onTouchDown = attr; onTouchDownExists = true; } 
+		if(attr == null) { attr = "0,0"; }
+		if(attr != null) { anchor = attr; anchorExists = true; } 
 		
 
 	}
@@ -131,11 +118,9 @@ public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(normalResourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "normalResourcePath", normalResourcePath); }
-		if(highlightedResourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "highlightedResourcePath", highlightedResourcePath); }
-		if(touchSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchSize", touchSize); }
-		if(onTouchUpExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchUp", onTouchUp); }
-		if(onTouchDownExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchDown", onTouchDown); }
+		if(resourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "resourcePath", resourcePath); }
+		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
+		if(anchorExists) { sb.AppendFormat (" {0}=\"{1}\"", "anchor", anchor); }
 
 	}
 	
@@ -153,7 +138,7 @@ public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "ImageButton");
+		sb.AppendFormat ("<{0}", "Image");
 		
 		if(xmlns != null)
 		{
@@ -173,7 +158,7 @@ public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "ImageButton");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Image");
 		}
 	}
 }

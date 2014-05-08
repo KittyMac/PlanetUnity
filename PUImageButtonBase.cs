@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
+public class PUImageButtonBase : PUImage {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,20 +19,20 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 
 
 	// XML Attributes
-	public cRect bounds;
-	public bool boundsExists;
+	public string normalResourcePath;
+	public bool normalResourcePathExists;
 
-	public bool hidden;
-	public bool hiddenExists;
+	public string highlightedResourcePath;
+	public bool highlightedResourcePathExists;
 
-	public float lastY;
-	public bool lastYExists;
+	public cVector2 touchSize;
+	public bool touchSizeExists;
 
-	public float lastX;
-	public bool lastXExists;
+	public string onTouchUp;
+	public bool onTouchUpExists;
 
-	public int renderQueueOffset;
-	public bool renderQueueOffsetExists;
+	public string onTouchDown;
+	public bool onTouchDownExists;
 
 
 
@@ -47,23 +47,23 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_Entity ))
+		if(this.GetType() == typeof( PUImageButton ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Entity");
+				FieldInfo parentField = _parent.GetType().GetField("ImageButton");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("EntityExists");
+					parentField = _parent.GetType().GetField("ImageButtonExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Entitys");
+					parentField = _parent.GetType().GetField("ImageButtons");
 					
 					if(parentField != null)
 					{
@@ -71,7 +71,7 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("ObservableObjects");
+						parentField = _parent.GetType().GetField("Images");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -98,25 +98,25 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 		
 
 		string attr;
-		attr = reader.GetAttribute("bounds");
+		attr = reader.GetAttribute("normalResourcePath");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { bounds = attr; boundsExists = true; } 
+		if(attr != null) { normalResourcePath = attr; normalResourcePathExists = true; } 
 		
-		attr = reader.GetAttribute("hidden");
+		attr = reader.GetAttribute("highlightedResourcePath");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { hidden = bool.Parse(attr); hiddenExists = true; } 
+		if(attr != null) { highlightedResourcePath = attr; highlightedResourcePathExists = true; } 
 		
-		attr = reader.GetAttribute("lastY");
+		attr = reader.GetAttribute("touchSize");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { lastY = float.Parse(attr); lastYExists = true; } 
+		if(attr != null) { touchSize = attr; touchSizeExists = true; } 
 		
-		attr = reader.GetAttribute("lastX");
+		attr = reader.GetAttribute("onTouchUp");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { lastX = float.Parse(attr); lastXExists = true; } 
+		if(attr != null) { onTouchUp = attr; onTouchUpExists = true; } 
 		
-		attr = reader.GetAttribute("renderQueueOffset");
+		attr = reader.GetAttribute("onTouchDown");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { renderQueueOffset = int.Parse(attr); renderQueueOffsetExists = true; } 
+		if(attr != null) { onTouchDown = attr; onTouchDownExists = true; } 
 		
 
 	}
@@ -131,11 +131,11 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(boundsExists) { sb.AppendFormat (" {0}=\"{1}\"", "bounds", bounds); }
-		if(hiddenExists) { sb.AppendFormat (" {0}=\"{1}\"", "hidden", hidden.ToString().ToLower()); }
-		if(lastYExists) { sb.AppendFormat (" {0}=\"{1}\"", "lastY", lastY.ToString ("0.##")); }
-		if(lastXExists) { sb.AppendFormat (" {0}=\"{1}\"", "lastX", lastX.ToString ("0.##")); }
-		if(renderQueueOffsetExists) { sb.AppendFormat (" {0}=\"{1}\"", "renderQueueOffset", renderQueueOffset); }
+		if(normalResourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "normalResourcePath", normalResourcePath); }
+		if(highlightedResourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "highlightedResourcePath", highlightedResourcePath); }
+		if(touchSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchSize", touchSize); }
+		if(onTouchUpExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchUp", onTouchUp); }
+		if(onTouchDownExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchDown", onTouchDown); }
 
 	}
 	
@@ -153,7 +153,7 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Entity");
+		sb.AppendFormat ("<{0}", "ImageButton");
 		
 		if(xmlns != null)
 		{
@@ -173,7 +173,7 @@ public class PlanetUnity_EntityBase : PlanetUnity_ObservableObject {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Entity");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "ImageButton");
 		}
 	}
 }
