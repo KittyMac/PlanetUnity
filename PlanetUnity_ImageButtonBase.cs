@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PlanetUnity_LinkButtonBase : PlanetUnity_Entity {
+public class PlanetUnity_ImageButtonBase : PlanetUnity_Image {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -19,20 +19,11 @@ public class PlanetUnity_LinkButtonBase : PlanetUnity_Entity {
 
 
 	// XML Attributes
-	public string shader;
-	public bool shaderExists;
+	public string normalResourcePath;
+	public bool normalResourcePathExists;
 
-	public string font;
-	public bool fontExists;
-
-	public int size;
-	public bool sizeExists;
-
-	public cColor textColor;
-	public bool textColorExists;
-
-	public string value;
-	public bool valueExists;
+	public string highlightedResourcePath;
+	public bool highlightedResourcePathExists;
 
 	public cVector2 touchSize;
 	public bool touchSizeExists;
@@ -56,23 +47,23 @@ public class PlanetUnity_LinkButtonBase : PlanetUnity_Entity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PlanetUnity_LinkButton ))
+		if(this.GetType() == typeof( PlanetUnity_ImageButton ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("LinkButton");
+				FieldInfo parentField = _parent.GetType().GetField("ImageButton");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("LinkButtonExists");
+					parentField = _parent.GetType().GetField("ImageButtonExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("LinkButtons");
+					parentField = _parent.GetType().GetField("ImageButtons");
 					
 					if(parentField != null)
 					{
@@ -80,7 +71,7 @@ public class PlanetUnity_LinkButtonBase : PlanetUnity_Entity {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("Entitys");
+						parentField = _parent.GetType().GetField("Images");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -107,26 +98,13 @@ public class PlanetUnity_LinkButtonBase : PlanetUnity_Entity {
 		
 
 		string attr;
-		attr = reader.GetAttribute("shader");
+		attr = reader.GetAttribute("normalResourcePath");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { shader = attr; shaderExists = true; } 
+		if(attr != null) { normalResourcePath = attr; normalResourcePathExists = true; } 
 		
-		attr = reader.GetAttribute("font");
+		attr = reader.GetAttribute("highlightedResourcePath");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { font = attr; fontExists = true; } 
-		
-		attr = reader.GetAttribute("size");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { size = int.Parse(attr); sizeExists = true; } 
-		
-		attr = reader.GetAttribute("textColor");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "1,1,1,1"; }
-		if(attr != null) { textColor = attr; textColorExists = true; } 
-		
-		attr = reader.GetAttribute("value");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { value = attr; valueExists = true; } 
+		if(attr != null) { highlightedResourcePath = attr; highlightedResourcePathExists = true; } 
 		
 		attr = reader.GetAttribute("touchSize");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
@@ -153,11 +131,8 @@ public class PlanetUnity_LinkButtonBase : PlanetUnity_Entity {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
-		if(fontExists) { sb.AppendFormat (" {0}=\"{1}\"", "font", font); }
-		if(sizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "size", size); }
-		if(textColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "textColor", textColor); }
-		if(valueExists) { sb.AppendFormat (" {0}=\"{1}\"", "value", value); }
+		if(normalResourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "normalResourcePath", normalResourcePath); }
+		if(highlightedResourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "highlightedResourcePath", highlightedResourcePath); }
 		if(touchSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchSize", touchSize); }
 		if(onTouchUpExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchUp", onTouchUp); }
 		if(onTouchDownExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchDown", onTouchDown); }
@@ -178,7 +153,7 @@ public class PlanetUnity_LinkButtonBase : PlanetUnity_Entity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "LinkButton");
+		sb.AppendFormat ("<{0}", "ImageButton");
 		
 		if(xmlns != null)
 		{
@@ -198,7 +173,7 @@ public class PlanetUnity_LinkButtonBase : PlanetUnity_Entity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "LinkButton");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "ImageButton");
 		}
 	}
 }

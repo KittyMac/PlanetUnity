@@ -140,28 +140,12 @@
 		</complexContent>
 	</complexType>
 	
-	<element name="Button" type="planet:Button"/>
-	<complexType name="Button">
+	<element name="ImageButton" type="planet:ImageButton"/>
+	<complexType name="ImageButton">
 		<complexContent>
 			<extension base="planet:Image">
 				<attribute name="normalResourcePath" type="string" />
 				<attribute name="highlightedResourcePath" type="string" />
-				<attribute name="touchSize" type="planet:vec2" />
-				<attribute name="onTouchUp" type="string" />
-				<attribute name="onTouchDown" type="string" />
-			</extension>
-		</complexContent>
-	</complexType>
-	
-	<element name="LinkButton" type="planet:LinkButton" />
-	<complexType name="LinkButton">
-		<complexContent>
-			<extension base="planet:Entity">
-				<attribute name="shader" type="string" />
-				<attribute name="font" type="string" />
-				<attribute name="size" type="int" />
-				<attribute name="textColor" type="planet:color" default="1,1,1,1" />
-				<attribute name="value" type="string" />
 				<attribute name="touchSize" type="planet:vec2" />
 				<attribute name="onTouchUp" type="string" />
 				<attribute name="onTouchDown" type="string" />
@@ -191,6 +175,17 @@
 				<attribute name="alignment" type="planet:LabelAlignment" default="center"/>
 				<attribute name="textColor" type="planet:color" default="1,1,1,1" />
 				<attribute name="value" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<element name="LabelButton" type="planet:LabelButton" />
+	<complexType name="LabelButton">
+		<complexContent>
+			<extension base="planet:Label">
+				<attribute name="touchSize" type="planet:vec2" />
+				<attribute name="onTouchUp" type="string" />
+				<attribute name="onTouchDown" type="string" />
 			</extension>
 		</complexContent>
 	</complexType>

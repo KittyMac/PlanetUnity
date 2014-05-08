@@ -55,12 +55,18 @@ public class PlanetUnity_Controller : PlanetUnity_ControllerBase {
 				PlanetUnity_Entity scene = scope() as PlanetUnity_Entity;
 				if(scene != null)
 				{
+					FieldInfo field = controller.GetType ().GetField ("scene");
+					if (field != null)
+					{
+						field.SetValue (controller, scene);
+					}
+
 					scene.peformOnChildren(val =>
 						{
 							PlanetUnity_ObservableObject oo = val as PlanetUnity_ObservableObject;
 							if(oo != null && oo.title != null)
 							{
-								FieldInfo field = controller.GetType ().GetField (oo.title);
+								field = controller.GetType ().GetField (oo.title);
 								if (field != null)
 								{
 									field.SetValue (controller, oo);

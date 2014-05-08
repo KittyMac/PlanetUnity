@@ -23,21 +23,59 @@ using System.IO;
 
 public class PlanetKeyboardInput : MonoBehaviour
 {
+	static string lastMobileKeyboardText = "";
+	static TouchScreenKeyboard keyboard = null;
+
+	public static void OpenKeyboard(string text, TouchScreenKeyboardType keyboardType, bool autocorrection, bool multiline, bool secure, bool alert, bool hideInput)
+	{
+		keyboard = TouchScreenKeyboard.Open(text, keyboardType, autocorrection, multiline, secure, alert);
+		TouchScreenKeyboard.hideInput = hideInput;
+	}
+
+	public static void CloseKeyboard()
+	{
+		if(keyboard != null)
+		{
+			keyboard.active = false;
+			keyboard = null;
+		}
+	}
+
+
 	void Update () {
 		foreach (Char c in Input.inputString) {
-
-			NotificationCenter.postNotification (null, PlanetUnity.USERCHARINPUT, NotificationCenter.Args("char", c));
 
 			if (c == "\b"[0]) {
 				if (guiText.text.Length != 0)
 					guiText.text = guiText.text.Substring(0, guiText.text.Length - 1);
+				NotificationCenter.postNotification (null, PlanetUnity.USERCHARINPUT, NotificationCenter.Args("char", c, "string", guiText.text));
 			}
 			else if (c == "\n"[0] || c == "\r"[0]) {
+				NotificationCenter.postNotification (null, PlanetUnity.USERCHARINPUT, NotificationCenter.Args("char", c, "string", guiText.text));
 				NotificationCenter.postNotification (null, PlanetUnity.USERSTRINGINPUT, NotificationCenter.Args("string", guiText.text));
 				guiText.text = "";
 			}
 			else {
 				guiText.text += c;
+				NotificationCenter.postNotification (null, PlanetUnity.USERCHARINPUT, NotificationCenter.Args("char", c, "string", guiText.text));
+			}
+		}
+
+
+		// Also, support mobile seamlessly...
+		if(keyboard != null && keyboard.active == true)
+		{
+			if(keyboard.text.Equals(lastMobileKeyboardText) == false)
+			{
+				NotificationCenter.postNotification (null, PlanetUnity.USERCHARINPUT, NotificationCenter.Args("string", keyboard.text));
+			}
+			if(keyboard.done)
+			{
+				NotificationCenter.postNotification (null, PlanetUnity.USERSTRINGINPUT, NotificationCenter.Args("string", keyboard.text));
+			}
+			else if(keyboard.wasCanceled)
+			{
+
 			}
 		}
 	}

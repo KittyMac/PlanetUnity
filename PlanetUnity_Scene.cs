@@ -106,6 +106,8 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 public class PlanetUnity_Scene : PlanetUnity_SceneBase {
 
+	private PlanetUnityCameraObject cameraObject = null;
+
 	public void gaxb_loadComplete()
 	{
 		foreach (Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
@@ -118,7 +120,7 @@ public class PlanetUnity_Scene : PlanetUnity_SceneBase {
 		base.gaxb_load(reader, _parent);
 
 		if (adjustCamera) {
-			PlanetUnityCameraObject cameraObject = (PlanetUnityCameraObject)gameObject.AddComponent (typeof(PlanetUnityCameraObject));
+			cameraObject = (PlanetUnityCameraObject)gameObject.AddComponent (typeof(PlanetUnityCameraObject));
 			cameraObject.scene = this;
 			cameraObject.AdjustCamera ();
 		}
@@ -127,5 +129,21 @@ public class PlanetUnity_Scene : PlanetUnity_SceneBase {
 	public new bool isScopeContainer()
 	{
 		return true;
+	}
+
+	public bool TestUserTouch (Vector3 touchPos)
+	{
+		// If we have a custom camera, we need to ray cast against it
+		if (cameraObject != null) {
+			Ray ray = cameraObject.camera.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+			LayerMask mask = 31;
+
+			if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
+
+				return true;
+			}
+		}
+		return false;
 	}
 }

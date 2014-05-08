@@ -45,8 +45,10 @@ public class PlanetUnity_Color : PlanetUnity_ColorBase
 		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
 		filter.mesh = mesh;
 
-		Material mat = new Material("Shader \"Vertex Color Only\"{Subshader{Tags { \"Queue\" = \"Transparent\" }BindChannels{Bind \"vertex\", vertex Bind \"color\", color}Pass{ZWrite Off Blend SrcAlpha OneMinusSrcAlpha}}}");
+		var shaderObj = Shader.Find ("Custom/Unlit/SolidColor");
+		Material mat = new Material (shaderObj);
 		gameObject.renderer.material = mat;
+		gameObject.renderer.material.color = Color.white;
 
 	}
 

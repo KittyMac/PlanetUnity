@@ -18,6 +18,7 @@ using System.Xml;
 
 public class PlanetUnity_Label : PlanetUnity_LabelBase {
 	public CCText text;
+	public CCFont ccfont;
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
@@ -29,7 +30,7 @@ public class PlanetUnity_Label : PlanetUnity_LabelBase {
 
 		text = gameObject.AddComponent(typeof(CCText)) as CCText;
 
-		CCFont ccfont = Resources.Load ("bmfonts/"+font, typeof(CCFont)) as CCFont;
+		ccfont = Resources.Load ("bmfonts/"+font, typeof(CCFont)) as CCFont;
 
 		if (ccfont == null) {
 			UnityEngine.Debug.Log ("Unable to find bmfont " + font);

@@ -98,7 +98,7 @@ public class NotificationCenter
 		List<NotificationObserver> list;
 		if (observersByScope.TryGetValue(scope, out list))
 		{
-			foreach (NotificationObserver o in list) {
+			foreach (NotificationObserver o in new List<NotificationObserver>(list)) {
 				if (o.name.Equals (name)) {
 					o.callObserver (args);
 				}
@@ -109,6 +109,13 @@ public class NotificationCenter
 	public static void postNotification(object scope, string name)
 	{
 		postNotification (scope, name, null);
+	}
+
+	public static void removeObserver(object obv, string name)
+	{
+		foreach (List<NotificationObserver> list in observersByScope.Values) {
+			list.RemoveAll(x => (x.observer == obv && x.name.Equals(name)));
+		}
 	}
 
 	public static void removeObserver(object obv)
