@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PULabelBase : PUEntity {
+public class PULabelBase : PUGameObject {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -71,7 +71,7 @@ public class PULabelBase : PUEntity {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("Entitys");
+						parentField = _parent.GetType().GetField("GameObjects");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));

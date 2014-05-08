@@ -19,13 +19,13 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
-interface IPUController {
+interface IPUCode {
 
 }
 
-public class PUController : PUControllerBase {
+public class PUCode : PUCodeBase {
 
-	IPUController controller;
+	IPUCode controller;
 
 	public object GetObject()
 	{
@@ -50,9 +50,9 @@ public class PUController : PUControllerBase {
 		if (_classExists) {
 			// Attach all of the PlanetUnity objects
 			try {
-				controller = (IPUController)gameObject.AddComponent(Type.GetType (_class, true));
+				controller = (IPUCode)gameObject.AddComponent(Type.GetType (_class, true));
 
-				PUEntity scene = scope() as PUEntity;
+				PUGameObject scene = scope() as PUGameObject;
 				if(scene != null)
 				{
 					FieldInfo field = controller.GetType ().GetField ("scene");
@@ -63,7 +63,7 @@ public class PUController : PUControllerBase {
 
 					scene.peformOnChildren(val =>
 						{
-							PUObservableObject oo = val as PUObservableObject;
+							PUGameObject oo = val as PUGameObject;
 							if(oo != null && oo.title != null)
 							{
 								field = controller.GetType ().GetField (oo.title);
@@ -100,7 +100,7 @@ public class PUController : PUControllerBase {
 			}
 		}
 
-		foreach(PUSubscribe subscribe in Subscribes)
+		foreach(PUNotification subscribe in Notifications)
 		{
 			NotificationCenter.addObserver(controller, subscribe.name, subscribe.name, scope());
 		}

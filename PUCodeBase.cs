@@ -10,15 +10,24 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PUGhostEntityBase : PUObservableObject {
+public class PUCodeBase : PUGameObject {
 
+
+	private Type planetOverride = Type.GetType("PlanetUnityOverride");
 
 
 
 
 	// XML Attributes
+	public string _class;
+	public bool _classExists;
 
 
+
+
+	// XML Sequences
+	public List<object> Notifications = new List<object>();
+	
 
 
 	public new void gaxb_load(XmlReader reader, object _parent)
@@ -30,23 +39,23 @@ public class PUGhostEntityBase : PUObservableObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUGhostEntity ))
+		if(this.GetType() == typeof( PUCode ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("GhostEntity");
+				FieldInfo parentField = _parent.GetType().GetField("Code");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("GhostEntityExists");
+					parentField = _parent.GetType().GetField("CodeExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("GhostEntitys");
+					parentField = _parent.GetType().GetField("Codes");
 					
 					if(parentField != null)
 					{
@@ -54,7 +63,7 @@ public class PUGhostEntityBase : PUObservableObject {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("ObservableObjects");
+						parentField = _parent.GetType().GetField("GameObjects");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -80,6 +89,12 @@ public class PUGhostEntityBase : PUObservableObject {
 		xmlns = reader.GetAttribute("xmlns");
 		
 
+		string attr;
+		attr = reader.GetAttribute("class");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { _class = attr; _classExists = true; } 
+		
+
 	}
 	
 	
@@ -92,6 +107,7 @@ public class PUGhostEntityBase : PUObservableObject {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
+		if(_classExists) { sb.AppendFormat (" {0}=\"{1}\"", "_class", _class); }
 
 	}
 	
@@ -99,6 +115,8 @@ public class PUGhostEntityBase : PUObservableObject {
 	{
 		base.gaxb_appendXMLSequences(sb);
 
+		MethodInfo mInfo;		foreach(object o in Notifications) { mInfo = o.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke (o, new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "Notification", o); } }
+	
 
 	}
 	
@@ -109,7 +127,7 @@ public class PUGhostEntityBase : PUObservableObject {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "GhostEntity");
+		sb.AppendFormat ("<{0}", "Code");
 		
 		if(xmlns != null)
 		{
@@ -129,7 +147,7 @@ public class PUGhostEntityBase : PUObservableObject {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "GhostEntity");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Code");
 		}
 	}
 }

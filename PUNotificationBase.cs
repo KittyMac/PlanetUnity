@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PUSubscribeBase : IPlanetUnity {
+public class PUNotificationBase : IPlanetUnity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -36,23 +36,23 @@ public class PUSubscribeBase : IPlanetUnity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUSubscribe ))
+		if(this.GetType() == typeof( PUNotification ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Subscribe");
+				FieldInfo parentField = _parent.GetType().GetField("Notification");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("SubscribeExists");
+					parentField = _parent.GetType().GetField("NotificationExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Subscribes");
+					parentField = _parent.GetType().GetField("Notifications");
 					
 					if(parentField != null)
 					{
@@ -120,7 +120,7 @@ public class PUSubscribeBase : IPlanetUnity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Subscribe");
+		sb.AppendFormat ("<{0}", "Notification");
 		
 		if(xmlns != null)
 		{
@@ -140,7 +140,7 @@ public class PUSubscribeBase : IPlanetUnity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Subscribe");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Notification");
 		}
 	}
 }

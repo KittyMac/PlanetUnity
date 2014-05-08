@@ -13,11 +13,53 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-public class PUGhostEntity : PUGhostEntityBase {
+using System.Xml;
+using System;
+using System.Reflection;
 
-	public new void gaxb_unload()
+public class PUObject : PUObjectBase {
+
+	private int renderQeueuCount = 0;
+	public int getRenderQueue()
 	{
-		base.gaxb_unload ();
+		return renderQeueuCount++;
 	}
 
+	public void peformOnChildren(Action<object> block)
+	{
+		foreach(object child in children)
+		{
+			block (child);
+
+			MethodInfo method = child.GetType().GetMethod ("peformOnChildren");
+			if (method != null) { method.Invoke (child, new[] { block }); }
+		}
+	}
+
+	public new void gaxb_load(XmlReader reader, object _parent)
+	{
+		base.gaxb_load(reader, _parent);
+		renderQeueuCount = 0;
+	}
+
+	public void gaxb_unload()
+	{
+		NotificationCenter.removeObserver (this);
+	}
+
+	public PUObject scope()
+	{
+		if (isScopeContainer ())
+			return this;
+		if (parent == null)
+			return this;
+		if ((parent is PUObject) == false)
+			return this;
+		return (parent as PUObject).scope();
+	}
+
+	public bool isScopeContainer()
+	{
+		return false;
+	}
 }

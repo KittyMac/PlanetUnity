@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PUEntityBase : PUObservableObject {
+public class PUGameObjectBase : PUObject {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -47,23 +47,23 @@ public class PUEntityBase : PUObservableObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUEntity ))
+		if(this.GetType() == typeof( PUGameObject ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Entity");
+				FieldInfo parentField = _parent.GetType().GetField("GameObject");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("EntityExists");
+					parentField = _parent.GetType().GetField("GameObjectExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Entitys");
+					parentField = _parent.GetType().GetField("GameObjects");
 					
 					if(parentField != null)
 					{
@@ -71,7 +71,7 @@ public class PUEntityBase : PUObservableObject {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("ObservableObjects");
+						parentField = _parent.GetType().GetField("Objects");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -153,7 +153,7 @@ public class PUEntityBase : PUObservableObject {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Entity");
+		sb.AppendFormat ("<{0}", "GameObject");
 		
 		if(xmlns != null)
 		{
@@ -173,7 +173,7 @@ public class PUEntityBase : PUObservableObject {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Entity");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "GameObject");
 		}
 	}
 }

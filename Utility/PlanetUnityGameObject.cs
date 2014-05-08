@@ -38,8 +38,8 @@ public class PlanetUnityOverride {
 			var parts = evalListString.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
 			List<string> results = new List<string> ();
 
-			if (o is PUEntity) {
-				PUEntity entity = (PUEntity)o;
+			if (o is PUGameObject) {
+				PUGameObject entity = (PUGameObject)o;
 				mathParser.LocalVariables.Clear ();
 
 				mathParser.LocalVariables.Add ("top", Convert.ToDecimal(sceneTop));
@@ -56,9 +56,9 @@ public class PlanetUnityOverride {
 				results.Add (mathParser.Parse(part).ToString());
 			}
 
-			if(results.Count == 4 && o is PUEntity)
+			if(results.Count == 4 && o is PUGameObject)
 			{
-				PUEntity entity = (PUEntity)o;
+				PUGameObject entity = (PUGameObject)o;
 				entity.lastY = float.Parse (results [1]) + float.Parse (results [3]);
 				entity.lastX = float.Parse (results [0]) + float.Parse (results [2]);
 			}

@@ -13,54 +13,6 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using UnityEngine;
-using System.Xml;
+public class PUNotification : PUNotificationBase {
 
-public class PUEntity : PUEntityBase {
-	public GameObject gameObject;
-
-	public new void gaxb_unload()
-	{
-		base.gaxb_unload ();
-	}
-
-	public void setParentGameObject(GameObject p)
-	{
-		gameObject.transform.parent = p.transform;
-	}
-
-	public new void gaxb_load(XmlReader reader, object _parent)
-	{
-		base.gaxb_load(reader, _parent);
-
-		if (gameObject == null) {
-			gameObject = new GameObject ("<Entity />");
-
-			if (titleExists) {
-				gameObject.name = title;
-			}
-		}
-
-		if (_parent is GameObject) {
-			setParentGameObject (_parent as GameObject);
-		}
-		else if (_parent is PUEntity) {
-			PUEntity parentEntity = (PUEntity)_parent;
-
-			setParentGameObject (parentEntity.gameObject);
-
-			if (boundsExists) {
-				bounds.y = (parentEntity.bounds.h - bounds.y) - bounds.h;
-				gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0.0f);
-			}
-		}
-
-		if (reader != null) {
-			gameObject.layer = 31;
-		}
-
-		if (hidden) {
-			gameObject.SetActive (false);
-		}
-	}
 }

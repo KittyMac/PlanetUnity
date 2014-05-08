@@ -58,8 +58,8 @@
 	
 	<!-- Super Classes -->
 
-	<element name="ObservableObject" type="planet:ObservableObject" />
-	<complexType name="ObservableObject">
+	<element name="Object" type="planet:Object" />
+	<complexType name="Object">
 		<sequence>
 			<any minOccurs="0" maxOccurs="unbounded" />
 		</sequence>
@@ -73,19 +73,10 @@
 		<attribute name="tag6" type="string" />
 	</complexType>
 
-
-	<element name="GhostEntity" type="planet:GhostEntity"/>
-	<complexType name="GhostEntity">
+	<element name="GameObject" type="planet:GameObject"/>
+	<complexType name="GameObject">
 		<complexContent>
-			<extension base="planet:ObservableObject">
-			</extension>
-		</complexContent>
-	</complexType>
-
-	<element name="Entity" type="planet:Entity"/>
-	<complexType name="Entity">
-		<complexContent>
-			<extension base="planet:ObservableObject">
+			<extension base="planet:Object">
 				<attribute name="bounds" type="planet:rect" />
 				<attribute name="hidden" type="boolean" />
 				<attribute name="lastY" type="float" />
@@ -102,7 +93,7 @@
 	<element name="Scene" type="planet:Scene"/>
 	<complexType name="Scene" >
 		<complexContent>
-			<extension base="planet:Entity">
+			<extension base="planet:GameObject">
 				<attribute name="adjustCamera" type="boolean" default="true" />
 			</extension>
 		</complexContent>
@@ -111,7 +102,7 @@
 	<element name="Color" type="planet:Color"/>
 	<complexType name="Color">
 		<complexContent>
-			<extension base="planet:Entity">
+			<extension base="planet:GameObject">
 				<attribute name="color" type="planet:color" />
 				<attribute name="anchor" type="planet:vec2" default="0,0" />
 			</extension>
@@ -121,7 +112,7 @@
 	<element name="Gradient" type="planet:Gradient"/>
 	<complexType name="Gradient">
 		<complexContent>
-			<extension base="planet:Entity">
+			<extension base="planet:GameObject">
 				<attribute name="colorTop" type="planet:color" />
 				<attribute name="colorBottom" type="planet:color" />
 				<attribute name="anchor" type="planet:vec2" default="0,0" />
@@ -132,7 +123,7 @@
 	<element name="Image" type="planet:Image"/>
 	<complexType name="Image">
 		<complexContent>
-			<extension base="planet:Entity">
+			<extension base="planet:GameObject">
 				<attribute name="resourcePath" type="string" />
 				<attribute name="shader" type="string" />
 				<attribute name="anchor" type="planet:vec2" default="0,0" />
@@ -169,7 +160,7 @@
 	<element name="Label" type="planet:Label" />
 	<complexType name="Label">
 		<complexContent>
-			<extension base="planet:Entity">
+			<extension base="planet:GameObject">
 				<attribute name="shader" type="string" />
 				<attribute name="font" type="string" />
 				<attribute name="alignment" type="planet:LabelAlignment" default="center"/>
@@ -193,24 +184,24 @@
 	<element name="Prefab" type="planet:Prefab" />
 	<complexType name="Prefab">
 		<complexContent>
-			<extension base="planet:Entity">
+			<extension base="planet:GameObject">
 				<attribute name="name" type="string" />
 			</extension>
 		</complexContent>
 	</complexType>
 	
 	
-	<element name="Subscribe" type="planet:Subscribe" />
-	<complexType name="Subscribe">
+	<element name="Notification" type="planet:Notification" />
+	<complexType name="Notification">
 		<attribute name="name" type="string" use="required" />
 	</complexType>
 
-	<element name="Controller">
+	<element name="Code">
 		<complexType>
 			<complexContent>
-				<extension base="planet:Entity">
+				<extension base="planet:GameObject">
 					<sequence>
-						<element ref="planet:Subscribe" minOccurs="0" maxOccurs="unbounded" />
+						<element ref="planet:Notification" minOccurs="0" maxOccurs="unbounded" />
 					</sequence>
 					<attribute name="class" type="string"/>
 				</extension>

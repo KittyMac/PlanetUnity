@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PUPrefabBase : PUEntity {
+public class PUPrefabBase : PUGameObject {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -59,7 +59,7 @@ public class PUPrefabBase : PUEntity {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("Entitys");
+						parentField = _parent.GetType().GetField("GameObjects");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));

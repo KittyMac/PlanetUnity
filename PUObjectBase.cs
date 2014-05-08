@@ -10,7 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
-public class PUObservableObjectBase : IPlanetUnity {
+public class PUObjectBase : IPlanetUnity {
 
 
 	private Type planetOverride = Type.GetType("PlanetUnityOverride");
@@ -61,23 +61,23 @@ public class PUObservableObjectBase : IPlanetUnity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUObservableObject ))
+		if(this.GetType() == typeof( PUObject ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("ObservableObject");
+				FieldInfo parentField = _parent.GetType().GetField("Object");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("ObservableObjectExists");
+					parentField = _parent.GetType().GetField("ObjectExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("ObservableObjects");
+					parentField = _parent.GetType().GetField("Objects");
 					
 					if(parentField != null)
 					{
@@ -182,7 +182,7 @@ public class PUObservableObjectBase : IPlanetUnity {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "ObservableObject");
+		sb.AppendFormat ("<{0}", "Object");
 		
 		if(xmlns != null)
 		{
@@ -202,7 +202,7 @@ public class PUObservableObjectBase : IPlanetUnity {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "ObservableObject");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Object");
 		}
 	}
 }
