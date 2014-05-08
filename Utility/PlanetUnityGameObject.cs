@@ -92,8 +92,6 @@ public class PlanetUnityGameObject : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		PlanetLanguage.reload ();
-
 		NotificationCenter.addObserver (this, "ReloadScene", "PlanetUnityReloadScene", null);
 
 		ReloadScene ();
