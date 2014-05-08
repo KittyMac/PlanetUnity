@@ -53,6 +53,7 @@
         <restriction base="string">
 			<enumeration value = "UserStringInput"/>
 			<enumeration value = "UserCharInput"/>
+			<enumeration value = "UserInputCancelled"/>
 		</restriction>
     </simpleType>
 	

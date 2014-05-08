@@ -30,6 +30,7 @@ public class PlanetKeyboardInput : MonoBehaviour
 	{
 		keyboard = TouchScreenKeyboard.Open(text, keyboardType, autocorrection, multiline, secure, alert);
 		TouchScreenKeyboard.hideInput = hideInput;
+		lastMobileKeyboardText = "";
 	}
 
 	public static void CloseKeyboard()
@@ -63,19 +64,22 @@ public class PlanetKeyboardInput : MonoBehaviour
 
 
 		// Also, support mobile seamlessly...
-		if(keyboard != null && keyboard.active == true)
+		if(keyboard != null)
 		{
 			if(keyboard.text.Equals(lastMobileKeyboardText) == false)
 			{
 				NotificationCenter.postNotification (null, PlanetUnity.USERCHARINPUT, NotificationCenter.Args("string", keyboard.text));
+				lastMobileKeyboardText = keyboard.text;
 			}
 			if(keyboard.done)
 			{
 				NotificationCenter.postNotification (null, PlanetUnity.USERSTRINGINPUT, NotificationCenter.Args("string", keyboard.text));
+				CloseKeyboard();
 			}
-			else if(keyboard.wasCanceled)
+			else if(keyboard.wasCanceled || keyboard.active == false)
 			{
-
+				NotificationCenter.postNotification (null, PlanetUnity.USERINPUTCANCELLED, NotificationCenter.Args("string", keyboard.text));
+				CloseKeyboard();
 			}
 		}
 	}
