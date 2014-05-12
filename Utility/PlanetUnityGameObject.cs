@@ -130,7 +130,6 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		RemoveScene ();
 
-		try {
 			Stopwatch sw = Stopwatch.StartNew();
 
 			// In the editor, pull directly from the file system otherwise we get a cached version
@@ -146,10 +145,6 @@ public class PlanetUnityGameObject : MonoBehaviour {
 			sw.Stop();
 
 			UnityEngine.Debug.Log("["+sw.Elapsed.TotalMilliseconds+"ms] Loading scene "+xmlPath+".xml");
-		}
-		catch(Exception) {
-			UnityEngine.Debug.Log ("Unable to load Planet Unity XML " + xmlPath);
-		}
 	}
 
 	// ************************ EDITOR ONLY *******************************

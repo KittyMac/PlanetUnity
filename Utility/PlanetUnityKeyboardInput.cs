@@ -71,7 +71,6 @@ public class PlanetUnityKeyboardInput : MonoBehaviour
 		// Also, support mobile seamlessly...
 		if(keyboard != null)
 		{
-			Debug.Log ("********* HERE ********");
 			if(keyboard.text.Equals(lastMobileKeyboardText) == false)
 			{
 				NotificationCenter.postNotification (null, PlanetUnity.USERCHARINPUT, NotificationCenter.Args("string", keyboard.text));
