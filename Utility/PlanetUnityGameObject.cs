@@ -92,7 +92,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		NotificationCenter.addObserver (this, "ReloadScene", "PlanetUnityReloadScene", null);
+		NotificationCenter.addObserver (this, "PlanetUnityReloadScene", null, "ReloadScene");
 
 		ReloadScene ();
 
@@ -130,21 +130,21 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		RemoveScene ();
 
-			Stopwatch sw = Stopwatch.StartNew();
+		Stopwatch sw = Stopwatch.StartNew();
 
-			// In the editor, pull directly from the file system otherwise we get a cached version
-			#if UNITY_EDITOR
-			string basePath = Path.GetFullPath("Assets/Resources");
-			string xmlString = System.IO.File.ReadAllText(basePath+"/"+xmlPath+".xml");
-			scene = (PUScene)PlanetUnity.loadXML(xmlString, gameObject);
-			#else
-			TextAsset stringData = Resources.Load(xmlPath) as TextAsset;
-			scene = (PUScene)PlanetUnity.loadXML(stringData.text, gameObject);
-			#endif
+		// In the editor, pull directly from the file system otherwise we get a cached version
+		#if UNITY_EDITOR
+		string basePath = Path.GetFullPath("Assets/Resources");
+		string xmlString = System.IO.File.ReadAllText(basePath+"/"+xmlPath+".xml");
+		scene = (PUScene)PlanetUnity.loadXML(xmlString, gameObject);
+		#else
+		TextAsset stringData = Resources.Load(xmlPath) as TextAsset;
+		scene = (PUScene)PlanetUnity.loadXML(stringData.text, gameObject);
+		#endif
 
-			sw.Stop();
+		sw.Stop();
 
-			UnityEngine.Debug.Log("["+sw.Elapsed.TotalMilliseconds+"ms] Loading scene "+xmlPath+".xml");
+		UnityEngine.Debug.Log("["+sw.Elapsed.TotalMilliseconds+"ms] Loading scene "+xmlPath+".xml");
 	}
 
 	// ************************ EDITOR ONLY *******************************

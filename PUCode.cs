@@ -102,7 +102,7 @@ public class PUCode : PUCodeBase {
 
 		foreach(PUNotification subscribe in Notifications)
 		{
-			NotificationCenter.addObserver(controller, subscribe.name, subscribe.name, scope());
+			NotificationCenter.addObserver(controller, subscribe.name, scope(), subscribe.name);
 		}
 	}
 

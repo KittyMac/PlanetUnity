@@ -17,26 +17,32 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System;
 
 public class NotificationObserver
 {
 	public string name;
 	public string methodName;
 	public object observer;
+	public Action<Hashtable> block;
 
 	public void callObserver(Hashtable args)
 	{
-		MethodInfo method = observer.GetType().GetMethod (methodName);
-		if (method != null) {
-			if (method.GetParameters().Length > 0) {
-				method.Invoke (observer, new [] { args });
-			} else {
-				method.Invoke (observer, null);
-			}
+		if (methodName != null) {
+			MethodInfo method = observer.GetType ().GetMethod (methodName);
+			if (method != null) {
+				if (method.GetParameters ().Length > 0) {
+					method.Invoke (observer, new [] { args });
+				} else {
+					method.Invoke (observer, null);
+				}
 
-		} else {
-			UnityEngine.Debug.Log ("Warning: NotificationCenter attempting to deliver notification, but object does not implement public method "+methodName);
-		}
+			} else {
+				UnityEngine.Debug.Log ("Warning: NotificationCenter attempting to deliver notification, but object does not implement public method " + methodName);
+			}
+		} else if (block != null) {
+			block (args);
+		} 
 	}
 }
 
@@ -59,7 +65,7 @@ public class NotificationCenter
 		}
 	}
 
-	public static void addObserver(object observer, string methodName, string name, object scope)
+	private static void addObserverPrivate(object observer, string name, object scope, Action<Hashtable> block, string methodName)
 	{
 		if (observer == null || name == null) {
 			UnityEngine.Debug.Log ("Warning: NotificationCenter.addObserver() called with null observer or name");
@@ -72,6 +78,7 @@ public class NotificationCenter
 
 		NotificationObserver obv = new NotificationObserver ();
 		obv.name = name;
+		obv.block = block;
 		obv.methodName = methodName;
 		obv.observer = observer;
 
@@ -82,6 +89,16 @@ public class NotificationCenter
 			observersByScope.Add(scope, list);
 		}
 		list.Add(obv);
+	}
+
+	public static void addObserver(object observer, string name, object scope, Action<Hashtable> block)
+	{
+		addObserverPrivate (observer, name, scope, block, null);
+	}
+
+	public static void addObserver(object observer, string name, object scope, string methodName)
+	{
+		addObserverPrivate (observer, name, scope, null, methodName);
 	}
 
 	public static void postNotification(object scope, string name, Hashtable args)
