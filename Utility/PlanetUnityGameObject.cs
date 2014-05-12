@@ -31,6 +31,8 @@ public class PlanetUnityOverride {
 
 	public static string processString(object o, string s)
 	{
+		s.Replace("@LANGUAGE", PlanetUnityLanguage.LanguageCode());
+
 		if (s.StartsWith ("@eval(")) {
 
 			string evalListString = s.Substring(6, s.Length-7);
@@ -67,7 +69,7 @@ public class PlanetUnityOverride {
 
 		} else if(s.StartsWith("@")) {
 
-			string localizedString = PlanetUnityLanguage.translate(s);
+			string localizedString = PlanetUnityLanguage.Translate(s);
 			if(localizedString.Equals(s) == false)
 			{
 				return localizedString;

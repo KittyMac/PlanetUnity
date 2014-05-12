@@ -24,11 +24,19 @@ using System.Text.RegularExpressions;
 
 public class PlanetUnityLanguage
 {
-	static Dictionary<string,Dictionary<string,string>> allLanguages = new Dictionary<string,Dictionary<string,string>>();
+	private static Dictionary<string,Dictionary<string,string>> allLanguages = new Dictionary<string,Dictionary<string,string>>();
+	private static Dictionary<string, string> languageToCode = null;
+	private static string languageCode = null;
 
-	static Dictionary<string, string> languageToCode = null;
+	static public string LanguageCode()
+	{
+		if(languageCode == null) {
+			languageCode = Application.systemLanguage.ToString ();
+		}
+		return languageCode;
+	}
 
-	static public void createLanguageCodeMapping()
+	static public void CreateLanguageCodeMapping()
 	{
 		if(languageToCode == null)
 		{
@@ -78,16 +86,16 @@ public class PlanetUnityLanguage
 		}
 	}
 
-	static public void reloadAllLanguages()
+	static public void ReloadAllLanguages()
 	{
 		allLanguages.Clear ();
 	}
 
-	static public void verifyLanguageCode(string code)
+	static public void VerifyLanguageCode(string code)
 	{
 		Dictionary<string,string> languageDict;
 
-		createLanguageCodeMapping ();
+		CreateLanguageCodeMapping ();
 
 		try {
 			code = languageToCode [code];
@@ -113,16 +121,16 @@ public class PlanetUnityLanguage
 		}
 	}
 
-	static public string translate(string key, string code)
+	static public string Translate(string key, string code)
 	{
-		verifyLanguageCode (code);
+		VerifyLanguageCode (code);
 
 		Dictionary<string,string> languageDict;
 		if(!allLanguages.TryGetValue(code, out languageDict))
 		{
 			if(code.Equals("en"))
 				return key;
-			return translate(key, "en");
+			return Translate(key, "en");
 		}
 
 		string value = languageDict[key];
@@ -130,14 +138,17 @@ public class PlanetUnityLanguage
 		{
 			if(code.Equals("en"))
 				return key;
-			return translate(key, "en");
+			return Translate(key, "en");
 		}
 
 		return value;
 	}
 
-	static public string translate(string key)
+	static public string Translate(string key)
 	{
-		return translate (key, Application.systemLanguage.ToString());
+		if (languageCode == null) {
+
+		}
+		return Translate (key, languageCode);
 	}
 }
