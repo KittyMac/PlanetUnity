@@ -21,7 +21,7 @@ using System;
 using System.IO;
 
 
-public class PlanetKeyboardInput : MonoBehaviour
+public class PlanetUnityKeyboardInput : MonoBehaviour
 {
 	static string lastMobileKeyboardText = "";
 	static TouchScreenKeyboard keyboard = null;

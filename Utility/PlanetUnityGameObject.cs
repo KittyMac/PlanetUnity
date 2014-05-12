@@ -67,7 +67,7 @@ public class PlanetUnityOverride {
 
 		} else if(s.StartsWith("@")) {
 
-			string localizedString = PlanetLanguage.translate(s);
+			string localizedString = PlanetUnityLanguage.translate(s);
 			if(localizedString.Equals(s) == false)
 			{
 				return localizedString;

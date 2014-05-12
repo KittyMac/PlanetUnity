@@ -22,7 +22,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 
 
-public class PlanetLanguage
+public class PlanetUnityLanguage
 {
 	static Dictionary<string,Dictionary<string,string>> allLanguages = new Dictionary<string,Dictionary<string,string>>();
 
