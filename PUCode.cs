@@ -32,7 +32,7 @@ public class PUCode : PUCodeBase {
 		return controller;
 	}
 
-	public void gaxb_unload()
+	public new void gaxb_unload()
 	{
 		base.gaxb_unload ();
 		NotificationCenter.removeObserver (controller);
