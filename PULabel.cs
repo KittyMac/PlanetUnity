@@ -61,12 +61,19 @@ public class PULabel : PULabelBase {
 			gameObject.transform.localPosition += new Vector3(bounds.w, bounds.h, 0);
 		}
 
+		if (shaderExists == false) {
+			shader = "Custom/Unlit/Font";
+		}
+
 		MeshRenderer meshRendererComponent = gameObject.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
-		var shaderObj = Shader.Find ("Custom/Unlit/Font");
+		var shaderObj = Shader.Find (shader);
 		Material mat = new Material (shaderObj);
 		mat.mainTexture = textMesh.font.material.mainTexture;
+		mat.mainTexture.filterMode = FilterMode.Bilinear;
 		meshRendererComponent.materials = new Material[] { mat };
 
+
+		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 
 		ts.FitToWidth (bounds.w);
 	}
