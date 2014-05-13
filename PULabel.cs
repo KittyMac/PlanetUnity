@@ -17,8 +17,6 @@ using UnityEngine;
 using System.Xml;
 
 public class PULabel : PULabelBase {
-	public CCText text;
-	public CCFont ccfont;
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
@@ -27,52 +25,41 @@ public class PULabel : PULabelBase {
 		if (titleExists == false) {
 			gameObject.name = "\""+value+"\"";
 		}
+		
+		gameObject.AddComponent("TextMesh");
 
-		text = gameObject.AddComponent(typeof(CCText)) as CCText;
+		TextMesh textMeshComponent = gameObject.GetComponent(typeof(TextMesh)) as TextMesh;
+		textMeshComponent.font = PlanetUnityGameObject.FindFontNamed(font);
+		textMeshComponent.text = value;
 
-		ccfont = Resources.Load ("bmfonts/"+font, typeof(CCFont)) as CCFont;
+		textMeshComponent.color = new Color (textColor.r, textColor.g, textColor.b, textColor.a);
 
-		if (ccfont == null) {
-			UnityEngine.Debug.Log ("Unable to find bmfont " + font);
-			return;
+		// magic numbers explained here: http://answers.unity3d.com/questions/55433/textmesh-charactersize-vs-fontsize.html
+		textMeshComponent.characterSize = fontSize*10.0f/(fontSize*2);
+		textMeshComponent.fontSize = (fontSize*2);
+
+		textMeshComponent.lineSpacing = 0.86f;
+
+		if (this.alignment == PlanetUnity.LabelAlignment.left) {
+			textMeshComponent.alignment = TextAlignment.Left;
+			textMeshComponent.anchor = TextAnchor.UpperLeft;
+			gameObject.transform.localPosition += new Vector3(0, bounds.h, 0);
+		}
+		if (this.alignment == PlanetUnity.LabelAlignment.center) {
+			textMeshComponent.alignment = TextAlignment.Center;
+			textMeshComponent.anchor = TextAnchor.MiddleCenter;
+			gameObject.transform.localPosition += new Vector3(bounds.w/2, bounds.h/2, 0);
+		}
+		if (this.alignment == PlanetUnity.LabelAlignment.right) {
+			textMeshComponent.alignment = TextAlignment.Right;
+			textMeshComponent.anchor = TextAnchor.UpperRight;
+			gameObject.transform.localPosition += new Vector3(bounds.w, bounds.h, 0);
 		}
 
-		text.Font = ccfont;
-		text.Text = value;
-
-		var tex = (Texture) Resources.Load ("bmfonts/"+font, typeof(Texture));
-		text.renderer.material.mainTexture = tex;
-
-
-		if (shaderExists == false) {
-			shader = "Custom/Unlit/NoDepth";
-		}
-
-		var shaderObj = Shader.Find(shader);
-
-		text.renderer.material.color = new Color (1, 1, 1, 1);
-		text.renderer.material.shader = shaderObj;
-		text.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
-
-		float pxScale = ccfont.pixelScale;
-
-		text.Width = bounds.w * pxScale;
-		text.LineHeight = 0.8f;
-		text.Bounding = CCText.BoundingMode.Margin;
-
-		if(this.alignment == PlanetUnity.LabelAlignment.left)
-			text.Alignment = CCText.AlignmentMode.Left;
-		if(this.alignment == PlanetUnity.LabelAlignment.center)
-			text.Alignment = CCText.AlignmentMode.Center;
-		if(this.alignment == PlanetUnity.LabelAlignment.right)
-			text.Alignment = CCText.AlignmentMode.Right;
-		if(this.alignment == PlanetUnity.LabelAlignment.justify)
-			text.Alignment = CCText.AlignmentMode.Justify;
-
-		text.VerticalAnchor = CCText.VerticalAnchorMode.Middle;
-		text.HorizontalAnchor = CCText.HorizontalAnchorMode.Center;
-
-		gameObject.transform.localPosition += new Vector3(bounds.w/2, bounds.h/2, 0);
-		gameObject.transform.localScale = new Vector3 (1.0f/pxScale, 1.0f/pxScale, 1.0f);
+		MeshRenderer meshRendererComponent = gameObject.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
+		var shaderObj = Shader.Find ("Custom/Unlit/Font");
+		Material mat = new Material (shaderObj);
+		mat.mainTexture = textMeshComponent.font.material.mainTexture;
+		meshRendererComponent.materials = new Material[] { mat };
 	}
 }

@@ -37,36 +37,29 @@ public class PULabelButton : PULabelButtonBase, IPUButton {
 
 	public void updateButtonToState(PlanetUnityButtonState newState)
 	{
+		TextMesh textMeshComponent = gameObject.GetComponent(typeof(TextMesh)) as TextMesh;
+		
 		state = newState;
-
+		
 		if(state == PlanetUnityButtonState.Normal)
 		{
-			text.renderer.material.color = new Color (textColor.r, textColor.g, textColor.b, textColor.a);
+			textMeshComponent.color = new Color (textColor.r, textColor.g, textColor.b, textColor.a);
 		}
 		if(state == PlanetUnityButtonState.Highlighted)
 		{
-			text.renderer.material.color = new Color (1.0f, 0.0f, 0.0f, 1.0f);
+			textMeshComponent.color = new Color (touchColor.r, touchColor.g, touchColor.b, touchColor.a);
 		}
 	}
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
-		/*
-		text.VerticalAnchor = CCText.VerticalAnchorMode.Middle;
 
-		gameObject.transform.localPosition += new Vector3(0, bounds.h/2, 0.0f);
-		gameObject.transform.localScale = new Vector3 (1.0f/pxScale, 1.0f/pxScale, 1.0f);
-		*/
-
-		float pxScale = ccfont.pixelScale;
-
-		// Re-use the button code from PUButton
 		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
 		if(touchSizeExists)
-			collider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w)*pxScale, (touchSize.y != 0 ? touchSize.y : bounds.h)*pxScale, 1.0f);
+			collider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
-			collider.size = new Vector3(bounds.w*pxScale, bounds.h*pxScale, 1.0f);
+			collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;

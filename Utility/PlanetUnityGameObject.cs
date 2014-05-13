@@ -85,14 +85,30 @@ public class PlanetUnityOverride {
 public class PlanetUnityGameObject : MonoBehaviour {
 
 	public string xmlPath;
+	public Font[] fonts;
 
 	private PUScene scene;
 
 	private static FileSystemWatcher watcher;
 	private bool shouldReloadMainXML = false;
 
+	static private PlanetUnityGameObject currentGameObject = null;
+
+	static public Font FindFontNamed(string name) {
+		if (!currentGameObject)
+			return null;
+		foreach (Font font in currentGameObject.fonts) {
+			if (font.name.Equals (name)) {
+				return font;
+			}
+		}
+		return Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+	}
+
 	// Use this for initialization
 	void Start () {
+
+		currentGameObject = this;
 
 		NotificationCenter.addObserver (this, "PlanetUnityReloadScene", null, "ReloadScene");
 

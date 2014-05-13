@@ -25,6 +25,9 @@ public class PULabelBase : PUGameObject {
 	public string font;
 	public bool fontExists;
 
+	public int fontSize;
+	public bool fontSizeExists;
+
 	public PlanetUnity.LabelAlignment alignment;
 	public bool alignmentExists;
 
@@ -106,6 +109,11 @@ public class PULabelBase : PUGameObject {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { font = attr; fontExists = true; } 
 		
+		attr = reader.GetAttribute("fontSize");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "12"; }
+		if(attr != null) { fontSize = int.Parse(attr); fontSizeExists = true; } 
+		
 		attr = reader.GetAttribute("alignment");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "center"; }
@@ -113,7 +121,7 @@ public class PULabelBase : PUGameObject {
 		
 		attr = reader.GetAttribute("textColor");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "1,1,1,1"; }
+		if(attr == null) { attr = "0,0,0,1"; }
 		if(attr != null) { textColor = attr; textColorExists = true; } 
 		
 		attr = reader.GetAttribute("value");
@@ -135,6 +143,7 @@ public class PULabelBase : PUGameObject {
 
 		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
 		if(fontExists) { sb.AppendFormat (" {0}=\"{1}\"", "font", font); }
+		if(fontSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "fontSize", fontSize); }
 		if(alignmentExists) { sb.AppendFormat (" {0}=\"{1}\"", "alignment", (int)alignment); }
 		if(textColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "textColor", textColor); }
 		if(valueExists) { sb.AppendFormat (" {0}=\"{1}\"", "value", value); }

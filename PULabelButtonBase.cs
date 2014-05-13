@@ -22,6 +22,9 @@ public class PULabelButtonBase : PULabel {
 	public cVector2 touchSize;
 	public bool touchSizeExists;
 
+	public cColor touchColor;
+	public bool touchColorExists;
+
 	public string onTouchUp;
 	public bool onTouchUpExists;
 
@@ -96,6 +99,11 @@ public class PULabelButtonBase : PULabel {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { touchSize = attr; touchSizeExists = true; } 
 		
+		attr = reader.GetAttribute("touchColor");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "1,0,0,1"; }
+		if(attr != null) { touchColor = attr; touchColorExists = true; } 
+		
 		attr = reader.GetAttribute("onTouchUp");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { onTouchUp = attr; onTouchUpExists = true; } 
@@ -118,6 +126,7 @@ public class PULabelButtonBase : PULabel {
 		base.gaxb_appendXMLAttributes(sb);
 
 		if(touchSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchSize", touchSize); }
+		if(touchColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchColor", touchColor); }
 		if(onTouchUpExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchUp", onTouchUp); }
 		if(onTouchDownExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchDown", onTouchDown); }
 

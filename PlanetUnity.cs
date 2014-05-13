@@ -25,7 +25,6 @@ public class PlanetUnity {
 		left,
 		center,
 		right,
-		justify,
 	};
 
 	public const string USERSTRINGINPUT = "UserStringInput";
