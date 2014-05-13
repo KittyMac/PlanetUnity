@@ -18,7 +18,8 @@ using System.Xml;
 
 public class PULabel : PULabelBase {
 
-	TextSize ts;
+	public TextSize ts;
+	public TextMesh textMesh;
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
@@ -30,40 +31,40 @@ public class PULabel : PULabelBase {
 		
 		gameObject.AddComponent("TextMesh");
 
-		TextMesh textMeshComponent = gameObject.GetComponent(typeof(TextMesh)) as TextMesh;
+		textMesh = gameObject.GetComponent(typeof(TextMesh)) as TextMesh;
 		ts = new TextSize(gameObject.GetComponent<TextMesh>());
 
-		textMeshComponent.font = PlanetUnityGameObject.FindFontNamed(font);
-		textMeshComponent.text = value;
+		textMesh.font = PlanetUnityGameObject.FindFontNamed(font);
+		textMesh.text = value;
 
-		textMeshComponent.color = new Color (textColor.r, textColor.g, textColor.b, textColor.a);
+		textMesh.color = new Color (textColor.r, textColor.g, textColor.b, textColor.a);
 
 		// magic numbers explained here: http://answers.unity3d.com/questions/55433/textmesh-charactersize-vs-fontsize.html
-		textMeshComponent.characterSize = fontSize*10.0f/(fontSize*2);
-		textMeshComponent.fontSize = (fontSize*2);
+		textMesh.characterSize = fontSize*10.0f/(fontSize*2);
+		textMesh.fontSize = (fontSize*2);
 
-		textMeshComponent.lineSpacing = 0.86f;
+		textMesh.lineSpacing = 0.86f;
 
 		if (this.alignment == PlanetUnity.LabelAlignment.left) {
-			textMeshComponent.alignment = TextAlignment.Left;
-			textMeshComponent.anchor = TextAnchor.UpperLeft;
+			textMesh.alignment = TextAlignment.Left;
+			textMesh.anchor = TextAnchor.UpperLeft;
 			gameObject.transform.localPosition += new Vector3(0, bounds.h, 0);
 		}
 		if (this.alignment == PlanetUnity.LabelAlignment.center) {
-			textMeshComponent.alignment = TextAlignment.Center;
-			textMeshComponent.anchor = TextAnchor.UpperCenter;
+			textMesh.alignment = TextAlignment.Center;
+			textMesh.anchor = TextAnchor.UpperCenter;
 			gameObject.transform.localPosition += new Vector3(bounds.w/2, bounds.h, 0);
 		}
 		if (this.alignment == PlanetUnity.LabelAlignment.right) {
-			textMeshComponent.alignment = TextAlignment.Right;
-			textMeshComponent.anchor = TextAnchor.UpperRight;
+			textMesh.alignment = TextAlignment.Right;
+			textMesh.anchor = TextAnchor.UpperRight;
 			gameObject.transform.localPosition += new Vector3(bounds.w, bounds.h, 0);
 		}
 
 		MeshRenderer meshRendererComponent = gameObject.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
 		var shaderObj = Shader.Find ("Custom/Unlit/Font");
 		Material mat = new Material (shaderObj);
-		mat.mainTexture = textMeshComponent.font.material.mainTexture;
+		mat.mainTexture = textMesh.font.material.mainTexture;
 		meshRendererComponent.materials = new Material[] { mat };
 
 

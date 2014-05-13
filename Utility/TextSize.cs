@@ -53,7 +53,6 @@ public class TextSize {
 		textMesh.text = "a a";
 		float cw = renderer.bounds.size.x - 2* aw;
 
-		MonoBehaviour.print("char< > " + cw);
 		dict.Add(' ', cw);
 		dict.Add('a', aw);
 
@@ -92,17 +91,40 @@ public class TextSize {
 
 		StringBuilder sb = new StringBuilder ();
 		StringBuilder sb2 = new StringBuilder ();
+		float stringWidth;
 
-		if (words.Length == 1) {
-			// If we have no spaces, then we need to separate on a character basis
-			char[] chars = textMesh.text.ToCharArray ();
+		// 1) break on words
+		foreach (string word in words) {
+			int idx = sb.Length;
+			sb.Append (word);
+
+			textMesh.text = sb.ToString();
+			stringWidth = renderer.bounds.size.x;
+
+			if (stringWidth > wantedWidth) {
+				sb2.Append (sb.ToString ().Substring (0, idx));
+				sb2.Append ("\n");
+
+				sb.Length = 0;
+				sb.Append (word);
+			}
+			sb.Append (" ");
+		}
+
+		sb2.Append (sb.ToString ());
+
+		// 2) break on chars
+		textMesh.text = sb2.ToString();
+		stringWidth = renderer.bounds.size.x;
+		if (stringWidth > wantedWidth) {
+			char[] chars = textMesh.text.ToCharArray();
 
 			foreach (char word in chars) {
 				int idx = sb.Length;
 				sb.Append (word);
 
 				textMesh.text = sb.ToString();
-				float stringWidth = renderer.bounds.size.x;
+				stringWidth = renderer.bounds.size.x;
 
 				if (stringWidth > wantedWidth) {
 					sb2.Append (sb.ToString ().Substring (0, idx));
@@ -114,33 +136,10 @@ public class TextSize {
 				sb.Append (" ");
 			}
 
-		} else {
-
-			foreach (string word in words) {
-				int idx = sb.Length;
-				sb.Append (word);
-
-				textMesh.text = sb.ToString();
-				float stringWidth = renderer.bounds.size.x;
-
-				if (stringWidth > wantedWidth) {
-					sb2.Append (sb.ToString ().Substring (0, idx));
-					sb2.Append ("\n");
-
-					sb.Length = 0;
-					sb.Append (word);
-				}
-				sb.Append (" ");
-			}
-
+			sb2.Append (sb.ToString ());
+			textMesh.text = sb2.ToString();
 		}
 
-
-
-
-		sb2.Append (sb.ToString ());
-
-		textMesh.text = sb2.ToString ();
 	}
 
 }
