@@ -93,24 +93,50 @@ public class TextSize {
 		StringBuilder sb = new StringBuilder ();
 		StringBuilder sb2 = new StringBuilder ();
 
-		foreach (string word in words) {
-			// Add the word to the string builder; if the width becomes too long,
-			// insert a new line before it.
-			int idx = sb.Length;
-			sb.Append (word);
+		if (words.Length == 1) {
+			// If we have no spaces, then we need to separate on a character basis
+			char[] chars = textMesh.text.ToCharArray ();
 
-			textMesh.text = sb.ToString();
-			float stringWidth = renderer.bounds.size.x;
-
-			if (stringWidth > wantedWidth) {
-				sb2.Append (sb.ToString ().Substring (0, idx));
-				sb2.Append ("\n");
-
-				sb.Length = 0;
+			foreach (char word in chars) {
+				int idx = sb.Length;
 				sb.Append (word);
+
+				textMesh.text = sb.ToString();
+				float stringWidth = renderer.bounds.size.x;
+
+				if (stringWidth > wantedWidth) {
+					sb2.Append (sb.ToString ().Substring (0, idx));
+					sb2.Append ("\n");
+
+					sb.Length = 0;
+					sb.Append (word);
+				}
+				sb.Append (" ");
 			}
-			sb.Append (" ");
+
+		} else {
+
+			foreach (string word in words) {
+				int idx = sb.Length;
+				sb.Append (word);
+
+				textMesh.text = sb.ToString();
+				float stringWidth = renderer.bounds.size.x;
+
+				if (stringWidth > wantedWidth) {
+					sb2.Append (sb.ToString ().Substring (0, idx));
+					sb2.Append ("\n");
+
+					sb.Length = 0;
+					sb.Append (word);
+				}
+				sb.Append (" ");
+			}
+
 		}
+
+
+
 
 		sb2.Append (sb.ToString ());
 
