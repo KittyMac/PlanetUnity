@@ -18,6 +18,8 @@ using System.Xml;
 
 public class PULabel : PULabelBase {
 
+	TextSize ts;
+
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
@@ -29,6 +31,8 @@ public class PULabel : PULabelBase {
 		gameObject.AddComponent("TextMesh");
 
 		TextMesh textMeshComponent = gameObject.GetComponent(typeof(TextMesh)) as TextMesh;
+		ts = new TextSize(gameObject.GetComponent<TextMesh>());
+
 		textMeshComponent.font = PlanetUnityGameObject.FindFontNamed(font);
 		textMeshComponent.text = value;
 
@@ -61,5 +65,8 @@ public class PULabel : PULabelBase {
 		Material mat = new Material (shaderObj);
 		mat.mainTexture = textMeshComponent.font.material.mainTexture;
 		meshRendererComponent.materials = new Material[] { mat };
+
+
+		ts.FitToWidth (bounds.w);
 	}
 }
