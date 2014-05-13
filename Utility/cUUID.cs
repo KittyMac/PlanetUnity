@@ -34,6 +34,8 @@ public class cUUID {
 
 	public override bool Equals (object obj)
 	{
+		if (obj == null)
+			return false;
 		if (obj.ToString ().Equals (uuidString))
 			return true;
 		return base.Equals (obj);
