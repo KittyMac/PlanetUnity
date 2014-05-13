@@ -47,8 +47,8 @@ public class PULabel : PULabelBase {
 		}
 		if (this.alignment == PlanetUnity.LabelAlignment.center) {
 			textMeshComponent.alignment = TextAlignment.Center;
-			textMeshComponent.anchor = TextAnchor.MiddleCenter;
-			gameObject.transform.localPosition += new Vector3(bounds.w/2, bounds.h/2, 0);
+			textMeshComponent.anchor = TextAnchor.UpperCenter;
+			gameObject.transform.localPosition += new Vector3(bounds.w/2, bounds.h, 0);
 		}
 		if (this.alignment == PlanetUnity.LabelAlignment.right) {
 			textMeshComponent.alignment = TextAlignment.Right;
