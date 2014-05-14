@@ -87,7 +87,8 @@ public class TextSize {
 	public float height { get { return renderer.bounds.size.y; } }
 
 	public void FitToWidth(float wantedWidth) {
-		string[] words = textMesh.text.Split(' ');
+		string originalString = textMesh.text;
+		string[] words = originalString.Split(' ');
 
 		StringBuilder sb = new StringBuilder ();
 		StringBuilder sb2 = new StringBuilder ();
@@ -117,7 +118,11 @@ public class TextSize {
 		textMesh.text = sb2.ToString();
 		stringWidth = renderer.bounds.size.x;
 		if (stringWidth > wantedWidth) {
-			char[] chars = textMesh.text.ToCharArray();
+			char[] chars = originalString.ToCharArray();
+
+			textMesh.text = "";
+			sb.Length = 0;
+			sb2.Length = 0;
 
 			foreach (char word in chars) {
 				int idx = sb.Length;
