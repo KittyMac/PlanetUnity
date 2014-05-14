@@ -54,6 +54,8 @@
 			<enumeration value = "UserStringInput"/>
 			<enumeration value = "UserCharInput"/>
 			<enumeration value = "UserInputCancelled"/>
+			
+			<enumeration value = "EditorFileDidChange"/>
 		</restriction>
     </simpleType>
 	

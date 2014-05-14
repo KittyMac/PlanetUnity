@@ -30,6 +30,7 @@ public class PlanetUnity {
 	public const string USERSTRINGINPUT = "UserStringInput";
 	public const string USERCHARINPUT = "UserCharInput";
 	public const string USERINPUTCANCELLED = "UserInputCancelled";
+	public const string EDITORFILEDIDCHANGE = "EditorFileDidChange";
 
 
 

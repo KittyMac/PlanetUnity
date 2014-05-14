@@ -14,6 +14,7 @@
  */
 
 using UnityEngine;
+using UnityEditor;
 using System.Xml;
 using System.Text;
 using System;
@@ -115,7 +116,13 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		ReloadScene ();
 
 		#if UNITY_EDITOR
-		beginWatchingFile ();
+		NotificationCenter.addObserver(this, PlanetUnity.EDITORFILEDIDCHANGE, null, args => {
+			string assetPath = args ["path"].ToString();
+			if(assetPath.Contains(xmlPath+".xml"))
+			{
+				ReloadScene ();
+			}
+		});
 		#endif
 	}
 
@@ -150,40 +157,28 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		Stopwatch sw = Stopwatch.StartNew();
 
-		// In the editor, pull directly from the file system otherwise we get a cached version
-		#if UNITY_EDITOR
-		string basePath = Path.GetFullPath("Assets/Resources");
-		string xmlString = System.IO.File.ReadAllText(basePath+"/"+xmlPath+".xml");
-		scene = (PUScene)PlanetUnity.loadXML(xmlString, gameObject);
-		#else
 		TextAsset stringData = Resources.Load(xmlPath) as TextAsset;
 		scene = (PUScene)PlanetUnity.loadXML(stringData.text, gameObject);
-		#endif
 
 		sw.Stop();
 
 		UnityEngine.Debug.Log("["+sw.Elapsed.TotalMilliseconds+"ms] Loading scene "+xmlPath+".xml");
 	}
-
-	// ************************ EDITOR ONLY *******************************
-	#if UNITY_EDITOR
-	private void beginWatchingFile()
-	{
-		string basePath = Path.GetFullPath("Assets/Resources");
-
-		watcher = new FileSystemWatcher ();
-		watcher.Path = basePath+"/"+Path.GetDirectoryName(xmlPath);
-		watcher.Filter = Path.GetFileName(xmlPath)+".xml";
-		watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.DirectoryName 
-			| NotifyFilters.FileName | NotifyFilters.LastAccess | NotifyFilters.LastWrite 
-			| NotifyFilters.Size;
-		watcher.Changed += new FileSystemEventHandler (OnAssetFileWatcherChanged);
-		watcher.EnableRaisingEvents = true;
-	}
-
-	void OnAssetFileWatcherChanged(object sender, FileSystemEventArgs e)
-	{
-		shouldReloadMainXML = true;
-	}
-	#endif
 }
+
+#if UNITY_EDITOR
+
+public class CustomPostprocessor : AssetPostprocessor
+{
+	private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromPath)
+	{
+		foreach(string asset in importedAssets)
+		{
+			NotificationCenter.postNotification(null, PlanetUnity.EDITORFILEDIDCHANGE, NotificationCenter.Args("path", asset));
+		}
+	}
+}
+
+#endif
+
+
