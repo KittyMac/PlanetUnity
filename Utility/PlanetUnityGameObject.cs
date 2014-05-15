@@ -118,8 +118,10 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		#if UNITY_EDITOR
 		NotificationCenter.addObserver(this, PlanetUnity.EDITORFILEDIDCHANGE, null, args => {
 			string assetPath = args ["path"].ToString();
-			if(assetPath.Contains(xmlPath+".xml"))
+			if( assetPath.Contains(xmlPath+".xml") ||
+				assetPath.EndsWith(".strings"))
 			{
+				PlanetUnityLanguage.ReloadAllLanguages();
 				ReloadScene ();
 			}
 		});
