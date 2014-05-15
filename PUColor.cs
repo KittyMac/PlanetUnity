@@ -20,7 +20,7 @@ using System;
 public class PUColor : PUColorBase
 {
 
-	public static void CreateGradient (GameObject gameObject, cRect bounds, cVector2 anchor, Color a, Color b)
+	public static void CreateGradient (GameObject gameObject, cRect bounds, cVector2 anchor, Color a, Color b, string shader)
 	{
 
 		Mesh mesh = new Mesh ();
@@ -45,7 +45,11 @@ public class PUColor : PUColorBase
 		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
 		filter.mesh = mesh;
 
-		var shaderObj = Shader.Find ("Custom/Unlit/SolidColor");
+		if (shader == null) {
+			shader = "Custom/Unlit/SolidColor";
+		}
+
+		var shaderObj = Shader.Find (shader);
 		Material mat = new Material (shaderObj);
 		gameObject.renderer.material = mat;
 		gameObject.renderer.material.color = Color.white;
@@ -59,15 +63,21 @@ public class PUColor : PUColorBase
 
 		base.gaxb_load (reader, _parent);
 
-		if (reader == null && _parent == null)
-			return;
-
 		if (titleExists) {
 			gameObject.name = title;
 		}
 
-		Color c = new Color (color.r, color.g, color.b, color.a);
-		PUColor.CreateGradient (gameObject, bounds, anchor, c, c);
+		Color c = Color.white;
+
+		if (colorExists) {
+			c = new Color (color.r, color.g, color.b, color.a);
+		}
+
+		if (anchorExists == false) {
+			anchor = new cVector2 (0, 0);
+		}
+
+		PUColor.CreateGradient (gameObject, bounds, anchor, c, c, shader);
 
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}

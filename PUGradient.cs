@@ -31,7 +31,7 @@ public class PUGradient : PUGradientBase
 
 		Color cTop = new Color (colorTop.r, colorTop.g, colorTop.b, colorTop.a);
 		Color cBottom = new Color (colorBottom.r, colorBottom.g, colorBottom.b, colorBottom.a);
-		PUColor.CreateGradient (gameObject, bounds, anchor, cTop, cBottom);
+		PUColor.CreateGradient (gameObject, bounds, anchor, cTop, cBottom, shader);
 
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}

@@ -19,6 +19,9 @@ public class PUGradientBase : PUGameObject {
 
 
 	// XML Attributes
+	public string shader;
+	public bool shaderExists;
+
 	public cColor colorTop;
 	public bool colorTopExists;
 
@@ -92,6 +95,10 @@ public class PUGradientBase : PUGameObject {
 		
 
 		string attr;
+		attr = reader.GetAttribute("shader");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { shader = attr; shaderExists = true; } 
+		
 		attr = reader.GetAttribute("colorTop");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { colorTop = attr; colorTopExists = true; } 
@@ -118,6 +125,7 @@ public class PUGradientBase : PUGameObject {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
+		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
 		if(colorTopExists) { sb.AppendFormat (" {0}=\"{1}\"", "colorTop", colorTop); }
 		if(colorBottomExists) { sb.AppendFormat (" {0}=\"{1}\"", "colorBottom", colorBottom); }
 		if(anchorExists) { sb.AppendFormat (" {0}=\"{1}\"", "anchor", anchor); }

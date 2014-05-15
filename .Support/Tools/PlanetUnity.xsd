@@ -106,6 +106,7 @@
 	<complexType name="Color">
 		<complexContent>
 			<extension base="planet:GameObject">
+				<attribute name="shader" type="string" />
 				<attribute name="color" type="planet:color" />
 				<attribute name="anchor" type="planet:vec2" default="0,0" />
 			</extension>
@@ -127,6 +128,7 @@
 	<complexType name="Gradient">
 		<complexContent>
 			<extension base="planet:GameObject">
+				<attribute name="shader" type="string" />
 				<attribute name="colorTop" type="planet:color" />
 				<attribute name="colorBottom" type="planet:color" />
 				<attribute name="anchor" type="planet:vec2" default="0,0" />
