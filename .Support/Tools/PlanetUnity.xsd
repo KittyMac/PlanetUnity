@@ -182,6 +182,7 @@
 				<attribute name="alignment" type="planet:LabelAlignment" default="center"/>
 				<attribute name="textColor" type="planet:color" default="0,0,0,1" />
 				<attribute name="value" type="string" />
+				<attribute name="clips" type="boolean" default="true" />
 			</extension>
 		</complexContent>
 	</complexType>

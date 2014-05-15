@@ -62,7 +62,11 @@ public class PULabel : PULabelBase {
 		}
 
 		if (shaderExists == false) {
-			shader = "Custom/Unlit/Font";
+			if (clips) {
+				shader = "Custom/Unlit/FontWithDepthMask";
+			} else {
+				shader = "Custom/Unlit/Font";
+			}
 		}
 
 		MeshRenderer meshRendererComponent = gameObject.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
@@ -73,49 +77,51 @@ public class PULabel : PULabelBase {
 		meshRendererComponent.materials = new Material[] { mat };
 
 		ts.FitToWidth (bounds.w);
-		
-		// We need to create a Color to render the DepthMask shader to do depth-based culling
-		PUColor depthMask1 = new PUColor ();
-		depthMask1.title = "Depth Mask 1";
-		depthMask1.titleExists = true;
-		depthMask1.anchor = new cVector2 (0, 1);
-		depthMask1.anchorExists = true;
-		depthMask1.bounds = bounds;
-		depthMask1.shader = "Custom/Unlit/DepthMask";
-		depthMask1.gaxb_load (null, null);
-		depthMask1.gameObject.transform.parent = gameObject.transform;
 
-		depthMask1.gameObject.transform.localPosition = Vector3.zero;
-		if (this.alignment == PlanetUnity.LabelAlignment.center) {
-			depthMask1.gameObject.transform.localPosition += new Vector3(-bounds.w/2, 0, 0);
+		if (clips) {
+			// We need to create a Color to render the DepthMask shader to do depth-based culling
+			PUColor depthMask1 = new PUColor ();
+			depthMask1.title = "Depth Mask 1";
+			depthMask1.titleExists = true;
+			depthMask1.anchor = new cVector2 (0, 1);
+			depthMask1.anchorExists = true;
+			depthMask1.bounds = bounds;
+			depthMask1.shader = "Custom/Unlit/DepthMask";
+			depthMask1.gaxb_load (null, null);
+			depthMask1.gameObject.transform.parent = gameObject.transform;
+
+			depthMask1.gameObject.transform.localPosition = Vector3.zero;
+			if (this.alignment == PlanetUnity.LabelAlignment.center) {
+				depthMask1.gameObject.transform.localPosition += new Vector3 (-bounds.w / 2, 0, 0);
+			}
+			if (this.alignment == PlanetUnity.LabelAlignment.right) {
+				depthMask1.gameObject.transform.localPosition += new Vector3 (-bounds.w, 0, 0);
+			}
+			depthMask1.gameObject.transform.localRotation = Quaternion.identity;
+			depthMask1.gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
+
+
+			gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
+
+			PUColor depthMask2 = new PUColor ();
+			depthMask2.title = "Depth Mask 2";
+			depthMask2.titleExists = true;
+			depthMask2.anchor = new cVector2 (0, 1);
+			depthMask2.anchorExists = true;
+			depthMask2.bounds = bounds;
+			depthMask2.shader = "Custom/Unlit/DepthMaskClear";
+			depthMask2.gaxb_load (null, null);
+			depthMask2.gameObject.transform.parent = gameObject.transform;
+
+			depthMask2.gameObject.transform.localPosition = Vector3.zero;
+			if (this.alignment == PlanetUnity.LabelAlignment.center) {
+				depthMask2.gameObject.transform.localPosition += new Vector3 (-bounds.w / 2, 0, 0);
+			}
+			if (this.alignment == PlanetUnity.LabelAlignment.right) {
+				depthMask2.gameObject.transform.localPosition += new Vector3 (-bounds.w, 0, 0);
+			}
+			depthMask2.gameObject.transform.localRotation = Quaternion.identity;
+			depthMask2.gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 		}
-		if (this.alignment == PlanetUnity.LabelAlignment.right) {
-			depthMask1.gameObject.transform.localPosition += new Vector3(-bounds.w, 0, 0);
-		}
-		depthMask1.gameObject.transform.localRotation = Quaternion.identity;
-		depthMask1.gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
-
-
-		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
-
-		PUColor depthMask2 = new PUColor ();
-		depthMask2.title = "Depth Mask 2";
-		depthMask2.titleExists = true;
-		depthMask2.anchor = new cVector2 (0, 1);
-		depthMask2.anchorExists = true;
-		depthMask2.bounds = bounds;
-		depthMask2.shader = "Custom/Unlit/DepthMaskClear";
-		depthMask2.gaxb_load (null, null);
-		depthMask2.gameObject.transform.parent = gameObject.transform;
-
-		depthMask2.gameObject.transform.localPosition = Vector3.zero;
-		if (this.alignment == PlanetUnity.LabelAlignment.center) {
-			depthMask2.gameObject.transform.localPosition += new Vector3(-bounds.w/2, 0, 0);
-		}
-		if (this.alignment == PlanetUnity.LabelAlignment.right) {
-			depthMask2.gameObject.transform.localPosition += new Vector3(-bounds.w, 0, 0);
-		}
-		depthMask2.gameObject.transform.localRotation = Quaternion.identity;
-		depthMask2.gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}
 }

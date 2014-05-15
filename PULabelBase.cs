@@ -37,6 +37,9 @@ public class PULabelBase : PUGameObject {
 	public string value;
 	public bool valueExists;
 
+	public bool clips;
+	public bool clipsExists;
+
 
 
 
@@ -128,6 +131,11 @@ public class PULabelBase : PUGameObject {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { value = attr; valueExists = true; } 
 		
+		attr = reader.GetAttribute("clips");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "true"; }
+		if(attr != null) { clips = bool.Parse(attr); clipsExists = true; } 
+		
 
 	}
 	
@@ -147,6 +155,7 @@ public class PULabelBase : PUGameObject {
 		if(alignmentExists) { sb.AppendFormat (" {0}=\"{1}\"", "alignment", (int)alignment); }
 		if(textColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "textColor", textColor); }
 		if(valueExists) { sb.AppendFormat (" {0}=\"{1}\"", "value", value); }
+		if(clipsExists) { sb.AppendFormat (" {0}=\"{1}\"", "clips", clips.ToString().ToLower()); }
 
 	}
 	
