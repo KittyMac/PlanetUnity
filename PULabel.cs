@@ -60,7 +60,7 @@ public class PULabel : PULabelBase {
 			textMesh.anchor = TextAnchor.UpperRight;
 			gameObject.transform.localPosition += new Vector3(bounds.w, bounds.h, 0);
 		}
-
+		
 		if (shaderExists == false) {
 			if (clips) {
 				shader = "Custom/Unlit/FontWithDepthMask";

@@ -102,6 +102,15 @@
 		</complexContent>
 	</complexType>
 	
+	<element name="Scroll" type="planet:Scroll"/>
+	<complexType name="Scroll">
+		<complexContent>
+			<extension base="planet:GameObject">
+				<attribute name="contentSize" type="planet:vec2" default="0,0" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
 	<element name="Color" type="planet:Color"/>
 	<complexType name="Color">
 		<complexContent>
