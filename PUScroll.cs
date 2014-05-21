@@ -4,6 +4,7 @@ using System.Xml;
 public class PUScroll : PUScrollBase
 {
 	public GameObject contentObject;
+	private PlanetUnityScrollScript script;
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
@@ -24,7 +25,7 @@ public class PUScroll : PUScrollBase
 		collider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
 
 
-		PlanetUnityScrollScript script = (PlanetUnityScrollScript) contentObject.AddComponent(typeof(PlanetUnityScrollScript));
+		script = (PlanetUnityScrollScript) contentObject.AddComponent(typeof(PlanetUnityScrollScript));
 		script.entity = this;
 
 		if(scrollDirection == PlanetUnity.ScrollDirection.both)
@@ -38,6 +39,40 @@ public class PUScroll : PUScrollBase
 		script.pagingEnabled = pagingEnabled;
 		script.bounces = bounces;
 		script.directionalLockEnabled = directionalLockEnabled;
+	}
+
+	public void gaxb_loadComplete()
+	{
+		// if contentSize does not exist, run through planet children and calculate a content size
+		if ((int)contentSize.x == 0  || (int)contentSize.y == 0) {
+			float minX = 999999, maxX = -999999;
+			float minY = 999999, maxY = -999999;
+
+			foreach (PUGameObject go in children) {
+				if (go.bounds.x < minX)
+					minX = go.bounds.x;
+				if (go.bounds.y < minY)
+					minY = go.bounds.y;
+
+				if ((go.bounds.x+go.bounds.w) > maxX)
+					maxX = (go.bounds.x+go.bounds.w);
+				if ((go.bounds.y+go.bounds.h) > maxY)
+					maxY = (go.bounds.y+go.bounds.h);
+			}
+
+			contentSize = new cVector2 (maxX - minX, maxY - minY);
+		}
+
+		if (scrollDirectionExists == false) {
+			// If we don't specify a scroll direction, check out content size and use the size which exceeds our bounds
+			if (contentSize.x > bounds.w && contentSize.y > bounds.h) {
+				script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Both;
+			} else if (contentSize.x > bounds.w) {
+				script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Horizontal;
+			} else if (contentSize.y > bounds.h) {
+				script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Vertical;
+			}
+		}
 	}
 
 }
@@ -143,11 +178,11 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			scrollLockDirection = PlanetScrollDirection.Both;
 
 			//check if the view was rubber banding when we touched down
-			if (scroll.x < 0) {
+			if (scroll.x > 0) {
 				touchEdgeOffset.x = scroll.x;
 			} else {
-				float minScroll = calcMaxScrollY();
-				if(scroll.x > minScroll)
+				float minScroll = calcMinScrollX();
+				if(scroll.x < minScroll)
 					touchEdgeOffset.x = scroll.x - minScroll;
 				else
 					touchEdgeOffset.x = 0;
@@ -209,7 +244,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			}
 			else
 			{
-				bool isPastHorizontalEdge = scroll.x < 0.0f || scroll.x > calcMaxScrollX();
+				bool isPastHorizontalEdge = scroll.x > 0.0f || scroll.x < calcMinScrollX();
 				bool isPastVerticalEdge = scroll.y < 0.0f || scroll.y > calcMaxScrollY();
 				bool isMoving = Mathf.Abs(velocity.x) > kMinScrollSpeed || Mathf.Abs(velocity.y) > kMinScrollSpeed;
 
@@ -424,10 +459,10 @@ public class PlanetUnityScrollScript : MonoBehaviour
 
 	float bounceEdgeX(float scrollAmount)
 	{
-		if(scrollAmount < 0.0f)
+		if(scrollAmount > 0.0f)
 			return 0.0f;
 		else
-			return calcMaxScrollX();
+			return calcMinScrollX();
 	}
 
 	float bounceEdgeY(float scrollAmount)
@@ -535,7 +570,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 						velocity.x = easeOutQuint(animStartVelocity.x, 0.0f, deceleratingPercent);
 
 						//check if we've hit the edge
-						if(assignScroll.x < 0.0f || assignScroll.x > calcMaxScrollX())
+						if(assignScroll.x > 0.0f || assignScroll.x < calcMinScrollX())
 						{
 							if(bounces)
 							{
@@ -545,10 +580,10 @@ public class PlanetUnityScrollScript : MonoBehaviour
 							else
 							{
 								velocity.x = 0.0f;
-								if(assignScroll.x < 0.0f)
+								if(assignScroll.x > 0.0f)
 									assignScroll.x = 0.0f;
-								else if(assignScroll.x > calcMaxScrollX())
-									assignScroll.x = calcMaxScrollX();
+								else if(assignScroll.x < calcMinScrollX())
+									assignScroll.x = calcMinScrollX();
 								horizontalDecelerationState = PlanetScrollDeceleratingState.Idle;
 							}
 						}
@@ -690,7 +725,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 				assignScroll.y += touchEdgeOffset.y;
 
 				//do bungee effect horizontally
-				if(assignScroll.x < 0)
+				if(assignScroll.x > 0)
 				{
 					if(bounces)
 						assignScroll.x = bungee(assignScroll.x, entity.bounds.w);
@@ -702,8 +737,8 @@ public class PlanetUnityScrollScript : MonoBehaviour
 				}
 				else
 				{
-					float minScroll = calcMaxScrollX();
-					if(assignScroll.x > minScroll)
+					float minScroll = calcMinScrollX();
+					if(assignScroll.x < minScroll)
 					{
 						if(bounces)
 							assignScroll.x = entity.bounds.w - bungee((minScroll - assignScroll.x), entity.bounds.w) - entity.contentSize.x;

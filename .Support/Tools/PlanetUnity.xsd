@@ -124,7 +124,7 @@
 				<attribute name="bounces" type="boolean" use="optional" default="true"/>
 				<attribute name="pagingEnabled" type="boolean" use="optional" />
 				<attribute name="scrollEnabled" type="boolean" use="optional" default="true"/>
-				<attribute name="scrollDirection" type="planet:ScrollDirection" use="optional" default="vertical" />
+				<attribute name="scrollDirection" type="planet:ScrollDirection" />
 				<attribute name="directionalLockEnabled" type="boolean" use="optional" default="false"/>
 			</extension>
 		</complexContent>

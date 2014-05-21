@@ -122,7 +122,6 @@ public class PUScrollBase : PUGameObject {
 		
 		attr = reader.GetAttribute("scrollDirection");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "vertical"; }
 		if(attr != null) { scrollDirection = (PlanetUnity.ScrollDirection)System.Enum.Parse(typeof(PlanetUnity.ScrollDirection), attr); scrollDirectionExists = true; } 
 		
 		attr = reader.GetAttribute("directionalLockEnabled");
