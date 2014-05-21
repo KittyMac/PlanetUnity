@@ -86,8 +86,8 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private const float kBungeeStretchCoefficient = 0.55f;
 	private const float kMinCancelTouchesVelocity = 45;
 	private const float kScrollDuration = 2.75f;
-	private const float kPageVelocity = 400.0f;
-	private const float kSwipeDistancePerVelocity = 0.4f;
+	private const float kPageVelocity = 200.0f;
+	private const float kSwipeDistancePerVelocity = 0.3f;
 	private const float kBounceDistancePerVelocity = 0.03f;
 	private const float kAnimationDuration = 0.5f;
 	private const float kMinScrollSpeed = 1.0f;
@@ -426,7 +426,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	void calcPagingTarget()
 	{
 		animEndScroll.x = -entity.bounds.w * calcPage(scroll.x, entity.bounds.w, entity.contentSize.x, velocity.x);
-		animEndScroll.y = -entity.bounds.h * calcPage(scroll.y, entity.bounds.h, entity.contentSize.y, velocity.y);
+		animEndScroll.y = entity.bounds.h * calcPage(-scroll.y, entity.bounds.h, entity.contentSize.y, -velocity.y);
 	}
 
 	float calcMinScrollX()
