@@ -21,6 +21,12 @@ interface IPlanetUnity
 public class PlanetUnity {
 
 
+	public enum ScrollDirection {
+		horizontal,
+		vertical,
+		both,
+	};
+
 	public enum LabelAlignment {
 		left,
 		center,

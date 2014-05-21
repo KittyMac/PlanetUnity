@@ -5,9 +5,6 @@ public class PUScroll : PUScrollBase
 {
 	public GameObject contentObject;
 
-
-
-
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
@@ -29,6 +26,18 @@ public class PUScroll : PUScrollBase
 
 		PlanetUnityScrollScript script = (PlanetUnityScrollScript) contentObject.AddComponent(typeof(PlanetUnityScrollScript));
 		script.entity = this;
+
+		if(scrollDirection == PlanetUnity.ScrollDirection.both)
+			script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Both;
+		if(scrollDirection == PlanetUnity.ScrollDirection.vertical)
+			script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Vertical;
+		if(scrollDirection == PlanetUnity.ScrollDirection.horizontal)
+			script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Horizontal;
+
+		script.scrollEnabled = scrollEnabled;
+		script.pagingEnabled = pagingEnabled;
+		script.bounces = bounces;
+		script.directionalLockEnabled = directionalLockEnabled;
 	}
 
 }
@@ -48,14 +57,14 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private const float kAnimationDuration = 0.5f;
 	private const float kMinScrollSpeed = 1.0f;
 
-	enum PlanetScrollDirection
+	public enum PlanetScrollDirection
 	{
 		Vertical = (1 << 0),
 		Horizontal = (1 << 1),
 		Both = (Vertical|Horizontal),
 	};
 
-	enum PlanetScrollState
+	public enum PlanetScrollState
 	{
 		Idle,
 		UserDragging,
@@ -74,8 +83,8 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private bool isTracking = false;
 	private bool userTouching = false;
 
-	private PlanetScrollDirection scrollDirection = PlanetScrollDirection.Both;
-	private PlanetScrollDirection scrollLockDirection;
+	public PlanetScrollDirection scrollDirection = PlanetScrollDirection.Both;
+	public PlanetScrollDirection scrollLockDirection;
 	private PlanetScrollState scrollState;
 	private PlanetScrollDeceleratingState horizontalDecelerationState;
 	private PlanetScrollDeceleratingState verticalDecelerationState;
@@ -85,10 +94,10 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private float verticalDecelerationTime;
 	private float minScale;
 	private float maxScale;
-	private bool scrollEnabled;
-	private bool pagingEnabled;
-	private bool bounces = true;
-	private bool directionalLockEnabled = false;
+	public bool scrollEnabled;
+	public bool pagingEnabled;
+	public bool bounces = true;
+	public bool directionalLockEnabled = false;
 	private bool directionalLockIsSet = false;
 
 

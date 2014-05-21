@@ -102,11 +102,30 @@
 		</complexContent>
 	</complexType>
 	
+	
+	
+	<simpleType name="ScrollDirection">
+		<annotation>
+			<appinfo>NAMED_ENUM</appinfo>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="horizontal" />
+			<enumeration value="vertical" />
+			<enumeration value="both" />
+		</restriction>
+	</simpleType>
+	
 	<element name="Scroll" type="planet:Scroll"/>
 	<complexType name="Scroll">
 		<complexContent>
 			<extension base="planet:GameObject">
 				<attribute name="contentSize" type="planet:vec2" default="0,0" />
+				
+				<attribute name="bounces" type="boolean" use="optional" default="true"/>
+				<attribute name="pagingEnabled" type="boolean" use="optional" />
+				<attribute name="scrollEnabled" type="boolean" use="optional" default="true"/>
+				<attribute name="scrollDirection" type="planet:ScrollDirection" use="optional" default="vertical" />
+				<attribute name="directionalLockEnabled" type="boolean" use="optional" default="false"/>
 			</extension>
 		</complexContent>
 	</complexType>

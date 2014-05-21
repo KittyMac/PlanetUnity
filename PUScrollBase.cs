@@ -22,6 +22,21 @@ public class PUScrollBase : PUGameObject {
 	public cVector2 contentSize;
 	public bool contentSizeExists;
 
+	public bool bounces;
+	public bool bouncesExists;
+
+	public bool pagingEnabled;
+	public bool pagingEnabledExists;
+
+	public bool scrollEnabled;
+	public bool scrollEnabledExists;
+
+	public PlanetUnity.ScrollDirection scrollDirection;
+	public bool scrollDirectionExists;
+
+	public bool directionalLockEnabled;
+	public bool directionalLockEnabledExists;
+
 
 
 
@@ -91,6 +106,30 @@ public class PUScrollBase : PUGameObject {
 		if(attr == null) { attr = "0,0"; }
 		if(attr != null) { contentSize = attr; contentSizeExists = true; } 
 		
+		attr = reader.GetAttribute("bounces");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "true"; }
+		if(attr != null) { bounces = bool.Parse(attr); bouncesExists = true; } 
+		
+		attr = reader.GetAttribute("pagingEnabled");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { pagingEnabled = bool.Parse(attr); pagingEnabledExists = true; } 
+		
+		attr = reader.GetAttribute("scrollEnabled");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "true"; }
+		if(attr != null) { scrollEnabled = bool.Parse(attr); scrollEnabledExists = true; } 
+		
+		attr = reader.GetAttribute("scrollDirection");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "vertical"; }
+		if(attr != null) { scrollDirection = (PlanetUnity.ScrollDirection)System.Enum.Parse(typeof(PlanetUnity.ScrollDirection), attr); scrollDirectionExists = true; } 
+		
+		attr = reader.GetAttribute("directionalLockEnabled");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "false"; }
+		if(attr != null) { directionalLockEnabled = bool.Parse(attr); directionalLockEnabledExists = true; } 
+		
 
 	}
 	
@@ -105,6 +144,11 @@ public class PUScrollBase : PUGameObject {
 		base.gaxb_appendXMLAttributes(sb);
 
 		if(contentSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "contentSize", contentSize); }
+		if(bouncesExists) { sb.AppendFormat (" {0}=\"{1}\"", "bounces", bounces.ToString().ToLower()); }
+		if(pagingEnabledExists) { sb.AppendFormat (" {0}=\"{1}\"", "pagingEnabled", pagingEnabled.ToString().ToLower()); }
+		if(scrollEnabledExists) { sb.AppendFormat (" {0}=\"{1}\"", "scrollEnabled", scrollEnabled.ToString().ToLower()); }
+		if(scrollDirectionExists) { sb.AppendFormat (" {0}=\"{1}\"", "scrollDirection", (int)scrollDirection); }
+		if(directionalLockEnabledExists) { sb.AppendFormat (" {0}=\"{1}\"", "directionalLockEnabled", directionalLockEnabled.ToString().ToLower()); }
 
 	}
 	
