@@ -17,7 +17,7 @@ using UnityEngine;
 using System.Xml;
 using System;
 
-public class PUColor : PUColorBase
+public partial class PUColor : PUColorBase
 {
 
 	public static void CreateGradient (GameObject gameObject, cRect bounds, cVector2 anchor, Color a, Color b, string shader)

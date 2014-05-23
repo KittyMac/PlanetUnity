@@ -67,24 +67,24 @@
 			<any minOccurs="0" maxOccurs="unbounded" />
 		</sequence>
 		<attribute name="title" type="string" />
-		<attribute name="tag" type="string" />
-		<attribute name="tag1" type="string" />
-		<attribute name="tag2" type="string" />
-		<attribute name="tag3" type="string" />
-		<attribute name="tag4" type="string" />
-		<attribute name="tag5" type="string" />
-		<attribute name="tag6" type="string" />
+		<attribute name="tag" type="string" use="optional" />
+		<attribute name="tag1" type="string" use="optional" />
+		<attribute name="tag2" type="string" use="optional" />
+		<attribute name="tag3" type="string" use="optional" />
+		<attribute name="tag4" type="string" use="optional" />
+		<attribute name="tag5" type="string" use="optional" />
+		<attribute name="tag6" type="string" use="optional" />
 	</complexType>
 
 	<element name="GameObject" type="planet:GameObject"/>
 	<complexType name="GameObject">
 		<complexContent>
 			<extension base="planet:Object">
-				<attribute name="bounds" type="planet:rect" />
-				<attribute name="hidden" type="boolean" />
-				<attribute name="lastY" type="float" />
-		        <attribute name="lastX" type="float" />
-				<attribute name="renderQueueOffset" type="int" />
+				<attribute name="bounds" type="planet:rect" use="required" />
+				<attribute name="hidden" type="boolean" use="optional" />
+				<attribute name="lastY" type="float" use="optional" />
+		        <attribute name="lastX" type="float" use="optional" />
+				<attribute name="renderQueueOffset" type="int" use="optional" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -97,7 +97,7 @@
 	<complexType name="Scene" >
 		<complexContent>
 			<extension base="planet:GameObject">
-				<attribute name="adjustCamera" type="boolean" default="true" />
+				<attribute name="adjustCamera" type="boolean" use="optional" default="true" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -119,12 +119,12 @@
 	<complexType name="Scroll">
 		<complexContent>
 			<extension base="planet:GameObject">
-				<attribute name="contentSize" type="planet:vec2" default="0,0" />
+				<attribute name="contentSize" type="planet:vec2" use="optional" default="0,0" />
 				
 				<attribute name="bounces" type="boolean" use="optional" default="true"/>
 				<attribute name="pagingEnabled" type="boolean" use="optional" />
 				<attribute name="scrollEnabled" type="boolean" use="optional" default="true"/>
-				<attribute name="scrollDirection" type="planet:ScrollDirection" />
+				<attribute name="scrollDirection" type="planet:ScrollDirection" use="optional" />
 				<attribute name="directionalLockEnabled" type="boolean" use="optional" default="false"/>
 			</extension>
 		</complexContent>
@@ -134,9 +134,9 @@
 	<complexType name="Color">
 		<complexContent>
 			<extension base="planet:GameObject">
-				<attribute name="shader" type="string" />
-				<attribute name="color" type="planet:color" />
-				<attribute name="anchor" type="planet:vec2" default="0,0" />
+				<attribute name="shader" type="string" use="optional" />
+				<attribute name="color" type="planet:color" use="required" />
+				<attribute name="anchor" type="planet:vec2" use="optional" default="0,0" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -145,9 +145,9 @@
 	<complexType name="ColorButton">
 		<complexContent>
 			<extension base="planet:Color">
-				<attribute name="touchSize" type="planet:vec2" />
-				<attribute name="onTouchUp" type="string" />
-				<attribute name="onTouchDown" type="string" />
+				<attribute name="touchSize" type="planet:vec2" use="optional" />
+				<attribute name="onTouchUp" type="string" use="optional" />
+				<attribute name="onTouchDown" type="string" use="optional" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -156,10 +156,10 @@
 	<complexType name="Gradient">
 		<complexContent>
 			<extension base="planet:GameObject">
-				<attribute name="shader" type="string" />
-				<attribute name="colorTop" type="planet:color" />
-				<attribute name="colorBottom" type="planet:color" />
-				<attribute name="anchor" type="planet:vec2" default="0,0" />
+				<attribute name="shader" type="string" use="optional" />
+				<attribute name="colorTop" type="planet:color" use="required" />
+				<attribute name="colorBottom" type="planet:color" use="required" />
+				<attribute name="anchor" type="planet:vec2" use="optional" default="0,0" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -168,9 +168,9 @@
 	<complexType name="Image">
 		<complexContent>
 			<extension base="planet:GameObject">
-				<attribute name="resourcePath" type="string" />
-				<attribute name="shader" type="string" />
-				<attribute name="anchor" type="planet:vec2" default="0,0" />
+				<attribute name="resourcePath" type="string" use="required" />
+				<attribute name="shader" type="string" use="optional" />
+				<attribute name="anchor" type="planet:vec2" use="optional" default="0,0" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -179,11 +179,11 @@
 	<complexType name="ImageButton">
 		<complexContent>
 			<extension base="planet:Image">
-				<attribute name="normalResourcePath" type="string" />
-				<attribute name="highlightedResourcePath" type="string" />
-				<attribute name="touchSize" type="planet:vec2" />
-				<attribute name="onTouchUp" type="string" />
-				<attribute name="onTouchDown" type="string" />
+				<attribute name="normalResourcePath" type="string" use="required" />
+				<attribute name="highlightedResourcePath" type="string" use="required" />
+				<attribute name="touchSize" type="planet:vec2" use="optional" />
+				<attribute name="onTouchUp" type="string" use="optional" />
+				<attribute name="onTouchDown" type="string" use="optional" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -204,13 +204,13 @@
 	<complexType name="Label">
 		<complexContent>
 			<extension base="planet:GameObject">
-				<attribute name="shader" type="string" />
-				<attribute name="font" type="string" />
-				<attribute name="fontSize" type="int" default="12" />
-				<attribute name="alignment" type="planet:LabelAlignment" default="center"/>
-				<attribute name="textColor" type="planet:color" default="0,0,0,1" />
-				<attribute name="value" type="string" />
-				<attribute name="clips" type="boolean" default="true" />
+				<attribute name="shader" type="string" use="optional" />
+				<attribute name="font" type="string" use="optional" />
+				<attribute name="fontSize" type="int" use="optional" default="12" />
+				<attribute name="alignment" type="planet:LabelAlignment" use="optional" default="center"/>
+				<attribute name="textColor" type="planet:color" use="optional" default="0,0,0,1" />
+				<attribute name="value" type="string" use="required" />
+				<attribute name="clips" type="boolean" use="optional" default="true" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -219,10 +219,10 @@
 	<complexType name="LabelButton">
 		<complexContent>
 			<extension base="planet:Label">
-				<attribute name="touchSize" type="planet:vec2" />
-				<attribute name="touchColor" type="planet:color" default="1,0,0,1" />
-				<attribute name="onTouchUp" type="string" />
-				<attribute name="onTouchDown" type="string" />
+				<attribute name="touchSize" type="planet:vec2" use="optional" />
+				<attribute name="touchColor" type="planet:color" use="optional" default="1,0,0,1" />
+				<attribute name="onTouchUp" type="string" use="optional" />
+				<attribute name="onTouchDown" type="string" use="optional" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -231,7 +231,7 @@
 	<complexType name="Prefab">
 		<complexContent>
 			<extension base="planet:GameObject">
-				<attribute name="name" type="string" />
+				<attribute name="name" type="string" use="required" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -249,7 +249,7 @@
 					<sequence>
 						<element ref="planet:Notification" minOccurs="0" maxOccurs="unbounded" />
 					</sequence>
-					<attribute name="class" type="string"/>
+					<attribute name="class" type="string" use="required" />
 				</extension>
 			</complexContent>
 		</complexType>

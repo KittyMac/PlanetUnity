@@ -18,7 +18,7 @@ using System.Xml;
 using UnityEngine;
 
 
-public class PUColorButton : PUColorButtonBase, IPUButton {
+public partial class PUColorButton : PUColorButtonBase, IPUButton {
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
 
 	public void performTouchUp()

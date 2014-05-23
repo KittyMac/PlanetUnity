@@ -422,7 +422,37 @@ function split2(pString, pPattern)
    return Table
 end
 
+function allRequiredAttributesForClass(v)
+	attributes = {};
+	
+	while ( v ~= null ) do
+		for i,a in ipairs(v.attributes) do
+			if(a.use == "required") then
+				table.insert(attributes, a);
+			end
+		end
+		v = v.extension;
+	end
+	
+	return attributes;
+end
+
+function allAttributesForClass(v)
+	attributes = {};
+	
+	while ( v ~= null ) do
+		for i,a in ipairs(v.attributes) do
+			table.insert(attributes, a);
+		end
+		v = v.extension;
+	end
+	
+	return attributes;
+end
+
 gaxb_template("global.cs", capitalizedString(schema.namespace)..".cs", schema);
+
+ALL_CLASSES = {};
 
 -- Run through all of the elements and generate code files for them
 for k,v in pairs(schema.elements) do
@@ -437,6 +467,8 @@ for k,v in pairs(schema.elements) do
 			v1.originalName = v1.name;
 			v1.name = cleanedName(v1.name);
 		end
+		
+		ALL_CLASSES[className(v)] = v;
 		
 		print("Generating class file "..className(v).."...")
 		gaxb_template("element_base.cs", className(v).."Base.cs", v);

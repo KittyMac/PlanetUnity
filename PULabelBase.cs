@@ -10,6 +10,127 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
+
+public partial class PULabel : PULabelBase {
+	
+	public PULabel()
+	{
+		string attr;
+
+		attr = "12";
+		if(attr != null) { fontSize = int.Parse(attr); fontSizeExists = true; } 
+		attr = "center";
+		if(attr != null) { alignment = (PlanetUnity.LabelAlignment)System.Enum.Parse(typeof(PlanetUnity.LabelAlignment), attr); alignmentExists = true; } 
+		attr = "0,0,0,1";
+		if(attr != null) { textColor = attr; textColorExists = true; } 
+		attr = "true";
+		if(attr != null) { clips = bool.Parse(attr); clipsExists = true; } 
+
+	}
+	
+	
+	public PULabel(
+			string value,
+			cRect bounds ) : this()
+	{
+		this.value = value;
+		this.valueExists = true;
+
+		this.bounds = bounds;
+		this.boundsExists = true;
+	}
+
+	
+	
+	public PULabel(
+			string shader,
+			string font,
+			int fontSize,
+			PlanetUnity.LabelAlignment alignment,
+			cColor textColor,
+			string value,
+			bool clips,
+			cRect bounds,
+			bool hidden,
+			float lastY,
+			float lastX,
+			int renderQueueOffset,
+			string title,
+			string tag,
+			string tag1,
+			string tag2,
+			string tag3,
+			string tag4,
+			string tag5,
+			string tag6 ) : this()
+	{
+		this.shader = shader;
+		this.shaderExists = true;
+
+		this.font = font;
+		this.fontExists = true;
+
+		this.fontSize = fontSize;
+		this.fontSizeExists = true;
+
+		this.alignment = alignment;
+		this.alignmentExists = true;
+
+		this.textColor = textColor;
+		this.textColorExists = true;
+
+		this.value = value;
+		this.valueExists = true;
+
+		this.clips = clips;
+		this.clipsExists = true;
+
+		this.bounds = bounds;
+		this.boundsExists = true;
+
+		this.hidden = hidden;
+		this.hiddenExists = true;
+
+		this.lastY = lastY;
+		this.lastYExists = true;
+
+		this.lastX = lastX;
+		this.lastXExists = true;
+
+		this.renderQueueOffset = renderQueueOffset;
+		this.renderQueueOffsetExists = true;
+
+		this.title = title;
+		this.titleExists = true;
+
+		this.tag = tag;
+		this.tagExists = true;
+
+		this.tag1 = tag1;
+		this.tag1Exists = true;
+
+		this.tag2 = tag2;
+		this.tag2Exists = true;
+
+		this.tag3 = tag3;
+		this.tag3Exists = true;
+
+		this.tag4 = tag4;
+		this.tag4Exists = true;
+
+		this.tag5 = tag5;
+		this.tag5Exists = true;
+
+		this.tag6 = tag6;
+		this.tag6Exists = true;
+	}
+
+
+}
+
+
+
+
 public class PULabelBase : PUGameObject {
 
 

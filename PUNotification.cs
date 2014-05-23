@@ -13,6 +13,6 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-public class PUNotification : PUNotificationBase {
+public partial class PUNotification : PUNotificationBase {
 
 }

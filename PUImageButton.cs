@@ -66,7 +66,7 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 	}
 }
 
-public class PUImageButton : PUImageButtonBase, IPUButton {
+public partial class PUImageButton : PUImageButtonBase, IPUButton {
 
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
 

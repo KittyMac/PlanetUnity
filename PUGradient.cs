@@ -16,7 +16,7 @@
 using UnityEngine;
 using System.Xml;
 
-public class PUGradient : PUGradientBase
+public partial class PUGradient : PUGradientBase
 {
 	public new void gaxb_load (XmlReader reader, object _parent)
 	{

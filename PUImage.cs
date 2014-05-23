@@ -17,7 +17,7 @@ using UnityEngine;
 using System.Xml;
 using System;
 
-public class PUImage : PUImageBase {
+public partial class PUImage : PUImageBase {
 
 	protected Mesh CreateMesh ()
 	{

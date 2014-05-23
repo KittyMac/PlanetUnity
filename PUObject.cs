@@ -17,7 +17,7 @@ using System.Xml;
 using System;
 using System.Reflection;
 
-public class PUObject : PUObjectBase {
+public partial class PUObject : PUObjectBase {
 
 	private int renderQeueuCount = 0;
 	public int getRenderQueue()

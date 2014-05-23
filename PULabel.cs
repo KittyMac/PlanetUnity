@@ -16,7 +16,7 @@
 using UnityEngine;
 using System.Xml;
 
-public class PULabel : PULabelBase {
+public partial class PULabel : PULabelBase {
 
 	public TextSize ts;
 	public TextMesh textMesh;

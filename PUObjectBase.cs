@@ -10,6 +10,56 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
+
+public partial class PUObject : PUObjectBase {
+	
+	public PUObject()
+	{
+	}
+	
+	
+	
+	public PUObject(
+			string title,
+			string tag,
+			string tag1,
+			string tag2,
+			string tag3,
+			string tag4,
+			string tag5,
+			string tag6 ) : this()
+	{
+		this.title = title;
+		this.titleExists = true;
+
+		this.tag = tag;
+		this.tagExists = true;
+
+		this.tag1 = tag1;
+		this.tag1Exists = true;
+
+		this.tag2 = tag2;
+		this.tag2Exists = true;
+
+		this.tag3 = tag3;
+		this.tag3Exists = true;
+
+		this.tag4 = tag4;
+		this.tag4Exists = true;
+
+		this.tag5 = tag5;
+		this.tag5Exists = true;
+
+		this.tag6 = tag6;
+		this.tag6Exists = true;
+	}
+
+
+}
+
+
+
+
 public class PUObjectBase : IPlanetUnity {
 
 

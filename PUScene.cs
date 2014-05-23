@@ -104,7 +104,7 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 }
 
-public class PUScene : PUSceneBase {
+public partial class PUScene : PUSceneBase {
 
 	private PlanetUnityCameraObject cameraObject = null;
 

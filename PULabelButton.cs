@@ -18,7 +18,7 @@ using System.Xml;
 using UnityEngine;
 
 
-public class PULabelButton : PULabelButtonBase, IPUButton {
+public partial class PULabelButton : PULabelButtonBase, IPUButton {
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
 
 	public void performTouchUp()

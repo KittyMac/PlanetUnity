@@ -10,6 +10,28 @@ using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
+
+public partial class PUNotification : PUNotificationBase {
+	
+	public PUNotification()
+	{
+	}
+	
+	
+	public PUNotification(
+			string name ) : this()
+	{
+		this.name = name;
+		this.nameExists = true;
+	}
+
+	
+
+}
+
+
+
+
 public class PUNotificationBase : IPlanetUnity {
 
 

@@ -23,7 +23,7 @@ interface IPUCode {
 
 }
 
-public class PUCode : PUCodeBase {
+public partial class PUCode : PUCodeBase {
 
 	IPUCode controller;
 

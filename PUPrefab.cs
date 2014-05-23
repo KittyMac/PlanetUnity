@@ -19,7 +19,7 @@ using System;
 using System.CodeDom;
 
 
-public class PUPrefab : PUPrefabBase {
+public partial class PUPrefab : PUPrefabBase {
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

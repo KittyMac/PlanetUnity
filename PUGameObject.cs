@@ -16,7 +16,7 @@
 using UnityEngine;
 using System.Xml;
 
-public class PUGameObject : PUGameObjectBase {
+public partial class PUGameObject : PUGameObjectBase {
 	public GameObject gameObject;
 
 	public new void gaxb_unload()

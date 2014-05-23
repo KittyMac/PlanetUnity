@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Xml;
 
-public class PUScroll : PUScrollBase
+public partial class PUScroll : PUScrollBase
 {
 	public GameObject contentObject;
 	private PlanetUnityScrollScript script;
