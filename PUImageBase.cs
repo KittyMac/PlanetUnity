@@ -138,6 +138,12 @@ public class PUImageBase : PUGameObject {
 
 
 
+	
+	public void SetResourcePath(string v) { resourcePath = v; resourcePathExists = true; } 
+	public void SetShader(string v) { shader = v; shaderExists = true; } 
+	public void SetAnchor(cVector2 v) { anchor = v; anchorExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

@@ -81,39 +81,30 @@ public partial class PULabel : PULabelBase {
 		if (clips) {
 			// We need to create a Color to render the DepthMask shader to do depth-based culling
 			PUColor depthMask1 = new PUColor("Custom/Unlit/DepthMask", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
-			depthMask1.title = "Depth Mask 1";
-			depthMask1.titleExists = true;
-			depthMask1.gaxb_load (null, null);
-			depthMask1.gameObject.transform.parent = gameObject.transform;
+			depthMask1.SetTitle ("Depth Mask 1");
+			depthMask1.loadIntoPUGameObject (this);
 
-			depthMask1.gameObject.transform.localPosition = Vector3.zero;
+			// Fix positioning manually to match the label
 			if (this.alignment == PlanetUnity.LabelAlignment.center) {
 				depthMask1.gameObject.transform.localPosition += new Vector3 (-bounds.w / 2, 0, 0);
 			}
 			if (this.alignment == PlanetUnity.LabelAlignment.right) {
 				depthMask1.gameObject.transform.localPosition += new Vector3 (-bounds.w, 0, 0);
 			}
-			depthMask1.gameObject.transform.localRotation = Quaternion.identity;
-			depthMask1.gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
-
 
 			gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 
 			PUColor depthMask2 = new PUColor("Custom/Unlit/DepthMaskClear", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
-			depthMask2.title = "Depth Mask 2";
-			depthMask2.titleExists = true;
-			depthMask2.gaxb_load (null, null);
-			depthMask2.gameObject.transform.parent = gameObject.transform;
+			depthMask2.SetTitle ("Depth Mask 2");
+			depthMask2.loadIntoPUGameObject (this);
 
-			depthMask2.gameObject.transform.localPosition = Vector3.zero;
+			// Fix positioning manually to match the label
 			if (this.alignment == PlanetUnity.LabelAlignment.center) {
 				depthMask2.gameObject.transform.localPosition += new Vector3 (-bounds.w / 2, 0, 0);
 			}
 			if (this.alignment == PlanetUnity.LabelAlignment.right) {
 				depthMask2.gameObject.transform.localPosition += new Vector3 (-bounds.w, 0, 0);
 			}
-			depthMask2.gameObject.transform.localRotation = Quaternion.identity;
-			depthMask2.gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 		}
 	}
 }

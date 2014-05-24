@@ -15,6 +15,7 @@
 
 using UnityEngine;
 using System.Xml;
+using System.Reflection;
 
 public partial class PUGameObject : PUGameObjectBase {
 	public GameObject gameObject;
@@ -27,6 +28,27 @@ public partial class PUGameObject : PUGameObjectBase {
 	public void setParentGameObject(GameObject p)
 	{
 		gameObject.transform.parent = p.transform;
+	}
+
+	public void loadIntoGameObject(GameObject _parent)
+	{
+		object Null = null;
+
+		MethodInfo mInfo;
+		mInfo = this.GetType().GetMethod("gaxb_load");
+		if(mInfo != null) { mInfo.Invoke (this, new[] { Null, Null }); }
+
+		gameObject.transform.parent = _parent.transform;
+
+		gameObject.transform.localPosition = Vector3.zero;
+		gameObject.transform.localRotation = Quaternion.identity;
+	}
+
+	public void loadIntoPUGameObject(PUGameObject _parent)
+	{
+		parent = _parent;
+		loadIntoGameObject (_parent.gameObject);
+		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}
 
 	public new void gaxb_load(XmlReader reader, object _parent)

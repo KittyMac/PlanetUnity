@@ -138,6 +138,12 @@ public class PUColorBase : PUGameObject {
 
 
 
+	
+	public void SetShader(string v) { shader = v; shaderExists = true; } 
+	public void SetColor(cColor v) { color = v; colorExists = true; } 
+	public void SetAnchor(cVector2 v) { anchor = v; anchorExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

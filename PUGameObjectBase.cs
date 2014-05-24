@@ -131,6 +131,14 @@ public class PUGameObjectBase : PUObject {
 
 
 
+	
+	public void SetBounds(cRect v) { bounds = v; boundsExists = true; } 
+	public void SetHidden(bool v) { hidden = v; hiddenExists = true; } 
+	public void SetLastY(float v) { lastY = v; lastYExists = true; } 
+	public void SetLastX(float v) { lastX = v; lastXExists = true; } 
+	public void SetRenderQueueOffset(int v) { renderQueueOffset = v; renderQueueOffsetExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

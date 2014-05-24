@@ -181,6 +181,13 @@ public class PULabelButtonBase : PULabel {
 
 
 
+	
+	public void SetTouchSize(cVector2 v) { touchSize = v; touchSizeExists = true; } 
+	public void SetTouchColor(cColor v) { touchColor = v; touchColorExists = true; } 
+	public void SetOnTouchUp(string v) { onTouchUp = v; onTouchUpExists = true; } 
+	public void SetOnTouchDown(string v) { onTouchDown = v; onTouchDownExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

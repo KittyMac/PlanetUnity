@@ -49,6 +49,10 @@ public class PUNotificationBase : IPlanetUnity {
 
 
 
+	
+	public void SetName(string v) { name = v; nameExists = true; } 
+
+	
 
 	public void gaxb_load(XmlReader reader, object _parent)
 	{

@@ -116,6 +116,10 @@ public class PUSceneBase : PUGameObject {
 
 
 
+	
+	public void SetAdjustCamera(bool v) { adjustCamera = v; adjustCameraExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

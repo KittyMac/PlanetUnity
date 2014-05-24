@@ -102,6 +102,17 @@ public class PUObjectBase : IPlanetUnity {
 	public List<object> children = new List<object>();
 	
 
+	
+	public void SetTitle(string v) { title = v; titleExists = true; } 
+	public void SetTag(string v) { tag = v; tagExists = true; } 
+	public void SetTag1(string v) { tag1 = v; tag1Exists = true; } 
+	public void SetTag2(string v) { tag2 = v; tag2Exists = true; } 
+	public void SetTag3(string v) { tag3 = v; tag3Exists = true; } 
+	public void SetTag4(string v) { tag4 = v; tag4Exists = true; } 
+	public void SetTag5(string v) { tag5 = v; tag5Exists = true; } 
+	public void SetTag6(string v) { tag6 = v; tag6Exists = true; } 
+
+	
 
 	public void gaxb_load(XmlReader reader, object _parent)
 	{

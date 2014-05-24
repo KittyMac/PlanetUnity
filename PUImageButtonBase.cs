@@ -171,6 +171,14 @@ public class PUImageButtonBase : PUImage {
 
 
 
+	
+	public void SetNormalResourcePath(string v) { normalResourcePath = v; normalResourcePathExists = true; } 
+	public void SetHighlightedResourcePath(string v) { highlightedResourcePath = v; highlightedResourcePathExists = true; } 
+	public void SetTouchSize(cVector2 v) { touchSize = v; touchSizeExists = true; } 
+	public void SetOnTouchUp(string v) { onTouchUp = v; onTouchUpExists = true; } 
+	public void SetOnTouchDown(string v) { onTouchDown = v; onTouchDownExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

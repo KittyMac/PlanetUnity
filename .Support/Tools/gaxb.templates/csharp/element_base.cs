@@ -179,6 +179,13 @@ if (# this.sequences > 0) then
 	end
 end
 %>
+	
+<%
+	for k,v in pairs(this.attributes) do
+		gaxb_print("\tpublic void Set"..capitalizedString(v.name).."("..typeNameForItem(v).." v) { "..v.name.." = v; "..v.name.."Exists = true; } \n")
+	end
+	%>
+	
 
 	public <%=NEW_KEYWORD%>void gaxb_load(XmlReader reader, object _parent)
 	{

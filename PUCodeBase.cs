@@ -115,6 +115,10 @@ public class PUCodeBase : PUGameObject {
 	public List<object> Notifications = new List<object>();
 	
 
+	
+	public void Set_class(string v) { _class = v; _classExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

@@ -188,6 +188,16 @@ public class PULabelBase : PUGameObject {
 
 
 
+	
+	public void SetShader(string v) { shader = v; shaderExists = true; } 
+	public void SetFont(string v) { font = v; fontExists = true; } 
+	public void SetFontSize(int v) { fontSize = v; fontSizeExists = true; } 
+	public void SetAlignment(PlanetUnity.LabelAlignment v) { alignment = v; alignmentExists = true; } 
+	public void SetTextColor(cColor v) { textColor = v; textColorExists = true; } 
+	public void SetValue(string v) { value = v; valueExists = true; } 
+	public void SetClips(bool v) { clips = v; clipsExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

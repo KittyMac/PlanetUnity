@@ -111,6 +111,10 @@ public class PUPrefabBase : PUGameObject {
 
 
 
+	
+	public void SetName(string v) { name = v; nameExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

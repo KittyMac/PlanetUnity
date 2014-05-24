@@ -177,6 +177,15 @@ public class PUScrollBase : PUGameObject {
 
 
 
+	
+	public void SetContentSize(cVector2 v) { contentSize = v; contentSizeExists = true; } 
+	public void SetBounces(bool v) { bounces = v; bouncesExists = true; } 
+	public void SetPagingEnabled(bool v) { pagingEnabled = v; pagingEnabledExists = true; } 
+	public void SetScrollEnabled(bool v) { scrollEnabled = v; scrollEnabledExists = true; } 
+	public void SetScrollDirection(PlanetUnity.ScrollDirection v) { scrollDirection = v; scrollDirectionExists = true; } 
+	public void SetDirectionalLockEnabled(bool v) { directionalLockEnabled = v; directionalLockEnabledExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{

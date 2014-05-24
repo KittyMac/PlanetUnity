@@ -149,6 +149,13 @@ public class PUGradientBase : PUGameObject {
 
 
 
+	
+	public void SetShader(string v) { shader = v; shaderExists = true; } 
+	public void SetColorTop(cColor v) { colorTop = v; colorTopExists = true; } 
+	public void SetColorBottom(cColor v) { colorBottom = v; colorBottomExists = true; } 
+	public void SetAnchor(cVector2 v) { anchor = v; anchorExists = true; } 
+
+	
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
