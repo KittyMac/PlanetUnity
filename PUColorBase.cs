@@ -24,11 +24,19 @@ public partial class PUColor : PUColorBase {
 	
 	
 	public PUColor(
+			string shader,
 			cColor color,
+			cVector2 anchor,
 			cRect bounds ) : this()
 	{
+		this.shader = shader;
+		this.shaderExists = true;
+
 		this.color = color;
 		this.colorExists = true;
+
+		this.anchor = anchor;
+		this.anchorExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;

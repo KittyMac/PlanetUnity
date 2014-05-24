@@ -24,9 +24,25 @@ public partial class PULabelButton : PULabelButtonBase {
 	
 	
 	public PULabelButton(
+			cVector2 touchSize,
+			cColor touchColor,
+			string onTouchUp,
+			string onTouchDown,
 			string value,
 			cRect bounds ) : this()
 	{
+		this.touchSize = touchSize;
+		this.touchSizeExists = true;
+
+		this.touchColor = touchColor;
+		this.touchColorExists = true;
+
+		this.onTouchUp = onTouchUp;
+		this.onTouchUpExists = true;
+
+		this.onTouchDown = onTouchDown;
+		this.onTouchDownExists = true;
+
 		this.value = value;
 		this.valueExists = true;
 

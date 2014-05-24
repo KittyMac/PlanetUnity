@@ -24,8 +24,12 @@ public partial class PUScene : PUSceneBase {
 	
 	
 	public PUScene(
+			bool adjustCamera,
 			cRect bounds ) : this()
 	{
+		this.adjustCamera = adjustCamera;
+		this.adjustCameraExists = true;
+
 		this.bounds = bounds;
 		this.boundsExists = true;
 	}

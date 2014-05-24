@@ -450,6 +450,28 @@ function allAttributesForClass(v)
 	return attributes;
 end
 
+function mixedAttributesForClass(v)
+	attributes = {};
+	u = v;
+	
+	while ( v ~= null ) do
+		if(u ~= v) then
+			for i,a in ipairs(v.attributes) do
+				if(a.use == "required") then
+					table.insert(attributes, a);
+				end
+			end
+		else
+			for i,a in ipairs(v.attributes) do
+				table.insert(attributes, a);
+			end
+		end
+		v = v.extension;
+	end
+	
+	return attributes;
+end
+
 gaxb_template("global.cs", capitalizedString(schema.namespace)..".cs", schema);
 
 ALL_CLASSES = {};

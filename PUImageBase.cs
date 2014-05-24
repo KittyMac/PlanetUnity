@@ -25,10 +25,18 @@ public partial class PUImage : PUImageBase {
 	
 	public PUImage(
 			string resourcePath,
+			string shader,
+			cVector2 anchor,
 			cRect bounds ) : this()
 	{
 		this.resourcePath = resourcePath;
 		this.resourcePathExists = true;
+
+		this.shader = shader;
+		this.shaderExists = true;
+
+		this.anchor = anchor;
+		this.anchorExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;

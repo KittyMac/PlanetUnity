@@ -76,7 +76,7 @@ public partial class <%= FULL_NAME_CAMEL %> : <%= FULL_NAME_CAMEL %>Base {
 	}
 	<%
 	allAttributes = allAttributesForClass(this);
-	allRequiredAttributes = allRequiredAttributesForClass(this);
+	allRequiredAttributes = mixedAttributesForClass(this);
 	
 	if(#allRequiredAttributes > 0) then %>
 	

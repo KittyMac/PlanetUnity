@@ -80,13 +80,9 @@ public partial class PULabel : PULabelBase {
 
 		if (clips) {
 			// We need to create a Color to render the DepthMask shader to do depth-based culling
-			PUColor depthMask1 = new PUColor ();
+			PUColor depthMask1 = new PUColor("Custom/Unlit/DepthMask", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
 			depthMask1.title = "Depth Mask 1";
 			depthMask1.titleExists = true;
-			depthMask1.anchor = new cVector2 (0, 1);
-			depthMask1.anchorExists = true;
-			depthMask1.bounds = bounds;
-			depthMask1.shader = "Custom/Unlit/DepthMask";
 			depthMask1.gaxb_load (null, null);
 			depthMask1.gameObject.transform.parent = gameObject.transform;
 
@@ -103,13 +99,9 @@ public partial class PULabel : PULabelBase {
 
 			gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 
-			PUColor depthMask2 = new PUColor ();
+			PUColor depthMask2 = new PUColor("Custom/Unlit/DepthMaskClear", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
 			depthMask2.title = "Depth Mask 2";
 			depthMask2.titleExists = true;
-			depthMask2.anchor = new cVector2 (0, 1);
-			depthMask2.anchorExists = true;
-			depthMask2.bounds = bounds;
-			depthMask2.shader = "Custom/Unlit/DepthMaskClear";
 			depthMask2.gaxb_load (null, null);
 			depthMask2.gameObject.transform.parent = gameObject.transform;
 

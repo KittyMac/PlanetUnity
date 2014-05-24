@@ -19,9 +19,21 @@ public partial class PUColorButton : PUColorButtonBase {
 	
 	
 	public PUColorButton(
+			cVector2 touchSize,
+			string onTouchUp,
+			string onTouchDown,
 			cColor color,
 			cRect bounds ) : this()
 	{
+		this.touchSize = touchSize;
+		this.touchSizeExists = true;
+
+		this.onTouchUp = onTouchUp;
+		this.onTouchUpExists = true;
+
+		this.onTouchDown = onTouchDown;
+		this.onTouchDownExists = true;
+
 		this.color = color;
 		this.colorExists = true;
 

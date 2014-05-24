@@ -21,6 +21,9 @@ public partial class PUImageButton : PUImageButtonBase {
 	public PUImageButton(
 			string normalResourcePath,
 			string highlightedResourcePath,
+			cVector2 touchSize,
+			string onTouchUp,
+			string onTouchDown,
 			string resourcePath,
 			cRect bounds ) : this()
 	{
@@ -29,6 +32,15 @@ public partial class PUImageButton : PUImageButtonBase {
 
 		this.highlightedResourcePath = highlightedResourcePath;
 		this.highlightedResourcePathExists = true;
+
+		this.touchSize = touchSize;
+		this.touchSizeExists = true;
+
+		this.onTouchUp = onTouchUp;
+		this.onTouchUpExists = true;
+
+		this.onTouchDown = onTouchDown;
+		this.onTouchDownExists = true;
 
 		this.resourcePath = resourcePath;
 		this.resourcePathExists = true;

@@ -18,7 +18,6 @@ public partial class PUObject : PUObjectBase {
 	}
 	
 	
-	
 	public PUObject(
 			string title,
 			string tag,
@@ -54,6 +53,7 @@ public partial class PUObject : PUObjectBase {
 		this.tag6Exists = true;
 	}
 
+	
 
 }
 

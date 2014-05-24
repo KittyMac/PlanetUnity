@@ -19,10 +19,26 @@ public partial class PUGameObject : PUGameObjectBase {
 	
 	
 	public PUGameObject(
-			cRect bounds ) : this()
+			cRect bounds,
+			bool hidden,
+			float lastY,
+			float lastX,
+			int renderQueueOffset ) : this()
 	{
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.hidden = hidden;
+		this.hiddenExists = true;
+
+		this.lastY = lastY;
+		this.lastYExists = true;
+
+		this.lastX = lastX;
+		this.lastXExists = true;
+
+		this.renderQueueOffset = renderQueueOffset;
+		this.renderQueueOffsetExists = true;
 	}
 
 	

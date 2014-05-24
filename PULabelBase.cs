@@ -30,11 +30,35 @@ public partial class PULabel : PULabelBase {
 	
 	
 	public PULabel(
+			string shader,
+			string font,
+			int fontSize,
+			PlanetUnity.LabelAlignment alignment,
+			cColor textColor,
 			string value,
+			bool clips,
 			cRect bounds ) : this()
 	{
+		this.shader = shader;
+		this.shaderExists = true;
+
+		this.font = font;
+		this.fontExists = true;
+
+		this.fontSize = fontSize;
+		this.fontSizeExists = true;
+
+		this.alignment = alignment;
+		this.alignmentExists = true;
+
+		this.textColor = textColor;
+		this.textColorExists = true;
+
 		this.value = value;
 		this.valueExists = true;
+
+		this.clips = clips;
+		this.clipsExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;

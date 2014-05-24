@@ -24,15 +24,23 @@ public partial class PUGradient : PUGradientBase {
 	
 	
 	public PUGradient(
+			string shader,
 			cColor colorTop,
 			cColor colorBottom,
+			cVector2 anchor,
 			cRect bounds ) : this()
 	{
+		this.shader = shader;
+		this.shaderExists = true;
+
 		this.colorTop = colorTop;
 		this.colorTopExists = true;
 
 		this.colorBottom = colorBottom;
 		this.colorBottomExists = true;
+
+		this.anchor = anchor;
+		this.anchorExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;

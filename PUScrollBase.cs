@@ -30,8 +30,32 @@ public partial class PUScroll : PUScrollBase {
 	
 	
 	public PUScroll(
+			cVector2 contentSize,
+			bool bounces,
+			bool pagingEnabled,
+			bool scrollEnabled,
+			PlanetUnity.ScrollDirection scrollDirection,
+			bool directionalLockEnabled,
 			cRect bounds ) : this()
 	{
+		this.contentSize = contentSize;
+		this.contentSizeExists = true;
+
+		this.bounces = bounces;
+		this.bouncesExists = true;
+
+		this.pagingEnabled = pagingEnabled;
+		this.pagingEnabledExists = true;
+
+		this.scrollEnabled = scrollEnabled;
+		this.scrollEnabledExists = true;
+
+		this.scrollDirection = scrollDirection;
+		this.scrollDirectionExists = true;
+
+		this.directionalLockEnabled = directionalLockEnabled;
+		this.directionalLockEnabledExists = true;
+
 		this.bounds = bounds;
 		this.boundsExists = true;
 	}
