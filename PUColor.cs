@@ -46,7 +46,7 @@ public partial class PUColor : PUColorBase
 		filter.mesh = mesh;
 
 		if (shader == null) {
-			shader = "Custom/Unlit/SolidColor";
+			shader = "PlanetUnity/Color/Normal";
 		}
 
 		var shaderObj = Shader.Find (shader);

@@ -63,9 +63,9 @@ public partial class PULabel : PULabelBase {
 		
 		if (shaderExists == false) {
 			if (clips) {
-				shader = "Custom/Unlit/FontWithDepthMask";
+				shader = "PlanetUnity/Label/DepthMask";
 			} else {
-				shader = "Custom/Unlit/Font";
+				shader = "PlanetUnity/Label/Normal";
 			}
 		}
 
@@ -80,7 +80,7 @@ public partial class PULabel : PULabelBase {
 
 		if (clips) {
 			// We need to create a Color to render the DepthMask shader to do depth-based culling
-			PUColor depthMask1 = new PUColor("Custom/Unlit/DepthMask", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
+			PUColor depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
 			depthMask1.SetTitle ("Depth Mask 1");
 			depthMask1.loadIntoPUGameObject (this);
 
@@ -94,7 +94,7 @@ public partial class PULabel : PULabelBase {
 
 			gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 
-			PUColor depthMask2 = new PUColor("Custom/Unlit/DepthMaskClear", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
+			PUColor depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
 			depthMask2.SetTitle ("Depth Mask 2");
 			depthMask2.loadIntoPUGameObject (this);
 

@@ -57,7 +57,7 @@ public partial class PUImage : PUImageBase {
 		gameObject = (GameObject) new GameObject("<Image/>", typeof(MeshRenderer), typeof(MeshFilter));
 
 		if (shaderExists == false) {
-						shader = "Custom/Unlit/NoDepth";
+			shader = "PlanetUnity/Image/Normal";
 		}
 
 		base.gaxb_load(reader, _parent);
