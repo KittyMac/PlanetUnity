@@ -21,6 +21,19 @@ public partial class PULabel : PULabelBase {
 	public TextSize ts;
 	public TextMesh textMesh;
 
+	public override Vector3 maskOffset() 
+	{
+		// Fix positioning manually to match the label
+		if (this.alignment == PlanetUnity.LabelAlignment.center) {
+			return new Vector3 (-bounds.w / 2, -bounds.h, 0);
+		}
+		if (this.alignment == PlanetUnity.LabelAlignment.right) {
+			return new Vector3 (-bounds.w, -bounds.h, 0);
+		}
+
+		return Vector3.zero;
+	}
+
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
@@ -62,15 +75,11 @@ public partial class PULabel : PULabelBase {
 		}
 		
 		if (shaderExists == false) {
-			if (clips) {
-				shader = "PlanetUnity/Label/DepthMask";
-			} else {
-				shader = "PlanetUnity/Label/Normal";
-			}
+			shader = "PlanetUnity/Label";
 		}
 
 		MeshRenderer meshRendererComponent = gameObject.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
-		var shaderObj = Shader.Find (shader);
+		var shaderObj = Shader.Find (fullShaderPath (shader));
 		Material mat = new Material (shaderObj);
 		mat.mainTexture = textMesh.font.material.mainTexture;
 		mat.mainTexture.filterMode = FilterMode.Bilinear;
@@ -78,33 +87,6 @@ public partial class PULabel : PULabelBase {
 
 		ts.FitToWidth (bounds.w);
 
-		if (clips) {
-			// We need to create a Color to render the DepthMask shader to do depth-based culling
-			PUColor depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
-			depthMask1.SetTitle ("Depth Mask 1");
-			depthMask1.loadIntoPUGameObject (this);
 
-			// Fix positioning manually to match the label
-			if (this.alignment == PlanetUnity.LabelAlignment.center) {
-				depthMask1.gameObject.transform.localPosition += new Vector3 (-bounds.w / 2, 0, 0);
-			}
-			if (this.alignment == PlanetUnity.LabelAlignment.right) {
-				depthMask1.gameObject.transform.localPosition += new Vector3 (-bounds.w, 0, 0);
-			}
-
-			gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
-
-			PUColor depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), new cVector2 (0, 1), bounds);
-			depthMask2.SetTitle ("Depth Mask 2");
-			depthMask2.loadIntoPUGameObject (this);
-
-			// Fix positioning manually to match the label
-			if (this.alignment == PlanetUnity.LabelAlignment.center) {
-				depthMask2.gameObject.transform.localPosition += new Vector3 (-bounds.w / 2, 0, 0);
-			}
-			if (this.alignment == PlanetUnity.LabelAlignment.right) {
-				depthMask2.gameObject.transform.localPosition += new Vector3 (-bounds.w, 0, 0);
-			}
-		}
 	}
 }

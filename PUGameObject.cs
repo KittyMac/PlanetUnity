@@ -16,13 +16,78 @@
 using UnityEngine;
 using System.Xml;
 using System.Reflection;
+using System;
 
 public partial class PUGameObject : PUGameObjectBase {
+
+	static public int depthMaskCounter = 0;
+	static public int stencilMaskCounter = 0;
+
 	public GameObject gameObject;
+
+	public virtual GameObject contentGameObject()
+	{
+		// overriden by subclasses if they want objects to go into a different gameobject
+		return gameObject;
+	}
+
+	public virtual Vector3 maskOffset()
+	{
+		// Overridden by subclasses to manually offset the mask rectangle
+		return Vector3.zero;
+	}
+
+	public string fullShaderPath (string shaderPath)
+	{
+		if (shaderPath.StartsWith ("PlanetUnity/DepthMask")) {
+			return shaderPath;
+		}
+		
+		// Check to see if I am inside of something that is clipping...
+		if (depthMaskCounter > 0) {
+			return shaderPath + "/DepthMask";
+		}
+
+		if (stencilMaskCounter > 0) {
+			return shaderPath + "/StencilMask";
+		}
+
+		return shaderPath + "/Normal";
+	}
 
 	public new void gaxb_unload()
 	{
 		base.gaxb_unload ();
+	}
+
+	public void gaxb_loadComplete()
+	{
+		if (clipDepth) {
+			depthMaskCounter--;
+		}
+
+		if (clipDepth) {
+			// We need to create a Color to render the DepthMask shader to do depth-based culling
+			PUColor depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), new cVector2 (0, 0), bounds);
+			depthMask1.SetTitle ("Depth Mask 1");
+			depthMask1.loadIntoPUGameObject (this);
+			depthMask1.gameObject.transform.localPosition += maskOffset ();
+
+			if (gameObject.renderer) {
+				depthMask1.gameObject.renderer.material.renderQueue = gameObject.renderer.material.renderQueue - 1;
+			} else if(gameObject.transform.childCount > 0){
+				depthMask1.gameObject.renderer.material.renderQueue = gameObject.transform.GetChild(0).renderer.material.renderQueue - 1;
+			}
+
+			PUColor depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), new cVector2 (0, 0), bounds);
+			depthMask2.SetTitle ("Depth Mask 2");
+			depthMask2.loadIntoPUGameObject (this);
+			depthMask2.gameObject.transform.localPosition += maskOffset ();
+
+			// Get the renderQueue of the last child and make sure we render after that
+			Transform lastChild = gameObject.transform.GetChild (gameObject.transform.childCount - 1);
+			depthMask2.gameObject.renderer.material.renderQueue = lastChild.renderer.material.renderQueue+1;
+		}
 	}
 
 	public void setParentGameObject(GameObject p)
@@ -47,13 +112,17 @@ public partial class PUGameObject : PUGameObjectBase {
 	public void loadIntoPUGameObject(PUGameObject _parent)
 	{
 		parent = _parent;
-		loadIntoGameObject (_parent.gameObject);
+		loadIntoGameObject (_parent.contentGameObject());
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}
 
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
+
+		if (clipDepth) {
+			depthMaskCounter++;
+		}
 
 		if (gameObject == null) {
 			gameObject = new GameObject ("<Entity />");

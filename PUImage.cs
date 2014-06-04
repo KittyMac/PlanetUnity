@@ -57,7 +57,7 @@ public partial class PUImage : PUImageBase {
 		gameObject = (GameObject) new GameObject("<Image/>", typeof(MeshRenderer), typeof(MeshFilter));
 
 		if (shaderExists == false) {
-			shader = "PlanetUnity/Image/Normal";
+			shader = "PlanetUnity/Image";
 		}
 
 		base.gaxb_load(reader, _parent);
@@ -76,7 +76,7 @@ public partial class PUImage : PUImageBase {
 
 		gameObject.renderer.material.mainTexture = tex;
 
-		var shaderObj = Shader.Find(shader);
+		var shaderObj = Shader.Find(fullShaderPath(shader));
 		gameObject.renderer.material.color = new Color (1, 1, 1, 1);
 		gameObject.renderer.material.shader = shaderObj;
 		gameObject.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;

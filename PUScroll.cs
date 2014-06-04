@@ -6,6 +6,11 @@ public partial class PUScroll : PUScrollBase
 	public GameObject contentObject;
 	private PlanetUnityScrollScript script;
 
+	public override GameObject contentGameObject()
+	{
+		return contentObject;
+	}
+
 	public new void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
@@ -23,7 +28,6 @@ public partial class PUScroll : PUScrollBase
 		var collider = (BoxCollider) contentObject.AddComponent(typeof(BoxCollider));
 		collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 		collider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
-
 
 		script = (PlanetUnityScrollScript) contentObject.AddComponent(typeof(PlanetUnityScrollScript));
 		script.entity = this;
@@ -73,6 +77,8 @@ public partial class PUScroll : PUScrollBase
 				script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Vertical;
 			}
 		}
+
+		base.gaxb_loadComplete ();
 	}
 
 }

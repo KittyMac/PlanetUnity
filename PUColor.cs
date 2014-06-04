@@ -20,7 +20,7 @@ using System;
 public partial class PUColor : PUColorBase
 {
 
-	public static void CreateGradient (GameObject gameObject, cRect bounds, cVector2 anchor, Color a, Color b, string shader)
+	public static void CreateGradient (GameObject gameObject, PUGameObject puGameObject, cRect bounds, cVector2 anchor, Color a, Color b, string shader)
 	{
 
 		Mesh mesh = new Mesh ();
@@ -46,10 +46,10 @@ public partial class PUColor : PUColorBase
 		filter.mesh = mesh;
 
 		if (shader == null) {
-			shader = "PlanetUnity/Color/Normal";
+			shader = "PlanetUnity/Color";
 		}
 
-		var shaderObj = Shader.Find (shader);
+		var shaderObj = Shader.Find (puGameObject.fullShaderPath(shader));
 		Material mat = new Material (shaderObj);
 		gameObject.renderer.material = mat;
 		gameObject.renderer.material.color = Color.white;
@@ -77,7 +77,7 @@ public partial class PUColor : PUColorBase
 			anchor = new cVector2 (0, 0);
 		}
 
-		PUColor.CreateGradient (gameObject, bounds, anchor, c, c, shader);
+		PUColor.CreateGradient (gameObject, this, bounds, anchor, c, c, shader);
 
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}

@@ -104,6 +104,8 @@ public partial class PUCode : PUCodeBase {
 		{
 			NotificationCenter.addObserver(controller, subscribe.name, scope(), subscribe.name);
 		}
+
+		base.gaxb_loadComplete ();
 	}
 
 }

@@ -113,6 +113,8 @@ public partial class PUScene : PUSceneBase {
 		foreach (Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
 			trans.gameObject.layer = 31;
 		}
+
+		base.gaxb_loadComplete ();
 	}
 
 	public new void gaxb_load(XmlReader reader, object _parent)

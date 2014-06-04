@@ -22,7 +22,8 @@ public partial class PUObject : PUObjectBase {
 	private int renderQeueuCount = 0;
 	public int getRenderQueue()
 	{
-		return renderQeueuCount++;
+		renderQeueuCount += 10;
+		return renderQeueuCount;
 	}
 
 	public void peformOnChildren(Action<object> block)

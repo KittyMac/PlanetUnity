@@ -85,6 +85,8 @@
 				<attribute name="lastY" type="float" use="optional" />
 		        <attribute name="lastX" type="float" use="optional" />
 				<attribute name="renderQueueOffset" type="int" use="optional" />
+				<attribute name="clipDepth" type="boolean" use="optional" default="false" />
+				<attribute name="clipStencil" type="boolean" use="optional" default="false" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -210,7 +212,6 @@
 				<attribute name="alignment" type="planet:LabelAlignment" use="optional" default="center"/>
 				<attribute name="textColor" type="planet:color" use="optional" default="0,0,0,1" />
 				<attribute name="value" type="string" use="required" />
-				<attribute name="clips" type="boolean" use="optional" default="true" />
 			</extension>
 		</complexContent>
 	</complexType>

@@ -63,12 +63,13 @@ public partial class PULabelButton : PULabelButtonBase {
 			PlanetUnity.LabelAlignment alignment,
 			cColor textColor,
 			string value,
-			bool clips,
 			cRect bounds,
 			bool hidden,
 			float lastY,
 			float lastX,
 			int renderQueueOffset,
+			bool clipDepth,
+			bool clipStencil,
 			string title,
 			string tag,
 			string tag1,
@@ -108,9 +109,6 @@ public partial class PULabelButton : PULabelButtonBase {
 		this.value = value;
 		this.valueExists = true;
 
-		this.clips = clips;
-		this.clipsExists = true;
-
 		this.bounds = bounds;
 		this.boundsExists = true;
 
@@ -125,6 +123,12 @@ public partial class PULabelButton : PULabelButtonBase {
 
 		this.renderQueueOffset = renderQueueOffset;
 		this.renderQueueOffsetExists = true;
+
+		this.clipDepth = clipDepth;
+		this.clipDepthExists = true;
+
+		this.clipStencil = clipStencil;
+		this.clipStencilExists = true;
 
 		this.title = title;
 		this.titleExists = true;

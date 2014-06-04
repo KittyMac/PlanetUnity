@@ -15,6 +15,13 @@ public partial class PUGameObject : PUGameObjectBase {
 	
 	public PUGameObject()
 	{
+		string attr;
+
+		attr = "false";
+		if(attr != null) { clipDepth = bool.Parse(attr); clipDepthExists = true; } 
+		attr = "false";
+		if(attr != null) { clipStencil = bool.Parse(attr); clipStencilExists = true; } 
+
 	}
 	
 	
@@ -23,7 +30,9 @@ public partial class PUGameObject : PUGameObjectBase {
 			bool hidden,
 			float lastY,
 			float lastX,
-			int renderQueueOffset ) : this()
+			int renderQueueOffset,
+			bool clipDepth,
+			bool clipStencil ) : this()
 	{
 		this.bounds = bounds;
 		this.boundsExists = true;
@@ -39,6 +48,12 @@ public partial class PUGameObject : PUGameObjectBase {
 
 		this.renderQueueOffset = renderQueueOffset;
 		this.renderQueueOffsetExists = true;
+
+		this.clipDepth = clipDepth;
+		this.clipDepthExists = true;
+
+		this.clipStencil = clipStencil;
+		this.clipStencilExists = true;
 	}
 
 	
@@ -49,6 +64,8 @@ public partial class PUGameObject : PUGameObjectBase {
 			float lastY,
 			float lastX,
 			int renderQueueOffset,
+			bool clipDepth,
+			bool clipStencil,
 			string title,
 			string tag,
 			string tag1,
@@ -72,6 +89,12 @@ public partial class PUGameObject : PUGameObjectBase {
 
 		this.renderQueueOffset = renderQueueOffset;
 		this.renderQueueOffsetExists = true;
+
+		this.clipDepth = clipDepth;
+		this.clipDepthExists = true;
+
+		this.clipStencil = clipStencil;
+		this.clipStencilExists = true;
 
 		this.title = title;
 		this.titleExists = true;
@@ -128,6 +151,12 @@ public class PUGameObjectBase : PUObject {
 	public int renderQueueOffset;
 	public bool renderQueueOffsetExists;
 
+	public bool clipDepth;
+	public bool clipDepthExists;
+
+	public bool clipStencil;
+	public bool clipStencilExists;
+
 
 
 
@@ -137,6 +166,8 @@ public class PUGameObjectBase : PUObject {
 	public void SetLastY(float v) { lastY = v; lastYExists = true; } 
 	public void SetLastX(float v) { lastX = v; lastXExists = true; } 
 	public void SetRenderQueueOffset(int v) { renderQueueOffset = v; renderQueueOffsetExists = true; } 
+	public void SetClipDepth(bool v) { clipDepth = v; clipDepthExists = true; } 
+	public void SetClipStencil(bool v) { clipStencil = v; clipStencilExists = true; } 
 
 	
 
@@ -220,6 +251,16 @@ public class PUGameObjectBase : PUObject {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { renderQueueOffset = int.Parse(attr); renderQueueOffsetExists = true; } 
 		
+		attr = reader.GetAttribute("clipDepth");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "false"; }
+		if(attr != null) { clipDepth = bool.Parse(attr); clipDepthExists = true; } 
+		
+		attr = reader.GetAttribute("clipStencil");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "false"; }
+		if(attr != null) { clipStencil = bool.Parse(attr); clipStencilExists = true; } 
+		
 
 	}
 	
@@ -238,6 +279,8 @@ public class PUGameObjectBase : PUObject {
 		if(lastYExists) { sb.AppendFormat (" {0}=\"{1}\"", "lastY", lastY.ToString ("0.##")); }
 		if(lastXExists) { sb.AppendFormat (" {0}=\"{1}\"", "lastX", lastX.ToString ("0.##")); }
 		if(renderQueueOffsetExists) { sb.AppendFormat (" {0}=\"{1}\"", "renderQueueOffset", renderQueueOffset); }
+		if(clipDepthExists) { sb.AppendFormat (" {0}=\"{1}\"", "clipDepth", clipDepth.ToString().ToLower()); }
+		if(clipStencilExists) { sb.AppendFormat (" {0}=\"{1}\"", "clipStencil", clipStencil.ToString().ToLower()); }
 
 	}
 	

@@ -55,6 +55,8 @@ public partial class PUColorButton : PUColorButtonBase {
 			float lastY,
 			float lastX,
 			int renderQueueOffset,
+			bool clipDepth,
+			bool clipStencil,
 			string title,
 			string tag,
 			string tag1,
@@ -96,6 +98,12 @@ public partial class PUColorButton : PUColorButtonBase {
 
 		this.renderQueueOffset = renderQueueOffset;
 		this.renderQueueOffsetExists = true;
+
+		this.clipDepth = clipDepth;
+		this.clipDepthExists = true;
+
+		this.clipStencil = clipStencil;
+		this.clipStencilExists = true;
 
 		this.title = title;
 		this.titleExists = true;

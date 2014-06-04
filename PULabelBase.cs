@@ -23,8 +23,6 @@ public partial class PULabel : PULabelBase {
 		if(attr != null) { alignment = (PlanetUnity.LabelAlignment)System.Enum.Parse(typeof(PlanetUnity.LabelAlignment), attr); alignmentExists = true; } 
 		attr = "0,0,0,1";
 		if(attr != null) { textColor = attr; textColorExists = true; } 
-		attr = "true";
-		if(attr != null) { clips = bool.Parse(attr); clipsExists = true; } 
 
 	}
 	
@@ -36,7 +34,6 @@ public partial class PULabel : PULabelBase {
 			PlanetUnity.LabelAlignment alignment,
 			cColor textColor,
 			string value,
-			bool clips,
 			cRect bounds ) : this()
 	{
 		this.shader = shader;
@@ -57,9 +54,6 @@ public partial class PULabel : PULabelBase {
 		this.value = value;
 		this.valueExists = true;
 
-		this.clips = clips;
-		this.clipsExists = true;
-
 		this.bounds = bounds;
 		this.boundsExists = true;
 	}
@@ -73,12 +67,13 @@ public partial class PULabel : PULabelBase {
 			PlanetUnity.LabelAlignment alignment,
 			cColor textColor,
 			string value,
-			bool clips,
 			cRect bounds,
 			bool hidden,
 			float lastY,
 			float lastX,
 			int renderQueueOffset,
+			bool clipDepth,
+			bool clipStencil,
 			string title,
 			string tag,
 			string tag1,
@@ -106,9 +101,6 @@ public partial class PULabel : PULabelBase {
 		this.value = value;
 		this.valueExists = true;
 
-		this.clips = clips;
-		this.clipsExists = true;
-
 		this.bounds = bounds;
 		this.boundsExists = true;
 
@@ -123,6 +115,12 @@ public partial class PULabel : PULabelBase {
 
 		this.renderQueueOffset = renderQueueOffset;
 		this.renderQueueOffsetExists = true;
+
+		this.clipDepth = clipDepth;
+		this.clipDepthExists = true;
+
+		this.clipStencil = clipStencil;
+		this.clipStencilExists = true;
 
 		this.title = title;
 		this.titleExists = true;
@@ -182,9 +180,6 @@ public class PULabelBase : PUGameObject {
 	public string value;
 	public bool valueExists;
 
-	public bool clips;
-	public bool clipsExists;
-
 
 
 
@@ -195,7 +190,6 @@ public class PULabelBase : PUGameObject {
 	public void SetAlignment(PlanetUnity.LabelAlignment v) { alignment = v; alignmentExists = true; } 
 	public void SetTextColor(cColor v) { textColor = v; textColorExists = true; } 
 	public void SetValue(string v) { value = v; valueExists = true; } 
-	public void SetClips(bool v) { clips = v; clipsExists = true; } 
 
 	
 
@@ -286,11 +280,6 @@ public class PULabelBase : PUGameObject {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { value = attr; valueExists = true; } 
 		
-		attr = reader.GetAttribute("clips");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "true"; }
-		if(attr != null) { clips = bool.Parse(attr); clipsExists = true; } 
-		
 
 	}
 	
@@ -310,7 +299,6 @@ public class PULabelBase : PUGameObject {
 		if(alignmentExists) { sb.AppendFormat (" {0}=\"{1}\"", "alignment", (int)alignment); }
 		if(textColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "textColor", textColor); }
 		if(valueExists) { sb.AppendFormat (" {0}=\"{1}\"", "value", value); }
-		if(clipsExists) { sb.AppendFormat (" {0}=\"{1}\"", "clips", clips.ToString().ToLower()); }
 
 	}
 	
