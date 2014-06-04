@@ -51,7 +51,7 @@ public partial class PUImage : PUImageBase {
 		return mesh;
 	}
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent)
 	{
 		// Create our specific GameObject, set any defaults
 		gameObject = (GameObject) new GameObject("<Image/>", typeof(MeshRenderer), typeof(MeshFilter));

@@ -40,7 +40,7 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 		state = newState;
 	}
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
 

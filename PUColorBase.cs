@@ -151,9 +151,14 @@ public class PUColorBase : PUGameObject {
 	public void SetColor(cColor v) { color = v; colorExists = true; } 
 	public void SetAnchor(cVector2 v) { anchor = v; anchorExists = true; } 
 
-	
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_unload()
+	{
+		base.gaxb_unload();
+
+	}
+
+	public override void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
 
@@ -235,7 +240,7 @@ public class PUColorBase : PUGameObject {
 	
 	
 	
-	public new void gaxb_appendXMLAttributes(StringBuilder sb)
+	public override void gaxb_appendXMLAttributes(StringBuilder sb)
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
@@ -245,14 +250,14 @@ public class PUColorBase : PUGameObject {
 
 	}
 	
-	public new void gaxb_appendXMLSequences(StringBuilder sb)
+	public override void gaxb_appendXMLSequences(StringBuilder sb)
 	{
 		base.gaxb_appendXMLSequences(sb);
 
 
 	}
 	
-	public new void gaxb_appendXML(StringBuilder sb)
+	public override void gaxb_appendXML(StringBuilder sb)
 	{
 		if(sb.Length == 0)
 		{

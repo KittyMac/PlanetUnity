@@ -52,9 +52,13 @@ public class PUNotificationBase : IPlanetUnity {
 	
 	public void SetName(string v) { name = v; nameExists = true; } 
 
-	
 
-	public void gaxb_load(XmlReader reader, object _parent)
+	public virtual void gaxb_unload()
+	{
+
+	}
+
+	public virtual void gaxb_load(XmlReader reader, object _parent)
 	{
 
 		if(reader == null && _parent == null)
@@ -126,20 +130,20 @@ public class PUNotificationBase : IPlanetUnity {
 	
 	
 	
-	public void gaxb_appendXMLAttributes(StringBuilder sb)
+	public virtual void gaxb_appendXMLAttributes(StringBuilder sb)
 	{
 
 		if(nameExists) { sb.AppendFormat (" {0}=\"{1}\"", "name", name); }
 
 	}
 	
-	public void gaxb_appendXMLSequences(StringBuilder sb)
+	public virtual void gaxb_appendXMLSequences(StringBuilder sb)
 	{
 
 
 	}
 	
-	public void gaxb_appendXML(StringBuilder sb)
+	public virtual void gaxb_appendXML(StringBuilder sb)
 	{
 		if(sb.Length == 0)
 		{

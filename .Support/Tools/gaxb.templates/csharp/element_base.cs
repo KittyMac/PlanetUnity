@@ -130,9 +130,9 @@ FULL_NAME_CAMEL = namespaceInitials(this.namespace)..capitalizedString(this.name
 FULL_NAME_CAMEL_NON_BASE = namespaceInitials(this.namespace)..capitalizedString(this.name);
 
 if(hasSuperclass(this)) then
-	NEW_KEYWORD = "new "
+	NEW_KEYWORD = "override "
 else
-	NEW_KEYWORD = "";
+	NEW_KEYWORD = "virtual ";
 end
 
 %>
@@ -185,7 +185,14 @@ end
 		gaxb_print("\tpublic void Set"..capitalizedString(v.name).."("..typeNameForItem(v).." v) { "..v.name.." = v; "..v.name.."Exists = true; } \n")
 	end
 	%>
-	
+
+	public <%=NEW_KEYWORD%>void gaxb_unload()
+	{
+<%		if(hasSuperclass(this)) then
+			gaxb_print("\t\tbase.gaxb_unload();\n")
+		end
+%>
+	}
 
 	public <%=NEW_KEYWORD%>void gaxb_load(XmlReader reader, object _parent)
 	{

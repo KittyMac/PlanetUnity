@@ -32,13 +32,13 @@ public partial class PUCode : PUCodeBase {
 		return controller;
 	}
 
-	public new void gaxb_unload()
+	public override void gaxb_unload()
 	{
 		base.gaxb_unload ();
 		NotificationCenter.removeObserver (controller);
 	}
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
 

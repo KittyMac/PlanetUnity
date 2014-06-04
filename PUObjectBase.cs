@@ -112,9 +112,13 @@ public class PUObjectBase : IPlanetUnity {
 	public void SetTag5(string v) { tag5 = v; tag5Exists = true; } 
 	public void SetTag6(string v) { tag6 = v; tag6Exists = true; } 
 
-	
 
-	public void gaxb_load(XmlReader reader, object _parent)
+	public virtual void gaxb_unload()
+	{
+
+	}
+
+	public virtual void gaxb_load(XmlReader reader, object _parent)
 	{
 
 		if(reader == null && _parent == null)
@@ -214,7 +218,7 @@ public class PUObjectBase : IPlanetUnity {
 	
 	
 	
-	public void gaxb_appendXMLAttributes(StringBuilder sb)
+	public virtual void gaxb_appendXMLAttributes(StringBuilder sb)
 	{
 
 		if(titleExists) { sb.AppendFormat (" {0}=\"{1}\"", "title", title); }
@@ -228,7 +232,7 @@ public class PUObjectBase : IPlanetUnity {
 
 	}
 	
-	public void gaxb_appendXMLSequences(StringBuilder sb)
+	public virtual void gaxb_appendXMLSequences(StringBuilder sb)
 	{
 
 		MethodInfo mInfo;		foreach(object o in children) { mInfo = o.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke (o, new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "any", o); } }
@@ -236,7 +240,7 @@ public class PUObjectBase : IPlanetUnity {
 
 	}
 	
-	public void gaxb_appendXML(StringBuilder sb)
+	public virtual void gaxb_appendXML(StringBuilder sb)
 	{
 		if(sb.Length == 0)
 		{

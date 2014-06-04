@@ -20,7 +20,7 @@ using System.Reflection;
 
 public class PlanetUnityCameraObject : MonoBehaviour {
 	public PUScene scene;
-	public new Camera camera;
+	public Camera camera;
 	protected float currentAspectRatio;
 
 	public void AdjustCamera() {
@@ -117,7 +117,7 @@ public partial class PUScene : PUSceneBase {
 		base.gaxb_loadComplete ();
 	}
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
 
@@ -128,7 +128,7 @@ public partial class PUScene : PUSceneBase {
 		}
 	}
 
-	public new bool isScopeContainer()
+	public override bool isScopeContainer()
 	{
 		return true;
 	}

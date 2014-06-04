@@ -56,7 +56,7 @@ public partial class PUColor : PUColorBase
 
 	}
 
-	public new void gaxb_load (XmlReader reader, object _parent)
+	public override void gaxb_load (XmlReader reader, object _parent)
 	{
 		if(gameObject == null)
 			gameObject = (GameObject)new GameObject ("<Color/>", typeof(MeshRenderer), typeof(MeshFilter));

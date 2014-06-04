@@ -37,13 +37,13 @@ public partial class PUObject : PUObjectBase {
 		}
 	}
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
 		renderQeueuCount = 0;
 	}
 
-	public void gaxb_unload()
+	public override void gaxb_unload()
 	{
 		NotificationCenter.removeObserver (this);
 	}
@@ -59,7 +59,7 @@ public partial class PUObject : PUObjectBase {
 		return (parent as PUObject).scope();
 	}
 
-	public bool isScopeContainer()
+	public virtual bool isScopeContainer()
 	{
 		return false;
 	}

@@ -55,7 +55,7 @@ public partial class PUGameObject : PUGameObjectBase {
 		return shaderPath + "/Normal";
 	}
 
-	public new void gaxb_unload()
+	public override void gaxb_unload()
 	{
 		base.gaxb_unload ();
 	}
@@ -97,11 +97,7 @@ public partial class PUGameObject : PUGameObjectBase {
 
 	public void loadIntoGameObject(GameObject _parent)
 	{
-		object Null = null;
-
-		MethodInfo mInfo;
-		mInfo = this.GetType().GetMethod("gaxb_load");
-		if(mInfo != null) { mInfo.Invoke (this, new[] { Null, Null }); }
+		gaxb_load (null, null);
 
 		gameObject.transform.parent = _parent.transform;
 
@@ -116,7 +112,7 @@ public partial class PUGameObject : PUGameObjectBase {
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
 

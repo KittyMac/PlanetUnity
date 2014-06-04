@@ -21,7 +21,7 @@ using System.CodeDom;
 
 public partial class PUPrefab : PUPrefabBase {
 
-	public new void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent)
 	{
 		base.gaxb_load(reader, _parent);
 
