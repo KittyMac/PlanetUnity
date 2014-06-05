@@ -42,6 +42,10 @@ public partial class PUGameObject : PUGameObjectBase {
 		if (shaderPath.StartsWith ("PlanetUnity/DepthMask")) {
 			return shaderPath;
 		}
+
+		if (shaderPath.StartsWith ("PlanetUnity/") == false) {
+			return shaderPath;
+		}
 		
 		// Check to see if I am inside of something that is clipping...
 		if (depthMaskCounter > 0) {
