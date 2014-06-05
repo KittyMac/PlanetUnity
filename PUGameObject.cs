@@ -99,17 +99,23 @@ public partial class PUGameObject : PUGameObjectBase {
 	{
 		gaxb_load (null, null);
 
+		Debug.Log ("bounds: " + bounds);
+
+		Vector3 savedPos = gameObject.transform.localPosition;
+		Quaternion savedRot = gameObject.transform.localRotation;
+
 		gameObject.transform.parent = _parent.transform;
 
-		gameObject.transform.localPosition = Vector3.zero;
-		gameObject.transform.localRotation = Quaternion.identity;
+		gameObject.transform.localPosition = savedPos;
+		gameObject.transform.localRotation = savedRot;
+
+		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}
 
 	public void loadIntoPUGameObject(PUGameObject _parent)
 	{
 		parent = _parent;
 		loadIntoGameObject (_parent.contentGameObject());
-		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent)
@@ -130,8 +136,8 @@ public partial class PUGameObject : PUGameObjectBase {
 
 		if (_parent is GameObject) {
 			setParentGameObject (_parent as GameObject);
-		}
-		else if (_parent is PUGameObject) {
+			gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0.0f);
+		} else if (_parent is PUGameObject) {
 			PUGameObject parentEntity = (PUGameObject)_parent;
 
 			setParentGameObject (parentEntity.gameObject);
@@ -140,6 +146,8 @@ public partial class PUGameObject : PUGameObjectBase {
 				bounds.y = (parentEntity.bounds.h - bounds.y) - bounds.h;
 				gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0.0f);
 			}
+		} else if (_parent == null) {
+			gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0.0f);
 		}
 
 		if (reader != null) {
