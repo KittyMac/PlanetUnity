@@ -71,7 +71,7 @@ public partial class PUGameObject : PUGameObjectBase {
 			PUColor depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), new cVector2 (0, 0), bounds);
 			depthMask1.SetTitle ("Depth Mask 1");
 			depthMask1.loadIntoPUGameObject (this);
-			depthMask1.gameObject.transform.localPosition += maskOffset ();
+			depthMask1.gameObject.transform.localPosition = maskOffset ();
 
 			if (gameObject.renderer) {
 				depthMask1.gameObject.renderer.material.renderQueue = gameObject.renderer.material.renderQueue - 1;
@@ -82,7 +82,7 @@ public partial class PUGameObject : PUGameObjectBase {
 			PUColor depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), new cVector2 (0, 0), bounds);
 			depthMask2.SetTitle ("Depth Mask 2");
 			depthMask2.loadIntoPUGameObject (this);
-			depthMask2.gameObject.transform.localPosition += maskOffset ();
+			depthMask2.gameObject.transform.localPosition = maskOffset ();
 
 			// Get the renderQueue of the last child and make sure we render after that
 			Transform lastChild = gameObject.transform.GetChild (gameObject.transform.childCount - 1);
@@ -134,7 +134,6 @@ public partial class PUGameObject : PUGameObjectBase {
 
 		if (_parent is GameObject) {
 			setParentGameObject (_parent as GameObject);
-			gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0.0f);
 		} else if (_parent is PUGameObject) {
 			PUGameObject parentEntity = (PUGameObject)_parent;
 
