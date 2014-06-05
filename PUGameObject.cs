@@ -99,8 +99,6 @@ public partial class PUGameObject : PUGameObjectBase {
 	{
 		gaxb_load (null, null);
 
-		Debug.Log ("bounds: " + bounds);
-
 		Vector3 savedPos = gameObject.transform.localPosition;
 		Quaternion savedRot = gameObject.transform.localRotation;
 
