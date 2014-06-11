@@ -132,6 +132,14 @@
 		</complexContent>
 	</complexType>
 	
+	<element name="Table" type="planet:Table"/>
+	<complexType name="Table">
+		<complexContent>
+			<extension base="planet:Scroll">
+			</extension>
+		</complexContent>
+	</complexType>
+	
 	<element name="Color" type="planet:Color"/>
 	<complexType name="Color">
 		<complexContent>

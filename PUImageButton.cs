@@ -16,6 +16,7 @@
 using UnityEngine;
 using System.Xml;
 using System;
+using System.Collections;
 
 public enum PlanetUnityButtonState {Normal, Highlighted};
 
@@ -101,9 +102,9 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 		gameObject.renderer.material.mainTexture = tex;
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
 		if(touchSizeExists)

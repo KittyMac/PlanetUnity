@@ -16,6 +16,8 @@
 using System.Xml;
 using System;
 using System.Reflection;
+using System.Collections;
+using System.Diagnostics;
 
 public partial class PUObject : PUObjectBase {
 
@@ -37,10 +39,13 @@ public partial class PUObject : PUObjectBase {
 		}
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
-		renderQeueuCount = 0;
+		base.gaxb_load(reader, _parent, args);
+
+		if (args != null && args.ContainsKey ("baseRenderQueue")) {
+			renderQeueuCount = (int)args ["baseRenderQueue"];
+		}
 	}
 
 	public override void gaxb_unload()

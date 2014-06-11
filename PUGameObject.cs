@@ -17,6 +17,7 @@ using UnityEngine;
 using System.Xml;
 using System.Reflection;
 using System;
+using System.Collections;
 
 public partial class PUGameObject : PUGameObjectBase {
 
@@ -76,7 +77,15 @@ public partial class PUGameObject : PUGameObjectBase {
 			if (gameObject.renderer) {
 				depthMask1.gameObject.renderer.material.renderQueue = gameObject.renderer.material.renderQueue - 1;
 			} else if(gameObject.transform.childCount > 0){
-				depthMask1.gameObject.renderer.material.renderQueue = gameObject.transform.GetChild(0).renderer.material.renderQueue - 1;
+				int minRenderQueue = 99999999;
+				foreach (Transform child in contentGameObject().GetComponentsInChildren<Transform>(true)) {
+					if (child.renderer != null &&
+						child.renderer.material.renderQueue < minRenderQueue &&
+						child.name.StartsWith("Depth Mask") == false) {
+						minRenderQueue = child.renderer.material.renderQueue;
+					}
+				}
+				depthMask1.gameObject.renderer.material.renderQueue = minRenderQueue - 1;
 			}
 
 			PUColor depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), new cVector2 (0, 0), bounds);
@@ -85,9 +94,22 @@ public partial class PUGameObject : PUGameObjectBase {
 			depthMask2.gameObject.transform.localPosition = maskOffset ();
 
 			// Get the renderQueue of the last child and make sure we render after that
-			Transform lastChild = gameObject.transform.GetChild (gameObject.transform.childCount - 1);
-			depthMask2.gameObject.renderer.material.renderQueue = lastChild.renderer.material.renderQueue+1;
+			if (gameObject.transform.childCount > 0) {
+				int maxRenderQueue = -1;
+				foreach (Transform child in contentGameObject().GetComponentsInChildren<Transform>(true)) {
+					if (child.renderer != null &&
+						child.renderer.material.renderQueue > maxRenderQueue &&
+						child.name.StartsWith("Depth Mask") == false) {
+						maxRenderQueue = child.renderer.material.renderQueue;
+					}
+				}
+				depthMask2.gameObject.renderer.material.renderQueue = maxRenderQueue + 1;
+			}
+
+			depthMask1.gameObject.layer = 31;
+			depthMask2.gameObject.layer = 31;
 		}
+
 	}
 
 	public void setParentGameObject(GameObject p)
@@ -97,7 +119,7 @@ public partial class PUGameObject : PUGameObjectBase {
 
 	public void loadIntoGameObject(GameObject _parent)
 	{
-		gaxb_load (null, null);
+		gaxb_load (null, null, null);
 
 		Vector3 savedPos = gameObject.transform.localPosition;
 		Quaternion savedRot = gameObject.transform.localRotation;
@@ -116,16 +138,16 @@ public partial class PUGameObject : PUGameObjectBase {
 		loadIntoGameObject (_parent.contentGameObject());
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		if (clipDepth) {
 			depthMaskCounter++;
 		}
 
 		if (gameObject == null) {
-			gameObject = new GameObject ("<Entity />");
+			gameObject = new GameObject ("<GameObject />");
 
 			if (titleExists) {
 				gameObject.name = title;

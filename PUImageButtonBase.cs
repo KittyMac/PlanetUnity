@@ -9,6 +9,7 @@ using System.Xml;
 using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Collections;
 
 
 public partial class PUImageButton : PUImageButtonBase {
@@ -193,9 +194,9 @@ public class PUImageButtonBase : PUImage {
 
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		if(reader == null && _parent == null)
 			return;

@@ -17,13 +17,14 @@ using UnityEngine;
 using System.Xml;
 using System;
 using System.CodeDom;
+using System.Collections;
 
 
 public partial class PUPrefab : PUPrefabBase {
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		if (nameExists && titleExists == false) {
 			gameObject.name = name;

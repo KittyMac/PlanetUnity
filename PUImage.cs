@@ -16,6 +16,7 @@
 using UnityEngine;
 using System.Xml;
 using System;
+using System.Collections;
 
 public partial class PUImage : PUImageBase {
 
@@ -51,7 +52,7 @@ public partial class PUImage : PUImageBase {
 		return mesh;
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 		// Create our specific GameObject, set any defaults
 		gameObject = (GameObject) new GameObject("<Image/>", typeof(MeshRenderer), typeof(MeshFilter));
@@ -60,7 +61,7 @@ public partial class PUImage : PUImageBase {
 			shader = "PlanetUnity/Image";
 		}
 
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		if (titleExists) {
 			gameObject.name = title;

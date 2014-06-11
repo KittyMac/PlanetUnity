@@ -16,6 +16,7 @@
 
 using System.Xml;
 using UnityEngine;
+using System.Collections;
 
 
 public partial class PUColorButton : PUColorButtonBase, IPUButton {
@@ -40,9 +41,9 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 		state = newState;
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
 		if(touchSizeExists)

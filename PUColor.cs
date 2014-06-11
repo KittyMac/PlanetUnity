@@ -16,6 +16,7 @@
 using UnityEngine;
 using System.Xml;
 using System;
+using System.Collections;
 
 public partial class PUColor : PUColorBase
 {
@@ -53,15 +54,14 @@ public partial class PUColor : PUColorBase
 		Material mat = new Material (shaderObj);
 		gameObject.renderer.material = mat;
 		gameObject.renderer.material.color = Color.white;
-
 	}
 
-	public override void gaxb_load (XmlReader reader, object _parent)
+	public override void gaxb_load (XmlReader reader, object _parent, Hashtable args)
 	{
 		if(gameObject == null)
 			gameObject = (GameObject)new GameObject ("<Color/>", typeof(MeshRenderer), typeof(MeshFilter));
 
-		base.gaxb_load (reader, _parent);
+		base.gaxb_load (reader, _parent, args);
 
 		if (titleExists) {
 			gameObject.name = title;

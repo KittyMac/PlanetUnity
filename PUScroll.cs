@@ -1,5 +1,22 @@
+/* Copyright (c) 2012 Small Planet Digital, LLC
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+ * (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+ * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 using UnityEngine;
 using System.Xml;
+using System.Collections;
+using System.Security.Cryptography;
 
 public partial class PUScroll : PUScrollBase
 {
@@ -11,9 +28,9 @@ public partial class PUScroll : PUScrollBase
 		return contentObject;
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		// This is a little tricky; we want to insert our contentObject between our gameObject and its parent
 		contentObject = new GameObject ("ScrollContent");
@@ -68,13 +85,20 @@ public partial class PUScroll : PUScrollBase
 		}
 
 		if (scrollDirectionExists == false) {
+
+			script.scrollEnabled = false;
+			script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Both;
+
 			// If we don't specify a scroll direction, check out content size and use the size which exceeds our bounds
 			if (contentSize.x > bounds.w && contentSize.y > bounds.h) {
 				script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Both;
+				script.scrollEnabled = true;
 			} else if (contentSize.x > bounds.w) {
 				script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Horizontal;
+				script.scrollEnabled = true;
 			} else if (contentSize.y > bounds.h) {
 				script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Vertical;
+				script.scrollEnabled = true;
 			}
 		}
 
@@ -171,6 +195,9 @@ public class PlanetUnityScrollScript : MonoBehaviour
 
 	public void OnMouseDown ()
 	{
+		if (scrollEnabled == false)
+			return;
+
 		if (userTouching == false) {
 			userTouching = true;
 
@@ -212,6 +239,9 @@ public class PlanetUnityScrollScript : MonoBehaviour
 
 	public void OnMouseUp ()
 	{
+		if (scrollEnabled == false)
+			return;
+
 		if (userTouching) {
 			userTouching = false;
 
@@ -290,6 +320,9 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	}
 
 	public void OnMouseMoved() {
+
+		if (scrollEnabled == false)
+			return;
 
 		if(userTouching)
 		{
@@ -759,10 +792,9 @@ public class PlanetUnityScrollScript : MonoBehaviour
 				//do bungee effect vertically
 				if(assignScroll.y < 0)
 				{
-					if(bounces)
-						assignScroll.y = bungee(assignScroll.y, entity.bounds.h);
-					else
-					{
+					if (bounces) {
+						assignScroll.y = bungee (assignScroll.y, -entity.bounds.h);
+					} else {
 						assignScroll.y = 0.0f;
 						velocity.y = 0.0f;
 					}

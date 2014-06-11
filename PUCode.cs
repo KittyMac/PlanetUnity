@@ -18,6 +18,7 @@ using System.Xml;
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Collections;
 
 interface IPUCode {
 
@@ -38,9 +39,9 @@ public partial class PUCode : PUCodeBase {
 		NotificationCenter.removeObserver (controller);
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		gameObject.name = _class;
 	}

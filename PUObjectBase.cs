@@ -9,6 +9,7 @@ using System.Xml;
 using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Collections;
 
 
 public partial class PUObject : PUObjectBase {
@@ -118,7 +119,7 @@ public class PUObjectBase : IPlanetUnity {
 
 	}
 
-	public virtual void gaxb_load(XmlReader reader, object _parent)
+	public virtual void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 
 		if(reader == null && _parent == null)

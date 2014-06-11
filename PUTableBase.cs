@@ -12,28 +12,29 @@ using System.Collections.Generic;
 using System.Collections;
 
 
-public partial class PUCode : PUCodeBase {
+public partial class PUTable : PUTableBase {
 	
-	public PUCode()
+	public PUTable()
 	{
 	}
 	
 	
-	public PUCode(
-			string _class,
+	public PUTable(
 			cRect bounds ) : this()
 	{
-		this._class = _class;
-		this._classExists = true;
-
 		this.bounds = bounds;
 		this.boundsExists = true;
 	}
 
 	
 	
-	public PUCode(
-			string _class,
+	public PUTable(
+			cVector2 contentSize,
+			bool bounces,
+			bool pagingEnabled,
+			bool scrollEnabled,
+			PlanetUnity.ScrollDirection scrollDirection,
+			bool directionalLockEnabled,
 			cRect bounds,
 			bool hidden,
 			float lastY,
@@ -50,8 +51,23 @@ public partial class PUCode : PUCodeBase {
 			string tag5,
 			string tag6 ) : this()
 	{
-		this._class = _class;
-		this._classExists = true;
+		this.contentSize = contentSize;
+		this.contentSizeExists = true;
+
+		this.bounces = bounces;
+		this.bouncesExists = true;
+
+		this.pagingEnabled = pagingEnabled;
+		this.pagingEnabledExists = true;
+
+		this.scrollEnabled = scrollEnabled;
+		this.scrollEnabledExists = true;
+
+		this.scrollDirection = scrollDirection;
+		this.scrollDirectionExists = true;
+
+		this.directionalLockEnabled = directionalLockEnabled;
+		this.directionalLockEnabledExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;
@@ -105,27 +121,17 @@ public partial class PUCode : PUCodeBase {
 
 
 
-public class PUCodeBase : PUGameObject {
+public class PUTableBase : PUScroll {
 
-
-	private Type planetOverride = Type.GetType("PlanetUnityOverride");
 
 
 
 
 	// XML Attributes
-	public string _class;
-	public bool _classExists;
 
 
-
-
-	// XML Sequences
-	public List<object> Notifications = new List<object>();
-	
 
 	
-	public void Set_class(string v) { _class = v; _classExists = true; } 
 
 
 	public override void gaxb_unload()
@@ -143,23 +149,23 @@ public class PUCodeBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUCode ))
+		if(this.GetType() == typeof( PUTable ))
 		{
 			if(parent != null)
 			{
-				FieldInfo parentField = _parent.GetType().GetField("Code");
+				FieldInfo parentField = _parent.GetType().GetField("Table");
 				List<object> parentChildren = null;
 				
 				if(parentField != null)
 				{
 					parentField.SetValue(_parent, this);
 					
-					parentField = _parent.GetType().GetField("CodeExists");
+					parentField = _parent.GetType().GetField("TableExists");
 					parentField.SetValue(_parent, true);
 				}
 				else
 				{
-					parentField = _parent.GetType().GetField("Codes");
+					parentField = _parent.GetType().GetField("Tables");
 					
 					if(parentField != null)
 					{
@@ -167,7 +173,7 @@ public class PUCodeBase : PUGameObject {
 					}
 					else
 					{
-						parentField = _parent.GetType().GetField("GameObjects");
+						parentField = _parent.GetType().GetField("Scrolls");
 						if(parentField != null)
 						{
 							parentChildren = (List<object>)(parentField.GetValue(_parent));
@@ -193,12 +199,6 @@ public class PUCodeBase : PUGameObject {
 		xmlns = reader.GetAttribute("xmlns");
 		
 
-		string attr;
-		attr = reader.GetAttribute("class");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr != null) { _class = attr; _classExists = true; } 
-		
-
 	}
 	
 	
@@ -211,7 +211,6 @@ public class PUCodeBase : PUGameObject {
 	{
 		base.gaxb_appendXMLAttributes(sb);
 
-		if(_classExists) { sb.AppendFormat (" {0}=\"{1}\"", "_class", _class); }
 
 	}
 	
@@ -219,8 +218,6 @@ public class PUCodeBase : PUGameObject {
 	{
 		base.gaxb_appendXMLSequences(sb);
 
-		MethodInfo mInfo;		foreach(object o in Notifications) { mInfo = o.GetType().GetMethod("gaxb_appendXML"); if(mInfo != null) { mInfo.Invoke (o, new[] { sb }); } else { sb.AppendFormat ("<{0}>{1}</{0}>", "Notification", o); } }
-	
 
 	}
 	
@@ -231,7 +228,7 @@ public class PUCodeBase : PUGameObject {
 			sb.AppendFormat ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		}
 		
-		sb.AppendFormat ("<{0}", "Code");
+		sb.AppendFormat ("<{0}", "Table");
 		
 		if(xmlns != null)
 		{
@@ -251,7 +248,7 @@ public class PUCodeBase : PUGameObject {
 		}
 		else
 		{
-			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Code");
+			sb.AppendFormat (">{0}</{1}>", seq.ToString(), "Table");
 		}
 	}
 }

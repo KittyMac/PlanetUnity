@@ -15,15 +15,16 @@
 
 using UnityEngine;
 using System.Xml;
+using System.Collections;
 
 public partial class PUGradient : PUGradientBase
 {
-	public override void gaxb_load (XmlReader reader, object _parent)
+	public override void gaxb_load (XmlReader reader, object _parent, Hashtable args)
 	{
 		// Create our specific GameObject, set any defaults
 		gameObject = (GameObject)new GameObject ("<Gradient/>", typeof(MeshRenderer), typeof(MeshFilter));
 
-		base.gaxb_load (reader, _parent);
+		base.gaxb_load (reader, _parent, args);
 
 		if (titleExists) {
 			gameObject.name = title;

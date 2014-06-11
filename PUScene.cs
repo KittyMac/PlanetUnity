@@ -17,6 +17,7 @@ using UnityEngine;
 using System.Xml;
 using System;
 using System.Reflection;
+using System.Collections;
 
 public class PlanetUnityCameraObject : MonoBehaviour {
 	public PUScene scene;
@@ -117,9 +118,9 @@ public partial class PUScene : PUSceneBase {
 		base.gaxb_loadComplete ();
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent)
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		base.gaxb_load(reader, _parent);
+		base.gaxb_load(reader, _parent, args);
 
 		if (adjustCamera) {
 			cameraObject = (PlanetUnityCameraObject)gameObject.AddComponent (typeof(PlanetUnityCameraObject));

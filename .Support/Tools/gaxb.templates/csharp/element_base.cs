@@ -27,6 +27,7 @@ using System.Xml;
 using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Collections;
 
 
 public partial class <%= FULL_NAME_CAMEL %> : <%= FULL_NAME_CAMEL %>Base {
@@ -194,10 +195,10 @@ end
 %>
 	}
 
-	public <%=NEW_KEYWORD%>void gaxb_load(XmlReader reader, object _parent)
+	public <%=NEW_KEYWORD%>void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 <%		if(hasSuperclass(this)) then
-			gaxb_print("\t\tbase.gaxb_load(reader, _parent);\n")
+			gaxb_print("\t\tbase.gaxb_load(reader, _parent, args);\n")
 		end
 %>
 		if(reader == null && _parent == null)

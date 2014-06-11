@@ -160,7 +160,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		Stopwatch sw = Stopwatch.StartNew();
 
 		TextAsset stringData = Resources.Load(xmlPath) as TextAsset;
-		scene = (PUScene)PlanetUnity.loadXML(stringData.text, gameObject);
+		scene = (PUScene)PlanetUnity.loadXML(stringData.text, gameObject, null);
 
 		sw.Stop();
 

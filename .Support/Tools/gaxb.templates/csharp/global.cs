@@ -27,15 +27,16 @@ using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 interface I<%=CAP_NAME%>
 {
-	void gaxb_load(XmlReader reader, object _parent);
+	void gaxb_load(XmlReader reader, object _parent, Hashtable args);
 	void gaxb_appendXML(StringBuilder sb);
 }
 
 public class <%=CAP_NAME%> {
-
+	public int baseRenderQueue = 0;
 
 <%
 
@@ -89,7 +90,7 @@ end
 		return Regex.Replace(xmlNamespace, "[^A-Z]", "")+name;
 	}
 
-	static public object loadXML(string xmlString, object parentObject)
+	static public object loadXML(string xmlString, object parentObject, Hashtable args)
 	{
 		object rootEntity = parentObject;
 		object returnEntity = null;
@@ -112,7 +113,7 @@ end
 						object entityObject = (Activator.CreateInstance (entityClass));						
 						
 						MethodInfo method = entityClass.GetMethod ("gaxb_load");
-						method.Invoke (entityObject, new[] { reader, rootEntity });
+						method.Invoke (entityObject, new[] { reader, rootEntity, args });
 						
 						if (reader.IsEmptyElement == false) {
 							rootEntity = entityObject;
