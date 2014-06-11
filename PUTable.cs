@@ -17,17 +17,54 @@ using UnityEngine;
 using System;
 using System.Reflection;
 
+public class PUTableHeaderScript : MonoBehaviour {
+
+	public PUTable table;
+	public PUTableCell tableCell;
+	private float originalY;
+
+	public void Start()
+	{
+		originalY = gameObject.transform.localPosition.y;
+	}
+
+	public void Update()
+	{
+		// Test world position is not above the table top; if so, clamp it?
+
+		float diff = table.gameObject.transform.localPosition.y + (originalY - table.bounds.h) + tableCell.puGameObject.bounds.h;
+
+		if (diff > 0) {
+			Vector2 pos = gameObject.transform.localPosition;
+			pos.y = originalY - diff;
+			gameObject.transform.localPosition = pos;
+		} else if(gameObject.transform.localPosition.y != originalY) {
+			Vector2 pos = gameObject.transform.localPosition;
+			pos.y = originalY;
+			gameObject.transform.localPosition = pos;
+		}
+	}
+}
+
 public class PUTableCell {
 
+	public PUTable table = null;
 	public PUGameObject puGameObject = null;
 	public object cellData = null;
 
+	public virtual bool IsHeader() {
+		// Subclasses override this method to specify this cell should act as a section header
+		return false;
+	}
+
 	public virtual string XmlPath() {
+		// Subclasses override this method to supply a path to a planet unity xml for this cell
 		return "(subclass needs to define an XmlPath)";
 	}
 
-	public virtual void LoadIntoPUGameObject(PUGameObject parent, object data, int baseRenderQueue) {
+	public virtual void LoadIntoPUGameObject(PUTable parent, object data, int baseRenderQueue) {
 
+		table = parent;
 		cellData = data;
 
 		TextAsset stringData = Resources.Load(XmlPath ()) as TextAsset;
@@ -77,6 +114,12 @@ public class PUTableCell {
 		catch(Exception e) {
 			UnityEngine.Debug.Log ("TableCell error: " + e);
 		}
+
+		if (IsHeader ()) {
+			PUTableHeaderScript script = (PUTableHeaderScript)puGameObject.gameObject.AddComponent(typeof(PUTableHeaderScript));
+			script.table = table;
+			script.tableCell = this;
+		}
 	}
 
 }
@@ -93,9 +136,6 @@ public partial class PUTable : PUTableBase {
 
 	public void ReloadTable() {
 		GameObject content = contentGameObject();
-
-		// TODO: run through all objects, create cells, put them in my content game object
-
 
 		// 0) Remove all previous content
 		for (int i = gameObject.transform.childCount - 1; i > 0; i--)
@@ -145,6 +185,17 @@ public partial class PUTable : PUTableBase {
 
 			foreach (Transform trans in cellGO.GetComponentsInChildren<Transform>(true)) {
 				trans.gameObject.layer = 31;
+			}
+		}
+
+		foreach (PUTableCell cell in allCells) {
+			if (cell.IsHeader ()) {
+				// push all headers above all cells renderQueue
+				foreach (Transform trans in cell.puGameObject.gameObject.GetComponentsInChildren<Transform>(true)) {
+					if (trans.gameObject.renderer != null) {
+						trans.gameObject.renderer.material.renderQueue = scope ().getRenderQueue ();
+					}
+				}
 			}
 		}
 

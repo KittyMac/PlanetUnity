@@ -87,6 +87,8 @@ public partial class PULabel : PULabelBase {
 		meshRendererComponent.materials = new Material[] { mat };
 
 		ts.FitToWidth (bounds.w);
+
+		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}
 
 	public void LoadTextString(string value)
