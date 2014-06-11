@@ -35,28 +35,24 @@ public class PUTableCell {
 
 		// Attach all of the PlanetUnity objects
 		try {
-			PUGameObject scene = puGameObject.scope() as PUGameObject;
-			if(scene != null)
+			FieldInfo field = this.GetType ().GetField ("scene");
+			if (field != null)
 			{
-				FieldInfo field = this.GetType ().GetField ("scene");
-				if (field != null)
-				{
-					field.SetValue (this, scene);
-				}
-
-				scene.peformOnChildren(val =>
-					{
-						PUGameObject oo = val as PUGameObject;
-						if(oo != null && oo.title != null)
-						{
-							field = this.GetType ().GetField (oo.title);
-							if (field != null)
-							{
-								field.SetValue (this, oo);
-							}
-						}
-					});
+				field.SetValue (this, puGameObject);
 			}
+
+			puGameObject.peformOnChildren(val =>
+				{
+					PUGameObject oo = val as PUGameObject;
+					if(oo != null && oo.title != null)
+					{
+						field = this.GetType ().GetField (oo.title);
+						if (field != null)
+						{
+							field.SetValue (this, oo);
+						}
+					}
+				});
 		}
 		catch(Exception e) {
 			UnityEngine.Debug.Log ("TableCell error: " + e);

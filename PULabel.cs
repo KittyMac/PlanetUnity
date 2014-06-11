@@ -92,5 +92,7 @@ public partial class PULabel : PULabelBase {
 	public void LoadTextString(string value)
 	{
 		textMesh.text = value;
+
+		ts.FitToWidth (bounds.w);
 	}
 }
