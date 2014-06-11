@@ -15,18 +15,72 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Reflection;
 
 public class PUTableCell {
 
 	public PUGameObject puGameObject = null;
+	public object cellData = null;
 
 	public virtual string XmlPath() {
 		return "(subclass needs to define an XmlPath)";
 	}
 
-	public virtual void LoadIntoPUGameObject(PUGameObject parent, int baseRenderQueue) {
+	public virtual void LoadIntoPUGameObject(PUGameObject parent, object data, int baseRenderQueue) {
+
+		cellData = data;
+
 		TextAsset stringData = Resources.Load(XmlPath ()) as TextAsset;
 		puGameObject = (PUGameObject)PlanetUnity.loadXML(stringData.text, parent, NotificationCenter.Args("baseRenderQueue", baseRenderQueue));
+
+		// Attach all of the PlanetUnity objects
+		try {
+			PUGameObject scene = puGameObject.scope() as PUGameObject;
+			if(scene != null)
+			{
+				FieldInfo field = this.GetType ().GetField ("scene");
+				if (field != null)
+				{
+					field.SetValue (this, scene);
+				}
+
+				scene.peformOnChildren(val =>
+					{
+						PUGameObject oo = val as PUGameObject;
+						if(oo != null && oo.title != null)
+						{
+							field = this.GetType ().GetField (oo.title);
+							if (field != null)
+							{
+								field.SetValue (this, oo);
+							}
+						}
+					});
+			}
+		}
+		catch(Exception e) {
+			UnityEngine.Debug.Log ("TableCell error: " + e);
+		}
+
+		try {
+			// Attach all of the named GameObjects
+			FieldInfo[] fields = this.GetType().GetFields();
+			foreach (FieldInfo field in fields) {
+				if (field.FieldType == typeof(GameObject)) {
+
+					GameObject[] pAllObjects = (GameObject[])Resources.FindObjectsOfTypeAll(typeof(GameObject));
+
+					foreach (GameObject pObject in pAllObjects) {
+						if(pObject.name.Equals(field.Name)) {
+							field.SetValue(this, pObject);
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e) {
+			UnityEngine.Debug.Log ("TableCell error: " + e);
+		}
 	}
 
 }
@@ -80,7 +134,7 @@ public partial class PUTable : PUTableBase {
 			Type cellType = Type.GetType (className, true);
 
 			PUTableCell cell = (Activator.CreateInstance (cellType)) as PUTableCell;
-			cell.LoadIntoPUGameObject (this, baseRenderQueue);
+			cell.LoadIntoPUGameObject (this, row, baseRenderQueue);
 
 			allCells.Add (cell);
 

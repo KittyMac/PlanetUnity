@@ -87,7 +87,10 @@ public partial class PULabel : PULabelBase {
 		meshRendererComponent.materials = new Material[] { mat };
 
 		ts.FitToWidth (bounds.w);
+	}
 
-
+	public void LoadTextString(string value)
+	{
+		textMesh.text = value;
 	}
 }

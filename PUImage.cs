@@ -17,6 +17,7 @@ using UnityEngine;
 using System.Xml;
 using System;
 using System.Collections;
+using System.Security.Policy;
 
 public partial class PUImage : PUImageBase {
 
@@ -71,15 +72,24 @@ public partial class PUImage : PUImageBase {
 		filter.mesh = CreateMesh();
 
 		// Set texture
-		Texture2D tex = (Texture2D) Resources.Load (resourcePath);
-		tex.filterMode = FilterMode.Bilinear;
-
-
-		gameObject.renderer.material.mainTexture = tex;
+		Texture2D tex = (Texture2D)Resources.Load (resourcePath);
+		if (tex != null) {
+			tex.filterMode = FilterMode.Bilinear;
+			gameObject.renderer.material.mainTexture = tex;
+		}
 
 		var shaderObj = Shader.Find(fullShaderPath(shader));
 		gameObject.renderer.material.color = new Color (1, 1, 1, 1);
 		gameObject.renderer.material.shader = shaderObj;
 		gameObject.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
+	}
+
+	public void LoadImageResource(string path)
+	{
+		Texture2D tex = (Texture2D)Resources.Load (path);
+		if (tex != null) {
+			tex.filterMode = FilterMode.Bilinear;
+			gameObject.renderer.material.mainTexture = tex;
+		}
 	}
 }
