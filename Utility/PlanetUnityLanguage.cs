@@ -102,13 +102,8 @@ public class PlanetUnityLanguage
 		} catch {}
 
 		if (!allLanguages.TryGetValue (code, out languageDict)) {
-			#if UNITY_EDITOR
-			string basePath = Path.GetFullPath ("Assets/Resources");
-			string stringsFile = System.IO.File.ReadAllText (basePath + "/languages/" + code + "/Localizable.strings");
-			#else
-			TextAsset stringData = Resources.Load("languages/"+code+"/Localizable") as TextAsset;
+			TextAsset stringData = Resources.Load("languages/"+code+"/Localizable.strings") as TextAsset;
 			string stringsFile = stringData.text;
-			#endif
 
 			Dictionary<string,string> currentLanguage = new Dictionary<string,string> ();
 			MatchCollection matches = Regex.Matches (stringsFile, "\"([^\"]+)\"\\s*=\\s*\"([^\"]+)\"");

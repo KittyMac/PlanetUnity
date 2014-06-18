@@ -14,7 +14,6 @@
  */
 
 using UnityEngine;
-using UnityEditor;
 using System.Xml;
 using System.Text;
 using System;
@@ -22,6 +21,10 @@ using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class PlanetUnityOverride {
 

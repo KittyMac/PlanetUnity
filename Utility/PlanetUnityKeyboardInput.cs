@@ -24,7 +24,22 @@ using System.IO;
 public class PlanetUnityKeyboardInput : MonoBehaviour
 {
 	static string lastMobileKeyboardText = "";
+
+	#if UNITY_IPHONE || UNITY_ANDROID
 	static TouchScreenKeyboard keyboard = null;
+	#else 
+	public enum TouchScreenKeyboardType
+	{
+		Default,
+		ASCIICapable,
+		NumbersAndPunctuation,
+		URL,
+		NumberPad,
+		PhonePad,
+		NamePhonePad,
+		EmailAddress
+	}
+	#endif
 
 	public static void OpenKeyboard(string text, TouchScreenKeyboardType keyboardType, bool autocorrection, bool multiline, bool secure, bool alert, bool hideInput)
 	{
@@ -40,11 +55,13 @@ public class PlanetUnityKeyboardInput : MonoBehaviour
 
 	public static void CloseKeyboard()
 	{
+		#if UNITY_IPHONE || UNITY_ANDROID
 		if(keyboard != null)
 		{
 			keyboard.active = false;
 			keyboard = null;
 		}
+		#endif
 	}
 
 
@@ -68,6 +85,7 @@ public class PlanetUnityKeyboardInput : MonoBehaviour
 		}
 
 
+		#if UNITY_IPHONE || UNITY_ANDROID
 		// Also, support mobile seamlessly...
 		if(keyboard != null)
 		{
@@ -87,5 +105,6 @@ public class PlanetUnityKeyboardInput : MonoBehaviour
 				CloseKeyboard();
 			}
 		}
+		#endif
 	}
 }
