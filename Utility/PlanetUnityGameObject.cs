@@ -44,7 +44,23 @@ public class PlanetUnityOverride {
 			var parts = evalListString.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
 			List<string> results = new List<string> ();
 
-			if (o is PUGameObject) {
+			if (o is GameObject) {
+				// Use the size of the display
+				mathParser.LocalVariables.Clear ();
+
+				mathParser.LocalVariables.Add ("top", Convert.ToDecimal(0));
+				mathParser.LocalVariables.Add ("bottom", Convert.ToDecimal(0));
+				mathParser.LocalVariables.Add ("scale", Convert.ToDecimal(1.0f));
+
+				mathParser.LocalVariables.Add ("scaledW", Convert.ToDecimal(Screen.width));
+				mathParser.LocalVariables.Add ("scaledH", Convert.ToDecimal(Screen.height));
+
+				mathParser.LocalVariables.Add ("w", Convert.ToDecimal(Screen.width));
+				mathParser.LocalVariables.Add ("h", Convert.ToDecimal(Screen.height));
+				mathParser.LocalVariables.Add ("lastY", Convert.ToDecimal(0));
+				mathParser.LocalVariables.Add ("lastX", Convert.ToDecimal(0));
+			}
+			else if (o is PUGameObject) {
 				PUGameObject entity = (PUGameObject)o;
 				mathParser.LocalVariables.Clear ();
 
