@@ -118,7 +118,7 @@ public partial class PULabel : PULabelBase {
 			shadowObject.transform.parent = gameObject.transform;
 			shadowObject.transform.localPosition = new Vector3(shadowOffset.x, shadowOffset.y, 0);
 			shadowObject.transform.localRotation = Quaternion.identity;
-
+			shadowObject.renderer.material.renderQueue = gameObject.renderer.material.renderQueue - 1;
 			shadowObject.SetActive (true);
 
 			shadowTextMesh = shadowObject.GetComponent(typeof(TextMesh)) as TextMesh;
