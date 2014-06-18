@@ -52,6 +52,9 @@ public class PlanetUnityOverride {
 				mathParser.LocalVariables.Add ("bottom", Convert.ToDecimal(sceneBottom));
 				mathParser.LocalVariables.Add ("scale", Convert.ToDecimal(sceneScale));
 
+				mathParser.LocalVariables.Add ("scaledW", Convert.ToDecimal(sceneScale*entity.bounds.w));
+				mathParser.LocalVariables.Add ("scaledH", Convert.ToDecimal(sceneScale*entity.bounds.h));
+
 				mathParser.LocalVariables.Add ("w", Convert.ToDecimal(entity.bounds.w));
 				mathParser.LocalVariables.Add ("h", Convert.ToDecimal(entity.bounds.h));
 				mathParser.LocalVariables.Add ("lastY", Convert.ToDecimal(entity.lastY));
