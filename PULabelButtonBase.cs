@@ -64,6 +64,8 @@ public partial class PULabelButton : PULabelButtonBase {
 			PlanetUnity.LabelAlignment alignment,
 			cColor textColor,
 			string value,
+			cVector2 shadowOffset,
+			cColor shadowColor,
 			cRect bounds,
 			bool hidden,
 			float lastY,
@@ -109,6 +111,12 @@ public partial class PULabelButton : PULabelButtonBase {
 
 		this.value = value;
 		this.valueExists = true;
+
+		this.shadowOffset = shadowOffset;
+		this.shadowOffsetExists = true;
+
+		this.shadowColor = shadowColor;
+		this.shadowColorExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;

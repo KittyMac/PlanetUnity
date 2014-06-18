@@ -220,6 +220,8 @@
 				<attribute name="alignment" type="planet:LabelAlignment" use="optional" default="center"/>
 				<attribute name="textColor" type="planet:color" use="optional" default="0,0,0,1" />
 				<attribute name="value" type="string" use="required" />
+				<attribute name="shadowOffset" type="planet:vec2" use="optional" />
+				<attribute name="shadowColor" type="planet:color" use="optional" />
 			</extension>
 		</complexContent>
 	</complexType>

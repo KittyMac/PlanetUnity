@@ -22,6 +22,9 @@ public partial class PULabel : PULabelBase {
 	public TextSize ts;
 	public TextMesh textMesh;
 
+	public GameObject shadowObject;
+	public TextMesh shadowTextMesh;
+
 	public override Vector3 maskOffset() 
 	{
 		// Fix positioning manually to match the label
@@ -89,6 +92,8 @@ public partial class PULabel : PULabelBase {
 		ts.FitToWidth (bounds.w);
 
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
+
+		GenerateShadow ();
 	}
 
 	public void LoadTextString(string value)
@@ -96,5 +101,28 @@ public partial class PULabel : PULabelBase {
 		textMesh.text = value;
 
 		ts.FitToWidth (bounds.w);
+
+		GenerateShadow ();
+	}
+
+	public void GenerateShadow()
+	{
+		if (shadowObject != null) {
+			GameObject.Destroy (shadowObject);
+			shadowObject = null;
+			shadowTextMesh = null;
+		}
+
+		if (shadowOffset != null && shadowColor != null) {
+			shadowObject = (GameObject)GameObject.Instantiate (gameObject);
+			shadowObject.transform.parent = gameObject.transform;
+			shadowObject.transform.localPosition = new Vector3(shadowOffset.x, shadowOffset.y, 0);
+			shadowObject.transform.localRotation = Quaternion.identity;
+
+			shadowObject.SetActive (true);
+
+			shadowTextMesh = shadowObject.GetComponent(typeof(TextMesh)) as TextMesh;
+			shadowTextMesh.color = new Color (shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
+		}
 	}
 }

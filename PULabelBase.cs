@@ -35,6 +35,8 @@ public partial class PULabel : PULabelBase {
 			PlanetUnity.LabelAlignment alignment,
 			cColor textColor,
 			string value,
+			cVector2 shadowOffset,
+			cColor shadowColor,
 			cRect bounds ) : this()
 	{
 		this.shader = shader;
@@ -55,6 +57,12 @@ public partial class PULabel : PULabelBase {
 		this.value = value;
 		this.valueExists = true;
 
+		this.shadowOffset = shadowOffset;
+		this.shadowOffsetExists = true;
+
+		this.shadowColor = shadowColor;
+		this.shadowColorExists = true;
+
 		this.bounds = bounds;
 		this.boundsExists = true;
 	}
@@ -68,6 +76,8 @@ public partial class PULabel : PULabelBase {
 			PlanetUnity.LabelAlignment alignment,
 			cColor textColor,
 			string value,
+			cVector2 shadowOffset,
+			cColor shadowColor,
 			cRect bounds,
 			bool hidden,
 			float lastY,
@@ -101,6 +111,12 @@ public partial class PULabel : PULabelBase {
 
 		this.value = value;
 		this.valueExists = true;
+
+		this.shadowOffset = shadowOffset;
+		this.shadowOffsetExists = true;
+
+		this.shadowColor = shadowColor;
+		this.shadowColorExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;
@@ -181,6 +197,12 @@ public class PULabelBase : PUGameObject {
 	public string value;
 	public bool valueExists;
 
+	public cVector2 shadowOffset;
+	public bool shadowOffsetExists;
+
+	public cColor shadowColor;
+	public bool shadowColorExists;
+
 
 
 
@@ -191,6 +213,8 @@ public class PULabelBase : PUGameObject {
 	public void SetAlignment(PlanetUnity.LabelAlignment v) { alignment = v; alignmentExists = true; } 
 	public void SetTextColor(cColor v) { textColor = v; textColorExists = true; } 
 	public void SetValue(string v) { value = v; valueExists = true; } 
+	public void SetShadowOffset(cVector2 v) { shadowOffset = v; shadowOffsetExists = true; } 
+	public void SetShadowColor(cColor v) { shadowColor = v; shadowColorExists = true; } 
 
 
 	public override void gaxb_unload()
@@ -286,6 +310,14 @@ public class PULabelBase : PUGameObject {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { value = attr; valueExists = true; } 
 		
+		attr = reader.GetAttribute("shadowOffset");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { shadowOffset = attr; shadowOffsetExists = true; } 
+		
+		attr = reader.GetAttribute("shadowColor");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { shadowColor = attr; shadowColorExists = true; } 
+		
 
 	}
 	
@@ -305,6 +337,8 @@ public class PULabelBase : PUGameObject {
 		if(alignmentExists) { sb.AppendFormat (" {0}=\"{1}\"", "alignment", (int)alignment); }
 		if(textColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "textColor", textColor); }
 		if(valueExists) { sb.AppendFormat (" {0}=\"{1}\"", "value", value); }
+		if(shadowOffsetExists) { sb.AppendFormat (" {0}=\"{1}\"", "shadowOffset", shadowOffset); }
+		if(shadowColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "shadowColor", shadowColor); }
 
 	}
 	
