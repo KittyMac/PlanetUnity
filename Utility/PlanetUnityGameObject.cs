@@ -107,6 +107,15 @@ public class PlanetUnityOverride {
 
 public class PlanetUnityGameObject : MonoBehaviour {
 
+	public static float desiredFPS;
+	public static void RequestFPS(float f) {
+		// Called by entities to request a specific fps. PlanetUnity will set the fps dynamically
+		// to the highest requested fps.
+		if (f > desiredFPS) {
+			desiredFPS = f;
+		}
+	}
+
 	public string xmlPath;
 	public Font[] fonts;
 
@@ -115,7 +124,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 	private static FileSystemWatcher watcher;
 	private bool shouldReloadMainXML = false;
 
-	static private PlanetUnityGameObject currentGameObject = null;
+	static public PlanetUnityGameObject currentGameObject = null;
 
 	static public Font FindFontNamed(string name) {
 		if (!currentGameObject)
@@ -138,7 +147,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		ReloadScene ();
 
 		#if UNITY_EDITOR
-		NotificationCenter.addObserver(this, PlanetUnity.EDITORFILEDIDCHANGE, null, args => {
+		NotificationCenter.addObserver(this, PlanetUnity.EDITORFILEDIDCHANGE, null, (args,name) => {
 			string assetPath = args ["path"].ToString();
 			if( assetPath.Contains(xmlPath+".xml") ||
 				assetPath.EndsWith(".strings"))
@@ -154,7 +163,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		NotificationCenter.removeObserver (this);
 
-		scene.peformOnChildren(val =>
+		scene.performOnChildren(val =>
 			{
 				MethodInfo method = val.GetType().GetMethod ("gaxb_unload");
 				if (method != null) { method.Invoke (val, null); }

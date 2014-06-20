@@ -62,7 +62,7 @@ public partial class PUCode : PUCodeBase {
 						field.SetValue (controller, scene);
 					}
 
-					scene.peformOnChildren(val =>
+					scene.performOnChildren(val =>
 						{
 							PUGameObject oo = val as PUGameObject;
 							if(oo != null && oo.title != null)

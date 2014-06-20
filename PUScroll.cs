@@ -42,9 +42,9 @@ public partial class PUScroll : PUScrollBase
 		contentObject.transform.localPosition = gameObject.transform.localPosition;
 		gameObject.transform.localPosition = Vector3.zero;
 
-		var collider = (BoxCollider) contentObject.AddComponent(typeof(BoxCollider));
-		collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
-		collider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
+		gameCollider = (BoxCollider) contentObject.AddComponent(typeof(BoxCollider));
+		gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+		gameCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
 
 		script = (PlanetUnityScrollScript) contentObject.AddComponent(typeof(PlanetUnityScrollScript));
 		script.entity = this;
@@ -858,6 +858,9 @@ public class PlanetUnityScrollScript : MonoBehaviour
 		if(prevScroll.x != newScroll.x || prevScroll.y != newScroll.y)
 		{
 			entity.gameObject.transform.localPosition = new Vector2 (newScroll.x, newScroll.y);
+
+			// When actively scrolling we want the best frame rate possible
+			PlanetUnityGameObject.RequestFPS (60);
 
 			// TODO: call paging changes to the delegate
 

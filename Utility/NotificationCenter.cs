@@ -24,14 +24,16 @@ public class NotificationObserver
 	public string name;
 	public string methodName;
 	public object observer;
-	public Action<Hashtable> block;
+	public Action<Hashtable, string> block;
 
-	public void callObserver(Hashtable args)
+	public void callObserver(Hashtable args, string notificatioName)
 	{
 		if (methodName != null) {
 			MethodInfo method = observer.GetType ().GetMethod (methodName);
 			if (method != null) {
-				if (method.GetParameters ().Length > 0) {
+				if (method.GetParameters ().Length == 2) {
+					method.Invoke (observer, new [] { (object)args, (object)notificatioName });
+				} else if (method.GetParameters ().Length == 1) {
 					method.Invoke (observer, new [] { args });
 				} else {
 					method.Invoke (observer, null);
@@ -41,7 +43,7 @@ public class NotificationObserver
 				UnityEngine.Debug.Log ("Warning: NotificationCenter attempting to deliver notification, but object does not implement public method " + methodName);
 			}
 		} else if (block != null) {
-			block (args);
+			block (args, notificatioName);
 		} 
 	}
 }
@@ -65,7 +67,7 @@ public class NotificationCenter
 		}
 	}
 
-	private static void addObserverPrivate(object observer, string name, object scope, Action<Hashtable> block, string methodName)
+	private static void addObserverPrivate(object observer, string name, object scope, Action<Hashtable, string> block, string methodName)
 	{
 		if (observer == null || name == null) {
 			UnityEngine.Debug.Log ("Warning: NotificationCenter.addObserver() called with null observer or name");
@@ -91,7 +93,7 @@ public class NotificationCenter
 		list.Add(obv);
 	}
 
-	public static void addObserver(object observer, string name, object scope, Action<Hashtable> block)
+	public static void addObserver(object observer, string name, object scope, Action<Hashtable, string> block)
 	{
 		addObserverPrivate (observer, name, scope, block, null);
 	}
@@ -116,8 +118,8 @@ public class NotificationCenter
 		if (observersByScope.TryGetValue(scope, out list))
 		{
 			foreach (NotificationObserver o in new List<NotificationObserver>(list)) {
-				if (o.name.Equals (name)) {
-					o.callObserver (args);
+				if (o.name.Equals (name) || o.name.Equals("*")) {
+					o.callObserver (args, name);
 				}
 			}
 		}

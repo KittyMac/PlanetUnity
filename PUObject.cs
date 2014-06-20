@@ -28,13 +28,13 @@ public partial class PUObject : PUObjectBase {
 		return renderQeueuCount;
 	}
 
-	public void peformOnChildren(Action<object> block)
+	public void performOnChildren(Action<object> block)
 	{
 		foreach(object child in children)
 		{
 			block (child);
 
-			MethodInfo method = child.GetType().GetMethod ("peformOnChildren");
+			MethodInfo method = child.GetType().GetMethod ("performOnChildren");
 			if (method != null) { method.Invoke (child, new[] { block }); }
 		}
 	}

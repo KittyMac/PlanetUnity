@@ -100,6 +100,7 @@
 		<complexContent>
 			<extension base="planet:GameObject">
 				<attribute name="adjustCamera" type="boolean" use="optional" default="true" />
+				<attribute name="fps" type="int" use="optional" />
 			</extension>
 		</complexContent>
 	</complexType>

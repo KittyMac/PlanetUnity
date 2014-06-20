@@ -56,11 +56,21 @@ public partial class PULabelButton : PULabelButtonBase, IPUButton {
 	{
 		base.gaxb_load(reader, _parent, args);
 
-		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
+		gameCollider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
 		if(touchSizeExists)
-			collider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
-			collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+			gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+
+		if (this.alignment == PlanetUnity.LabelAlignment.left) {
+			gameCollider.center = new Vector3 (bounds.w / 2, -bounds.h / 2, 0.0f);
+		}
+		if (this.alignment == PlanetUnity.LabelAlignment.center) {
+			gameCollider.center = new Vector3 (0.0f, -bounds.h / 2, 0.0f);
+		}
+		if (this.alignment == PlanetUnity.LabelAlignment.right) {
+			gameCollider.center = new Vector3 (-bounds.w / 2, -bounds.h / 2, 0.0f);
+		}
 
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;

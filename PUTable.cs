@@ -67,59 +67,59 @@ public class PUTableCell {
 		table = parent;
 		cellData = data;
 
-		TextAsset stringData = Resources.Load(XmlPath ()) as TextAsset;
-		puGameObject = (PUGameObject)PlanetUnity.loadXML(stringData.text, parent, NotificationCenter.Args("baseRenderQueue", baseRenderQueue));
+		TextAsset stringData = Resources.Load (XmlPath ()) as TextAsset;
+		puGameObject = (PUGameObject)PlanetUnity.loadXML (stringData.text, parent, NotificationCenter.Args ("baseRenderQueue", baseRenderQueue));
 
 		// Attach all of the PlanetUnity objects
 		try {
 			FieldInfo field = this.GetType ().GetField ("scene");
-			if (field != null)
-			{
+			if (field != null) {
 				field.SetValue (this, puGameObject);
 			}
 
-			puGameObject.peformOnChildren(val =>
-				{
-					PUGameObject oo = val as PUGameObject;
-					if(oo != null && oo.title != null)
-					{
-						field = this.GetType ().GetField (oo.title);
-						if (field != null)
-						{
-							field.SetValue (this, oo);
-						}
+			puGameObject.performOnChildren (val => {
+				PUGameObject oo = val as PUGameObject;
+				if (oo != null && oo.title != null) {
+					field = this.GetType ().GetField (oo.title);
+					if (field != null) {
+						field.SetValue (this, oo);
 					}
-				});
-		}
-		catch(Exception e) {
+				}
+			});
+		} catch (Exception e) {
 			UnityEngine.Debug.Log ("TableCell error: " + e);
 		}
 
 		try {
 			// Attach all of the named GameObjects
-			FieldInfo[] fields = this.GetType().GetFields();
+			FieldInfo[] fields = this.GetType ().GetFields ();
 			foreach (FieldInfo field in fields) {
 				if (field.FieldType == typeof(GameObject)) {
 
-					GameObject[] pAllObjects = (GameObject[])Resources.FindObjectsOfTypeAll(typeof(GameObject));
+					GameObject[] pAllObjects = (GameObject[])Resources.FindObjectsOfTypeAll (typeof(GameObject));
 
 					foreach (GameObject pObject in pAllObjects) {
-						if(pObject.name.Equals(field.Name)) {
-							field.SetValue(this, pObject);
+						if (pObject.name.Equals (field.Name)) {
+							field.SetValue (this, pObject);
 						}
 					}
 				}
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			UnityEngine.Debug.Log ("TableCell error: " + e);
 		}
 
 		if (IsHeader ()) {
-			PUTableHeaderScript script = (PUTableHeaderScript)puGameObject.gameObject.AddComponent(typeof(PUTableHeaderScript));
+			PUTableHeaderScript script = (PUTableHeaderScript)puGameObject.gameObject.AddComponent (typeof(PUTableHeaderScript));
 			script.table = table;
 			script.tableCell = this;
 		}
+
+		// We want to bridge all notifications to my scope; this allows developers to handle notifications
+		// at the table cell level, or at the scene controller level, with ease
+		NotificationCenter.addObserver (this, "*", puGameObject, (args,name) => {
+			NotificationCenter.postNotification(table.scope(), name, args);
+		});
 	}
 
 }

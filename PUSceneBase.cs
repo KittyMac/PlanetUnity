@@ -20,16 +20,22 @@ public partial class PUScene : PUSceneBase {
 
 		attr = "true";
 		if(attr != null) { adjustCamera = bool.Parse(attr); adjustCameraExists = true; } 
+		attr = "0";
+		if(attr != null) { fps = int.Parse(attr); fpsExists = true; } 
 
 	}
 	
 	
 	public PUScene(
 			bool adjustCamera,
+			int fps,
 			cRect bounds ) : this()
 	{
 		this.adjustCamera = adjustCamera;
 		this.adjustCameraExists = true;
+
+		this.fps = fps;
+		this.fpsExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;
@@ -39,6 +45,7 @@ public partial class PUScene : PUSceneBase {
 	
 	public PUScene(
 			bool adjustCamera,
+			int fps,
 			cRect bounds,
 			bool hidden,
 			float lastY,
@@ -57,6 +64,9 @@ public partial class PUScene : PUSceneBase {
 	{
 		this.adjustCamera = adjustCamera;
 		this.adjustCameraExists = true;
+
+		this.fps = fps;
+		this.fpsExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;
@@ -122,11 +132,15 @@ public class PUSceneBase : PUGameObject {
 	public bool adjustCamera;
 	public bool adjustCameraExists;
 
+	public int fps;
+	public bool fpsExists;
+
 
 
 
 	
 	public void SetAdjustCamera(bool v) { adjustCamera = v; adjustCameraExists = true; } 
+	public void SetFps(int v) { fps = v; fpsExists = true; } 
 
 
 	public override void gaxb_unload()
@@ -200,6 +214,11 @@ public class PUSceneBase : PUGameObject {
 		if(attr == null) { attr = "true"; }
 		if(attr != null) { adjustCamera = bool.Parse(attr); adjustCameraExists = true; } 
 		
+		attr = reader.GetAttribute("fps");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "0"; }
+		if(attr != null) { fps = int.Parse(attr); fpsExists = true; } 
+		
 
 	}
 	
@@ -214,6 +233,7 @@ public class PUSceneBase : PUGameObject {
 		base.gaxb_appendXMLAttributes(sb);
 
 		if(adjustCameraExists) { sb.AppendFormat (" {0}=\"{1}\"", "adjustCamera", adjustCamera.ToString().ToLower()); }
+		if(fpsExists) { sb.AppendFormat (" {0}=\"{1}\"", "fps", fps); }
 
 	}
 	

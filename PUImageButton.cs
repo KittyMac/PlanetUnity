@@ -48,7 +48,6 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 	}
 
 	public void OnMouseDown() {
-
 		entity.performTouchDown ();
 
 		trackingMouse = true;
@@ -57,7 +56,6 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 	}
 
 	public void OnMouseUp() {
-
 		if (btnState == PlanetUnityButtonState.Highlighted) {
 			entity.performTouchUp ();
 		}
@@ -106,11 +104,11 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 	{
 		base.gaxb_load(reader, _parent, args);
 
-		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
+		gameCollider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
 		if(touchSizeExists)
-			collider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
-			collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+			gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;

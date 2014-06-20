@@ -18,14 +18,43 @@ using System.Xml;
 using System;
 using System.Reflection;
 using System.Collections;
+using System.IO;
 
 public class PlanetUnityCameraObject : MonoBehaviour {
 	public PUScene scene;
 	public Camera camera;
 	protected float currentAspectRatio;
 
+	float timeSinceLastFPSChange = 0;
+	int newDesiredFPSRate = 0;
+
 	public void AdjustCamera() {
 		const float depth = 1024;
+
+		// TODO: put in a timer before we drop to a lower FPS from a higher FPS
+
+		if (scene.fps > 0) {
+			Application.targetFrameRate = scene.fps;
+		} else {
+			int newFPS = (int)PlanetUnityGameObject.desiredFPS;
+
+			if (newDesiredFPSRate != newFPS) {
+				newDesiredFPSRate = newFPS;
+				timeSinceLastFPSChange = 0;
+			}
+
+			timeSinceLastFPSChange += Time.deltaTime;
+
+			// When throttling down, we want to wait a long time before doing that
+			// Otherwise, we want to speed up as fast as possible.
+			if (timeSinceLastFPSChange > 2.0f && Application.targetFrameRate > newFPS) {
+				Application.targetFrameRate = newFPS;
+			} else if (Application.targetFrameRate < newFPS) {
+				Application.targetFrameRate = newFPS;
+			}
+
+			PlanetUnityGameObject.desiredFPS = 10;
+		}
 
 		if (camera == null) {
 			var original = GameObject.FindWithTag ("MainCamera");
@@ -49,14 +78,11 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 				Destroy (comp);
 			}
 		} else {
-			// ************************ EDITOR ONLY *******************************
-			#if UNITY_EDITOR
 			// Force the scene to reload so we can easily test different screen resolutions
 			if (camera.aspect != currentAspectRatio)
 			{
 				NotificationCenter.postNotification (null, "PlanetUnityReloadScene");
 			}
-			#endif
 		}
 
 		if (camera.aspect == currentAspectRatio)
@@ -99,10 +125,82 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 		}
 	}
 
-	void LateUpdate () {
+	void Awake() {
+
+	}
+
+	void Update () {
 		AdjustCamera ();
 	}
 
+
+
+
+	public void PassMouseMethod(string methodName)
+	{
+		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		LayerMask mask = 31;
+
+		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
+			Collider[] colliders = Physics.OverlapSphere (hit.point, 2.0f, ~mask.value);
+
+			// Fast path, just pass the call...
+			if (colliders.Length == 1) {
+				if (collider.gameObject != gameObject) {
+					collider.gameObject.BroadcastMessage (methodName);
+				}
+			} else {
+				// Otherwise, we havd multiple things under me.
+				// We need to figure out who should get the event.
+				scene.performOnChildren (val => {
+					PUGameObject oo = val as PUGameObject;
+					if (oo != null && oo.gameCollider) {
+
+						if (Array.IndexOf (colliders, oo.gameCollider) >= 0) {
+							oo.gameCollider.gameObject.SendMessage(methodName);
+						}
+					}
+				});
+			}
+		}
+	}
+
+	public void PassMouseMethod2(string methodName)
+	{
+		scene.performOnChildren (val => {
+			PUGameObject oo = val as PUGameObject;
+			if (oo != null && oo.gameCollider != null) {
+				oo.gameCollider.gameObject.SendMessage(methodName);
+			}
+		});
+	}
+
+
+	public void OnMouseEnter ()
+	{
+		PassMouseMethod ("OnMouseEnter");
+	}
+
+	public void OnMouseExit ()
+	{
+		PassMouseMethod ("OnMouseExit");
+	}
+
+	public void OnMouseDown ()
+	{
+		PassMouseMethod ("OnMouseDown");
+	}
+
+	public void OnMouseUp ()
+	{
+		PassMouseMethod2 ("OnMouseUp");
+	}
+
+	public void OnMouseMoved()
+	{
+		PassMouseMethod ("OnMouseMoved");
+	}
 }
 
 public partial class PUScene : PUSceneBase {
@@ -127,6 +225,11 @@ public partial class PUScene : PUSceneBase {
 			cameraObject.scene = this;
 			cameraObject.AdjustCamera ();
 		}
+
+		// We use a collider to capture all of our own touches and manually handle touch events
+		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
+		collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+		collider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
 	}
 
 	public override bool isScopeContainer()
@@ -149,4 +252,6 @@ public partial class PUScene : PUSceneBase {
 		}
 		return false;
 	}
+
+
 }

@@ -24,6 +24,8 @@ public partial class PUGameObject : PUGameObjectBase {
 	static public int depthMaskCounter = 0;
 	static public int stencilMaskCounter = 0;
 
+	public BoxCollider gameCollider;
+
 	public GameObject gameObject;
 
 	public virtual GameObject contentGameObject()
@@ -133,7 +135,9 @@ public partial class PUGameObject : PUGameObjectBase {
 		gameObject.transform.localPosition = savedPos;
 		gameObject.transform.localRotation = savedRot;
 
-		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
+		if (gameObject.renderer != null) {
+			gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
+		}
 	}
 
 	public void loadIntoPUGameObject(PUGameObject _parent)
