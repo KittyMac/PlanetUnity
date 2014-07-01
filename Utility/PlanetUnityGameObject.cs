@@ -31,6 +31,8 @@ public class PlanetUnityOverride {
 	private static Mathos.Parser.MathParser mathParser = new Mathos.Parser.MathParser();
 	public static float sceneTop;
 	public static float sceneBottom;
+	public static float sceneLeft;
+	public static float sceneRight;
 	public static float sceneScale;
 
 	public static string processString(object o, string s)
@@ -66,6 +68,8 @@ public class PlanetUnityOverride {
 
 				mathParser.LocalVariables.Add ("top", Convert.ToDecimal(sceneTop));
 				mathParser.LocalVariables.Add ("bottom", Convert.ToDecimal(sceneBottom));
+				mathParser.LocalVariables.Add ("left", Convert.ToDecimal(sceneLeft));
+				mathParser.LocalVariables.Add ("right", Convert.ToDecimal(sceneRight));
 				mathParser.LocalVariables.Add ("scale", Convert.ToDecimal(sceneScale));
 
 				mathParser.LocalVariables.Add ("scaledW", Convert.ToDecimal(sceneScale*entity.bounds.w));

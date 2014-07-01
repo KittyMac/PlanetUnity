@@ -92,8 +92,14 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 		float screenW = camera.pixelRect.width;
 		float screenH = camera.pixelRect.height;
+		bool isWide = (screenW / screenH) > (scene.bounds.w / scene.bounds.h);
+		float h;
 
-		float h = scene.bounds.w / (screenW / screenH);
+		if (isWide) {
+			h = scene.bounds.w / (screenW / screenH);
+		} else {
+			h = scene.bounds.h;
+		}
 
 		double radtheta;
 		radtheta = 2.0 * Math.Atan2 (h * 0.5f, depth);
@@ -121,6 +127,26 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 			fInfo = planetOverride.GetField ("sceneScale");
 			if (fInfo != null) {
 				fInfo.SetValue (planetOverride, h / scene.bounds.h);
+			}
+
+			fInfo = planetOverride.GetField ("sceneLeft");
+			if (fInfo != null) {
+				if (!isWide) {
+					float screenScale = scene.bounds.h / screenH;
+					fInfo.SetValue (planetOverride, (scene.bounds.w - (screenW * screenScale)) / 2);
+				} else {
+					fInfo.SetValue (planetOverride, 0);
+				}
+			}
+			fInfo = planetOverride.GetField ("sceneRight");
+			if (fInfo != null) {
+				if (!isWide) {
+					float screenScale = scene.bounds.h / screenH;
+					float sceneLeft = (scene.bounds.w - (screenW * screenScale)) / 2;
+					fInfo.SetValue (planetOverride, sceneLeft + (scene.bounds.w - sceneLeft * 2));
+				} else {
+					fInfo.SetValue (planetOverride, scene.bounds.w);
+				}
 			}
 		}
 	}
