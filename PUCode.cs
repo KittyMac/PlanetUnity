@@ -41,6 +41,9 @@ public partial class PUCode : PUCodeBase {
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
+		controller = null;
+		GC.Collect();
+
 		base.gaxb_load(reader, _parent, args);
 
 		gameObject.name = _class;
