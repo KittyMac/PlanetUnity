@@ -35,6 +35,9 @@ public class PlanetUnityOverride {
 	public static float sceneRight;
 	public static float sceneScale;
 
+	public static int puCameraLayer = 30;
+	public static int puEventLayer = 29;
+
 	public static string processString(object o, string s)
 	{
 		s.Replace("@LANGUAGE", PlanetUnityLanguage.LanguageCode());
@@ -186,6 +189,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 			{
 				MethodInfo method = val.GetType().GetMethod ("gaxb_unload");
 				if (method != null) { method.Invoke (val, null); }
+				return true;
 			});
 	}
 

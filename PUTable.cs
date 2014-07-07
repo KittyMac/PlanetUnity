@@ -85,6 +85,7 @@ public class PUTableCell {
 						field.SetValue (this, oo);
 					}
 				}
+				return true;
 			});
 		} catch (Exception e) {
 			UnityEngine.Debug.Log ("TableCell error: " + e);
@@ -184,7 +185,7 @@ public partial class PUTable : PUTableBase {
 			}
 
 			foreach (Transform trans in cellGO.GetComponentsInChildren<Transform>(true)) {
-				trans.gameObject.layer = 31;
+				trans.gameObject.layer = PlanetUnityOverride.puCameraLayer;
 			}
 		}
 

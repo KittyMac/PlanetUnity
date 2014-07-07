@@ -72,14 +72,14 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 	public void performTouchUp()
 	{
 		if (onTouchUpExists) {
-			NotificationCenter.postNotification (scope (), this.onTouchUp);
+			NotificationCenter.postNotification (scope (), this.onTouchUp, NotificationCenter.Args("sender", this));
 		}
 	}
 
 	public void performTouchDown()
 	{
 		if (onTouchDownExists) {
-			NotificationCenter.postNotification (scope (), this.onTouchDown);
+			NotificationCenter.postNotification (scope (), this.onTouchDown, NotificationCenter.Args("sender", this));
 		}
 	}
 

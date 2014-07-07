@@ -112,8 +112,8 @@ public partial class PUGameObject : PUGameObjectBase {
 				depthMask2.gameObject.renderer.material.renderQueue = maxRenderQueue + 1;
 			}
 
-			depthMask1.gameObject.layer = 31;
-			depthMask2.gameObject.layer = 31;
+			depthMask1.gameObject.layer = PlanetUnityOverride.puCameraLayer;
+			depthMask2.gameObject.layer = PlanetUnityOverride.puCameraLayer;
 		}
 
 	}
@@ -178,7 +178,7 @@ public partial class PUGameObject : PUGameObjectBase {
 		}
 
 		if (reader != null) {
-			gameObject.layer = 31;
+			gameObject.layer = PlanetUnityOverride.puCameraLayer;
 		}
 
 		if (hidden) {

@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Diagnostics;
+using System.IO;
 
 public partial class PUObject : PUObjectBase {
 
@@ -28,15 +29,25 @@ public partial class PUObject : PUObjectBase {
 		return renderQeueuCount;
 	}
 
-	public void performOnChildren(Action<object> block)
+	public bool performOnChildren(Func<object, bool> block)
 	{
-		foreach(object child in children)
-		{
-			block (child);
+		for (int i = children.Count - 1; i >= 0; i--) {
+			object child = children[i];
 
 			MethodInfo method = child.GetType().GetMethod ("performOnChildren");
-			if (method != null) { method.Invoke (child, new[] { block }); }
+			if (method != null) {
+				bool shouldContinue = Convert.ToBoolean(method.Invoke (child, new[] { block }));
+				if (!shouldContinue) {
+					return false;
+				}
+			}
+
+			if (!block (child)) {
+				return false;
+			}
 		}
+
+		return true;
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)

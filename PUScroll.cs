@@ -34,7 +34,7 @@ public partial class PUScroll : PUScrollBase
 
 		// This is a little tricky; we want to insert our contentObject between our gameObject and its parent
 		contentObject = new GameObject ("ScrollContent");
-		contentObject.layer = 31;
+		contentObject.layer = PlanetUnityOverride.puCameraLayer;
 
 		contentObject.transform.parent = gameObject.transform.parent;
 		gameObject.transform.parent = contentObject.transform;

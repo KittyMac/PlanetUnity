@@ -76,6 +76,7 @@ public partial class PUCode : PUCodeBase {
 									field.SetValue (controller, oo);
 								}
 							}
+							return true;
 						});
 				}
 			}

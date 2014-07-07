@@ -21,8 +21,10 @@ using System.Collections;
 using System.IO;
 
 public class PlanetUnityCameraObject : MonoBehaviour {
+
 	public PUScene scene;
 	public Camera camera;
+
 	protected float currentAspectRatio;
 
 	float timeSinceLastFPSChange = 0;
@@ -66,8 +68,9 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 			camera.name = "PlanetUnityCamera";
 			camera.transform.parent = scene.gameObject.transform;
+			camera.eventMask = 0;
 
-			original.camera.cullingMask &= 0x7FFFFFFF;
+			original.camera.cullingMask = 0x0FFFFFFF;
 
 
 			foreach (Component comp in camera.GetComponents(typeof(Component))) {
@@ -110,7 +113,9 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 		camera.orthographic = false;
 		camera.depth = 100;
 		camera.enabled = true;    
-		camera.cullingMask = 1 << 31;
+
+		camera.cullingMask = 0x70000000;
+		camera.eventMask = 1 << PlanetUnityOverride.puEventLayer;
 
 		currentAspectRatio = camera.aspect;
 
@@ -158,15 +163,19 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 	void Update () {
 		AdjustCamera ();
 	}
+}
 
 
+public class PlanetUnityEventMonitor : MonoBehaviour {
 
+	public PUScene scene;
+	public Camera camera;
 
 	public void PassMouseMethod(string methodName)
 	{
 		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
-		LayerMask mask = 31;
+		LayerMask mask = PlanetUnityOverride.puCameraLayer;
 
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
 			Collider[] colliders = Physics.OverlapSphere (hit.point, 2.0f, ~mask.value);
@@ -181,12 +190,14 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 				// We need to figure out who should get the event.
 				scene.performOnChildren (val => {
 					PUGameObject oo = val as PUGameObject;
-					if (oo != null && oo.gameCollider) {
+					if (oo != null && oo.gameCollider != null && oo.gameObject.activeInHierarchy) {
 
 						if (Array.IndexOf (colliders, oo.gameCollider) >= 0) {
-							oo.gameCollider.gameObject.SendMessage(methodName);
+							oo.gameCollider.gameObject.SendMessage (methodName);
+							return false;
 						}
 					}
+					return true;
 				});
 			}
 		}
@@ -196,9 +207,10 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 	{
 		scene.performOnChildren (val => {
 			PUGameObject oo = val as PUGameObject;
-			if (oo != null && oo.gameCollider != null) {
+			if (oo != null && oo.gameCollider != null && oo.gameObject.activeInHierarchy) {
 				oo.gameCollider.gameObject.SendMessage(methodName);
 			}
+			return true;
 		});
 	}
 
@@ -229,14 +241,18 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 	}
 }
 
+
 public partial class PUScene : PUSceneBase {
 
 	private PlanetUnityCameraObject cameraObject = null;
+	private GameObject eventsObject = null;
 
 	public void gaxb_loadComplete()
 	{
 		foreach (Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
-			trans.gameObject.layer = 31;
+			if (trans.gameObject.layer != PlanetUnityOverride.puEventLayer) {
+				trans.gameObject.layer = PlanetUnityOverride.puCameraLayer;
+			}
 		}
 
 		base.gaxb_loadComplete ();
@@ -252,10 +268,20 @@ public partial class PUScene : PUSceneBase {
 			cameraObject.AdjustCamera ();
 		}
 
+		eventsObject = new GameObject ("PlanetUnityEvents");
+		eventsObject.layer = PlanetUnityOverride.puEventLayer;
+		eventsObject.transform.parent = gameObject.transform;
+
+		PlanetUnityEventMonitor eventMonitor = (PlanetUnityEventMonitor)eventsObject.AddComponent (typeof(PlanetUnityEventMonitor));
+		eventMonitor.scene = this;
+		eventMonitor.camera = cameraObject.camera;
+
 		// We use a collider to capture all of our own touches and manually handle touch events
-		var collider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
+		var collider = (BoxCollider) eventsObject.AddComponent(typeof(BoxCollider));
 		collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 		collider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
+
+
 	}
 
 	public override bool isScopeContainer()
@@ -269,7 +295,7 @@ public partial class PUScene : PUSceneBase {
 		if (cameraObject != null) {
 			Ray ray = cameraObject.camera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
-			LayerMask mask = 31;
+			LayerMask mask = PlanetUnityOverride.puCameraLayer;
 
 			if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
 
