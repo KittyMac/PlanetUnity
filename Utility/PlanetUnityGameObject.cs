@@ -130,6 +130,21 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 	static public PlanetUnityGameObject currentGameObject = null;
 
+	static public Vector2 MousePosition() {
+		Vector2 pos = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
+
+		if (currentGameObject == null || currentGameObject.scene == null)
+			return pos;
+
+		pos.x /= Screen.width;
+		pos.y /= Screen.height;
+
+		pos.x *= currentGameObject.scene.bounds.w;
+		pos.y *= currentGameObject.scene.bounds.h;
+
+		return pos;
+	}
+
 	static public Font FindFontNamed(string name) {
 		if (!currentGameObject)
 			return null;

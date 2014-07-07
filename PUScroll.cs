@@ -176,12 +176,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private Vector2 touchEdgeOffset;
 	private long touchTimestamp;
 
-	private Vector2 previousMousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-
-
-
-
-
+	private Vector2 previousMousePosition = PlanetUnityGameObject.MousePosition();
 
 	public void OnMouseEnter ()
 	{
@@ -202,7 +197,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			userTouching = true;
 
 
-			previousMousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+			previousMousePosition = PlanetUnityGameObject.MousePosition();
 
 			//we have some touches that will stop this scroll view in it's tracks
 			velocity.x = 0;
@@ -327,7 +322,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 		if(userTouching)
 		{
 			//get the overall translation
-			Vector2 userTouchPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+			Vector2 userTouchPosition = PlanetUnityGameObject.MousePosition();
 			Vector2 avgPrevTouchLoc = previousMousePosition;
 
 			//calculate the touch velocity
