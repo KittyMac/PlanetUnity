@@ -60,7 +60,7 @@ public partial class PULabel : PULabelBase {
 		textMesh.characterSize = fontSize*10.0f/(fontSize*2);
 		textMesh.fontSize = (fontSize*2);
 
-		textMesh.lineSpacing = 0.86f;
+		textMesh.lineSpacing = 0.93f;
 
 		if (this.alignment == PlanetUnity.LabelAlignment.left) {
 			textMesh.alignment = TextAlignment.Left;
@@ -98,7 +98,7 @@ public partial class PULabel : PULabelBase {
 
 	public void LoadTextString(string value)
 	{
-		textMesh.text = value;
+		textMesh.text = value.Replace ("\\n", "\n");
 
 		ts.FitToWidth (bounds.w);
 
