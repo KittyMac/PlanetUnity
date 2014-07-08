@@ -23,6 +23,11 @@ public partial class PUScroll : PUScrollBase
 	public GameObject contentObject;
 	private PlanetUnityScrollScript script;
 
+	public override bool captureMouse()
+	{
+		return false;
+	}
+
 	public override GameObject contentGameObject()
 	{
 		return contentObject;
@@ -114,7 +119,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private const float kEdgeBounceDuration = 0.5f;
 	private const float kEdgeBounceEaseTimePercent = 0.2f;
 	private const float kBungeeStretchCoefficient = 0.55f;
-	private const float kMinCancelTouchesVelocity = 45;
+	private const float kMinCancelTouchesVelocity = 25;
 	private const float kScrollDuration = 2.75f;
 	private const float kPageVelocity = 200.0f;
 	private const float kSwipeDistancePerVelocity = 0.3f;
@@ -177,6 +182,11 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private long touchTimestamp;
 
 	private Vector2 previousMousePosition = PlanetUnityGameObject.MousePosition();
+
+	public void OnMouseCancelled()
+	{
+
+	}
 
 	public void OnMouseEnter ()
 	{
@@ -363,6 +373,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			if(((int)scrollDirection & (int)scrollLockDirection & (int)PlanetScrollDirection.Vertical) != 0)
 				scroll.y += dLoc.y;
 
+			NotificationCenter.postNotification (entity.scope (), "PlanetUnityCancelMouse");
 
 			// TODO: what to do for this?  I dunno
 			//cancel the touch for any targeted delegates (PlanetX normally wouldn't use any of these)

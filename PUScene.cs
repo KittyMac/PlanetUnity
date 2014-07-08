@@ -194,7 +194,10 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 						if (Array.IndexOf (colliders, oo.gameCollider) >= 0) {
 							oo.gameCollider.gameObject.SendMessage (methodName);
-							return false;
+
+							if(oo.captureMouse()) {
+								return false;
+							}
 						}
 					}
 					return true;
@@ -239,12 +242,18 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 	{
 		PassMouseMethod ("OnMouseMoved");
 	}
+
+	public void OnMouseCancelled()
+	{
+		PassMouseMethod ("OnMouseCancelled");
+	}
 }
 
 
 public partial class PUScene : PUSceneBase {
 
 	private PlanetUnityCameraObject cameraObject = null;
+	private PlanetUnityEventMonitor eventMonitor = null;
 	private GameObject eventsObject = null;
 
 	public void gaxb_loadComplete()
@@ -254,6 +263,10 @@ public partial class PUScene : PUSceneBase {
 				trans.gameObject.layer = PlanetUnityOverride.puCameraLayer;
 			}
 		}
+
+		NotificationCenter.addObserver (this, "PlanetUnityCancelMouse", this, (args, name) => {
+			eventMonitor.OnMouseCancelled();
+		});
 
 		base.gaxb_loadComplete ();
 	}
@@ -272,7 +285,7 @@ public partial class PUScene : PUSceneBase {
 		eventsObject.layer = PlanetUnityOverride.puEventLayer;
 		eventsObject.transform.parent = gameObject.transform;
 
-		PlanetUnityEventMonitor eventMonitor = (PlanetUnityEventMonitor)eventsObject.AddComponent (typeof(PlanetUnityEventMonitor));
+		eventMonitor = (PlanetUnityEventMonitor)eventsObject.AddComponent (typeof(PlanetUnityEventMonitor));
 		eventMonitor.scene = this;
 		eventMonitor.camera = cameraObject.camera;
 

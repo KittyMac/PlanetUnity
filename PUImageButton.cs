@@ -33,6 +33,14 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 	private bool trackingMouse = false;
 	private PlanetUnityButtonState btnState; 
 
+	public void OnMouseCancelled() {
+		if (trackingMouse) {
+			trackingMouse = false;
+			btnState = PlanetUnityButtonState.Normal;
+			entity.updateButtonToState (PlanetUnityButtonState.Normal);
+		}
+	}
+
 	public void OnMouseEnter() {
 		if (trackingMouse) {
 			btnState = PlanetUnityButtonState.Highlighted;

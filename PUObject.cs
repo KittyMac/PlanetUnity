@@ -34,16 +34,17 @@ public partial class PUObject : PUObjectBase {
 		for (int i = children.Count - 1; i >= 0; i--) {
 			object child = children[i];
 
+
+			if (!block (child)) {
+				return false;
+			}
+
 			MethodInfo method = child.GetType().GetMethod ("performOnChildren");
 			if (method != null) {
 				bool shouldContinue = Convert.ToBoolean(method.Invoke (child, new[] { block }));
 				if (!shouldContinue) {
 					return false;
 				}
-			}
-
-			if (!block (child)) {
-				return false;
 			}
 		}
 

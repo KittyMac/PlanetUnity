@@ -28,6 +28,11 @@ public partial class PUGameObject : PUGameObjectBase {
 
 	public GameObject gameObject;
 
+	public virtual bool captureMouse()
+	{
+		return true;
+	}
+
 	public virtual GameObject contentGameObject()
 	{
 		// overriden by subclasses if they want objects to go into a different gameobject
