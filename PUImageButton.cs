@@ -99,13 +99,22 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 		if(state == PlanetUnityButtonState.Normal)
 		{
 			tex = (Texture) Resources.Load (normalResourcePath);
+			gameObject.renderer.material.mainTexture = tex;
+
+			if(touchColorExists) {
+				gameObject.renderer.material.color = Color.white;
+			}
 		}
 		if(state == PlanetUnityButtonState.Highlighted)
 		{
-			tex = (Texture) Resources.Load (highlightedResourcePath);
+			if (highlightedResourcePathExists) {
+				tex = (Texture)Resources.Load (highlightedResourcePath);
+				gameObject.renderer.material.mainTexture = tex;
+			}
+			if(touchColorExists) {
+				gameObject.renderer.material.color = new Color(touchColor.r, touchColor.g, touchColor.b, touchColor.a);
+			}
 		}
-
-		gameObject.renderer.material.mainTexture = tex;
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)

@@ -20,8 +20,6 @@ public partial class PUScene : PUSceneBase {
 
 		attr = "true";
 		if(attr != null) { adjustCamera = bool.Parse(attr); adjustCameraExists = true; } 
-		attr = "0";
-		if(attr != null) { fps = int.Parse(attr); fpsExists = true; } 
 
 	}
 	
@@ -216,7 +214,6 @@ public class PUSceneBase : PUGameObject {
 		
 		attr = reader.GetAttribute("fps");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
-		if(attr == null) { attr = "0"; }
 		if(attr != null) { fps = int.Parse(attr); fpsExists = true; } 
 		
 

@@ -22,6 +22,7 @@ public partial class PUImageButton : PUImageButtonBase {
 	public PUImageButton(
 			string normalResourcePath,
 			string highlightedResourcePath,
+			cColor touchColor,
 			cVector2 touchSize,
 			string onTouchUp,
 			string onTouchDown,
@@ -33,6 +34,9 @@ public partial class PUImageButton : PUImageButtonBase {
 
 		this.highlightedResourcePath = highlightedResourcePath;
 		this.highlightedResourcePathExists = true;
+
+		this.touchColor = touchColor;
+		this.touchColorExists = true;
 
 		this.touchSize = touchSize;
 		this.touchSizeExists = true;
@@ -55,6 +59,7 @@ public partial class PUImageButton : PUImageButtonBase {
 	public PUImageButton(
 			string normalResourcePath,
 			string highlightedResourcePath,
+			cColor touchColor,
 			cVector2 touchSize,
 			string onTouchUp,
 			string onTouchDown,
@@ -82,6 +87,9 @@ public partial class PUImageButton : PUImageButtonBase {
 
 		this.highlightedResourcePath = highlightedResourcePath;
 		this.highlightedResourcePathExists = true;
+
+		this.touchColor = touchColor;
+		this.touchColorExists = true;
 
 		this.touchSize = touchSize;
 		this.touchSizeExists = true;
@@ -168,6 +176,9 @@ public class PUImageButtonBase : PUImage {
 	public string highlightedResourcePath;
 	public bool highlightedResourcePathExists;
 
+	public cColor touchColor;
+	public bool touchColorExists;
+
 	public cVector2 touchSize;
 	public bool touchSizeExists;
 
@@ -183,6 +194,7 @@ public class PUImageButtonBase : PUImage {
 	
 	public void SetNormalResourcePath(string v) { normalResourcePath = v; normalResourcePathExists = true; } 
 	public void SetHighlightedResourcePath(string v) { highlightedResourcePath = v; highlightedResourcePathExists = true; } 
+	public void SetTouchColor(cColor v) { touchColor = v; touchColorExists = true; } 
 	public void SetTouchSize(cVector2 v) { touchSize = v; touchSizeExists = true; } 
 	public void SetOnTouchUp(string v) { onTouchUp = v; onTouchUpExists = true; } 
 	public void SetOnTouchDown(string v) { onTouchDown = v; onTouchDownExists = true; } 
@@ -262,6 +274,10 @@ public class PUImageButtonBase : PUImage {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { highlightedResourcePath = attr; highlightedResourcePathExists = true; } 
 		
+		attr = reader.GetAttribute("touchColor");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { touchColor = attr; touchColorExists = true; } 
+		
 		attr = reader.GetAttribute("touchSize");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { touchSize = attr; touchSizeExists = true; } 
@@ -289,6 +305,7 @@ public class PUImageButtonBase : PUImage {
 
 		if(normalResourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "normalResourcePath", normalResourcePath); }
 		if(highlightedResourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "highlightedResourcePath", highlightedResourcePath); }
+		if(touchColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchColor", touchColor); }
 		if(touchSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchSize", touchSize); }
 		if(onTouchUpExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchUp", onTouchUp); }
 		if(onTouchDownExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchDown", onTouchDown); }

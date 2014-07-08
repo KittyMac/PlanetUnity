@@ -21,6 +21,7 @@ public partial class PUColorButton : PUColorButtonBase {
 	
 	public PUColorButton(
 			cVector2 touchSize,
+			cColor touchColor,
 			string onTouchUp,
 			string onTouchDown,
 			cColor color,
@@ -28,6 +29,9 @@ public partial class PUColorButton : PUColorButtonBase {
 	{
 		this.touchSize = touchSize;
 		this.touchSizeExists = true;
+
+		this.touchColor = touchColor;
+		this.touchColorExists = true;
 
 		this.onTouchUp = onTouchUp;
 		this.onTouchUpExists = true;
@@ -46,6 +50,7 @@ public partial class PUColorButton : PUColorButtonBase {
 	
 	public PUColorButton(
 			cVector2 touchSize,
+			cColor touchColor,
 			string onTouchUp,
 			string onTouchDown,
 			string shader,
@@ -69,6 +74,9 @@ public partial class PUColorButton : PUColorButtonBase {
 	{
 		this.touchSize = touchSize;
 		this.touchSizeExists = true;
+
+		this.touchColor = touchColor;
+		this.touchColorExists = true;
 
 		this.onTouchUp = onTouchUp;
 		this.onTouchUpExists = true;
@@ -149,6 +157,9 @@ public class PUColorButtonBase : PUColor {
 	public cVector2 touchSize;
 	public bool touchSizeExists;
 
+	public cColor touchColor;
+	public bool touchColorExists;
+
 	public string onTouchUp;
 	public bool onTouchUpExists;
 
@@ -160,6 +171,7 @@ public class PUColorButtonBase : PUColor {
 
 	
 	public void SetTouchSize(cVector2 v) { touchSize = v; touchSizeExists = true; } 
+	public void SetTouchColor(cColor v) { touchColor = v; touchColorExists = true; } 
 	public void SetOnTouchUp(string v) { onTouchUp = v; onTouchUpExists = true; } 
 	public void SetOnTouchDown(string v) { onTouchDown = v; onTouchDownExists = true; } 
 
@@ -234,6 +246,10 @@ public class PUColorButtonBase : PUColor {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { touchSize = attr; touchSizeExists = true; } 
 		
+		attr = reader.GetAttribute("touchColor");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { touchColor = attr; touchColorExists = true; } 
+		
 		attr = reader.GetAttribute("onTouchUp");
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { onTouchUp = attr; onTouchUpExists = true; } 
@@ -256,6 +272,7 @@ public class PUColorButtonBase : PUColor {
 		base.gaxb_appendXMLAttributes(sb);
 
 		if(touchSizeExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchSize", touchSize); }
+		if(touchColorExists) { sb.AppendFormat (" {0}=\"{1}\"", "touchColor", touchColor); }
 		if(onTouchUpExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchUp", onTouchUp); }
 		if(onTouchDownExists) { sb.AppendFormat (" {0}=\"{1}\"", "onTouchDown", onTouchDown); }
 

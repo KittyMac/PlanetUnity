@@ -39,6 +39,19 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 	public void updateButtonToState(PlanetUnityButtonState newState)
 	{
 		state = newState;
+
+		if(state == PlanetUnityButtonState.Normal)
+		{
+			if(touchColorExists) {
+				gameObject.renderer.material.color = Color.white;
+			}
+		}
+		if(state == PlanetUnityButtonState.Highlighted)
+		{
+			if(touchColorExists) {
+				gameObject.renderer.material.color = new Color(touchColor.r, touchColor.g, touchColor.b, touchColor.a);
+			}
+		}
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
