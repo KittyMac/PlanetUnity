@@ -51,17 +51,19 @@ for k,v in pairs(schema.simpleTypes) do
 			appinfo = appinfo[1].content;
 		end
 	
-		if(appinfo == "ENUM") then
+		if(appinfo == "NAMED_ENUM") then
 			gaxb_print("\tpublic enum "..v.name.." {\n")
 			for k,v in pairs(enums) do
 				gaxb_print("\t\t"..v.attributes.value..",\n")
 			end
 			gaxb_print("\t};\n\n")
 		end
-		if(appinfo == "NAMED_ENUM") then
-			gaxb_print("\tpublic enum "..v.name.." {\n")
+		if(appinfo == "ENUM") then
+			gaxb_print("\tpublic static class "..v.name.." {\n")
+			i = 0;
 			for k1,v1 in pairs(enums) do
-				gaxb_print("\t\t"..v1.attributes.value..",\n")
+				gaxb_print("\t\tstatic public readonly int "..v1.attributes.value.." = "..i..";\n")
+				i = i + 1;
 			end
 			gaxb_print("\t};\n\n")
 		end
