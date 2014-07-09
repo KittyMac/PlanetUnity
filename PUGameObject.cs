@@ -140,6 +140,8 @@ public partial class PUGameObject : PUGameObjectBase {
 		gameObject.transform.localPosition = savedPos;
 		gameObject.transform.localRotation = savedRot;
 
+		gameObject.layer = PlanetUnityOverride.puCameraLayer;
+
 		if (gameObject.renderer != null) {
 			gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 		}
