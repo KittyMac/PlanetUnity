@@ -38,6 +38,9 @@ public class PlanetUnityOverride {
 	public static int puCameraLayer = 30;
 	public static int puEventLayer = 29;
 
+	public static int minFPS = 10;
+	public static int maxFPS = 60;
+
 	public static string processString(object o, string s)
 	{
 		s.Replace("@LANGUAGE", PlanetUnityLanguage.LanguageCode());

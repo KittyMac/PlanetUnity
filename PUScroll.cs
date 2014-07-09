@@ -866,7 +866,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			entity.gameObject.transform.localPosition = new Vector2 (newScroll.x, newScroll.y);
 
 			// When actively scrolling we want the best frame rate possible
-			PlanetUnityGameObject.RequestFPS (60);
+			PlanetUnityGameObject.RequestFPS (PlanetUnityOverride.maxFPS);
 
 			// TODO: call paging changes to the delegate
 

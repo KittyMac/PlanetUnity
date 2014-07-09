@@ -55,7 +55,7 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 				Application.targetFrameRate = newFPS;
 			}
 
-			PlanetUnityGameObject.desiredFPS = 10;
+			PlanetUnityGameObject.desiredFPS = PlanetUnityOverride.minFPS;
 		}
 
 		if (camera == null) {
@@ -182,7 +182,7 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 			// Fast path, just pass the call...
 			if (colliders.Length == 1) {
-				if (collider.gameObject != gameObject) {
+				if (collider.gameObject != gameObject && collider.gameObject.activeInHierarchy) {
 					collider.gameObject.BroadcastMessage (methodName);
 				}
 			} else {
@@ -190,13 +190,16 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 				// We need to figure out who should get the event.
 				scene.performOnChildren (val => {
 					PUGameObject oo = val as PUGameObject;
-					if (oo != null && oo.gameCollider != null && oo.gameObject.activeInHierarchy) {
+					if (oo != null && oo.gameCollider != null) {
 
 						if (Array.IndexOf (colliders, oo.gameCollider) >= 0) {
-							oo.gameCollider.gameObject.SendMessage (methodName);
 
-							if(oo.captureMouse()) {
-								return false;
+							if(oo.gameObject.activeInHierarchy) {
+								oo.gameCollider.gameObject.SendMessage (methodName);
+
+								if(oo.captureMouse()) {
+									return false;
+								}
 							}
 						}
 					}
