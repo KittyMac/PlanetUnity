@@ -66,6 +66,7 @@ public partial class PUImageButton : PUImageButtonBase {
 			string resourcePath,
 			string shader,
 			cVector2 anchor,
+			cColor color,
 			cRect bounds,
 			bool hidden,
 			float lastY,
@@ -108,6 +109,9 @@ public partial class PUImageButton : PUImageButtonBase {
 
 		this.anchor = anchor;
 		this.anchorExists = true;
+
+		this.color = color;
+		this.colorExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;

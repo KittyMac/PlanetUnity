@@ -28,6 +28,7 @@ public partial class PUImage : PUImageBase {
 			string resourcePath,
 			string shader,
 			cVector2 anchor,
+			cColor color,
 			cRect bounds ) : this()
 	{
 		this.resourcePath = resourcePath;
@@ -39,6 +40,9 @@ public partial class PUImage : PUImageBase {
 		this.anchor = anchor;
 		this.anchorExists = true;
 
+		this.color = color;
+		this.colorExists = true;
+
 		this.bounds = bounds;
 		this.boundsExists = true;
 	}
@@ -49,6 +53,7 @@ public partial class PUImage : PUImageBase {
 			string resourcePath,
 			string shader,
 			cVector2 anchor,
+			cColor color,
 			cRect bounds,
 			bool hidden,
 			float lastY,
@@ -73,6 +78,9 @@ public partial class PUImage : PUImageBase {
 
 		this.anchor = anchor;
 		this.anchorExists = true;
+
+		this.color = color;
+		this.colorExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;
@@ -144,6 +152,9 @@ public class PUImageBase : PUGameObject {
 	public cVector2 anchor;
 	public bool anchorExists;
 
+	public cColor color;
+	public bool colorExists;
+
 
 
 
@@ -151,6 +162,7 @@ public class PUImageBase : PUGameObject {
 	public void SetResourcePath(string v) { resourcePath = v; resourcePathExists = true; } 
 	public void SetShader(string v) { shader = v; shaderExists = true; } 
 	public void SetAnchor(cVector2 v) { anchor = v; anchorExists = true; } 
+	public void SetColor(cColor v) { color = v; colorExists = true; } 
 
 
 	public override void gaxb_unload()
@@ -232,6 +244,10 @@ public class PUImageBase : PUGameObject {
 		if(attr == null) { attr = "0,0"; }
 		if(attr != null) { anchor = attr; anchorExists = true; } 
 		
+		attr = reader.GetAttribute("color");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { color = attr; colorExists = true; } 
+		
 
 	}
 	
@@ -248,6 +264,7 @@ public class PUImageBase : PUGameObject {
 		if(resourcePathExists) { sb.AppendFormat (" {0}=\"{1}\"", "resourcePath", resourcePath); }
 		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
 		if(anchorExists) { sb.AppendFormat (" {0}=\"{1}\"", "anchor", anchor); }
+		if(colorExists) { sb.AppendFormat (" {0}=\"{1}\"", "color", color); }
 
 	}
 	

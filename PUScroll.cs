@@ -470,8 +470,12 @@ public class PlanetUnityScrollScript : MonoBehaviour
 
 	void calcPagingTarget()
 	{
-		animEndScroll.x = -entity.bounds.w * calcPage(scroll.x, entity.bounds.w, entity.contentSize.x, velocity.x);
-		animEndScroll.y = entity.bounds.h * calcPage(-scroll.y, entity.bounds.h, entity.contentSize.y, -velocity.y);
+		if (((int)scrollDirection & (int)scrollLockDirection & (int)PlanetScrollDirection.Horizontal) != 0) {
+			animEndScroll.x = -entity.bounds.w * calcPage (scroll.x, entity.bounds.w, entity.contentSize.x, velocity.x);
+		}
+		if (((int)scrollDirection & (int)scrollLockDirection & (int)PlanetScrollDirection.Vertical) != 0) {
+			animEndScroll.y = entity.bounds.h * calcPage (-scroll.y, entity.bounds.h, entity.contentSize.y, -velocity.y);
+		}
 	}
 
 	float calcMinScrollX()

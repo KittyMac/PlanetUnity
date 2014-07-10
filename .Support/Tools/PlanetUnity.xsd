@@ -186,6 +186,7 @@
 				<attribute name="resourcePath" type="string" use="required" />
 				<attribute name="shader" type="string" use="optional" />
 				<attribute name="anchor" type="planet:vec2" use="optional" default="0,0" />
+				<attribute name="color" type="planet:color" use="optional" />
 			</extension>
 		</complexContent>
 	</complexType>

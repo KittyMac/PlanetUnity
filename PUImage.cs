@@ -79,7 +79,11 @@ public partial class PUImage : PUImageBase {
 		}
 
 		var shaderObj = Shader.Find(fullShaderPath(shader));
-		gameObject.renderer.material.color = new Color (1, 1, 1, 1);
+		if (colorExists) {
+			gameObject.renderer.material.color = new Color (color.r, color.g, color.b, color.a);
+		} else {
+			gameObject.renderer.material.color = new Color (1, 1, 1, 1);
+		}
 		gameObject.renderer.material.shader = shaderObj;
 		gameObject.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
 	}
