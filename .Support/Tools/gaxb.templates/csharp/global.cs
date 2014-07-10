@@ -91,6 +91,15 @@ end
 	{
 		return Regex.Replace(xmlNamespace, "[^A-Z]", "")+name;
 	}
+	
+	static public string writeXML(object root) {
+		StringBuilder sb = new StringBuilder ();
+		MethodInfo mInfo = root.GetType().GetMethod("gaxb_appendXML");
+		if(mInfo != null) {
+			mInfo.Invoke (root, new[] { sb });
+		}
+		return sb.ToString();
+	}
 
 	static public object loadXML(string xmlString, object parentObject, Hashtable args)
 	{

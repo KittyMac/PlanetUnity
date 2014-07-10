@@ -204,7 +204,7 @@
 	
 	<simpleType name="LabelAlignment">
 		<annotation>
-			<appinfo>ENUM</appinfo>
+			<appinfo>NAMED_ENUM</appinfo>
 		</annotation>
         <restriction base="string">
 			<enumeration value = "left"/>
