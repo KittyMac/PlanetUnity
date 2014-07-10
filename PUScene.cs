@@ -180,31 +180,33 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
 			Collider[] colliders = Physics.OverlapSphere (hit.point, 2.0f, ~mask.value);
 
-			// Fast path, just pass the call...
-			if (colliders.Length == 1) {
-				if (collider.gameObject != gameObject && collider.gameObject.activeInHierarchy) {
-					collider.gameObject.BroadcastMessage (methodName);
-				}
-			} else {
-				// Otherwise, we havd multiple things under me.
-				// We need to figure out who should get the event.
-				scene.performOnChildren (val => {
-					PUGameObject oo = val as PUGameObject;
-					if (oo != null && oo.gameCollider != null) {
+			// Otherwise, we havd multiple things under me.
+			// We need to figure out who should get the event.
+			if (scene.performOnChildren (val => {
+				PUGameObject oo = val as PUGameObject;
+				if (oo != null && oo.gameCollider != null) {
 
-						if (Array.IndexOf (colliders, oo.gameCollider) >= 0) {
+					if (Array.IndexOf (colliders, oo.gameCollider) >= 0) {
 
-							if(oo.gameObject.activeInHierarchy) {
-								oo.gameCollider.gameObject.SendMessage (methodName);
+						if (oo.gameObject.activeInHierarchy) {
+							oo.gameCollider.gameObject.SendMessage (methodName);
 
-								if(oo.captureMouse()) {
-									return false;
-								}
+							if (oo.captureMouse ()) {
+								return false;
 							}
 						}
 					}
-					return true;
-				});
+				}
+				return true;
+			})) {
+
+				// If we get here, no one "captured" the event. Run through colliders and send of notification
+				// for unregistered colliders hit
+				foreach (Collider collider in colliders) {
+					if (collider.gameObject != gameObject) {
+						NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
+					}
+				}
 			}
 		}
 	}
@@ -218,6 +220,21 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 			}
 			return true;
 		});
+
+
+		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		LayerMask mask = PlanetUnityOverride.puCameraLayer;
+
+		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
+			Collider[] colliders = Physics.OverlapSphere (hit.point, 2.0f, ~mask.value);
+
+			foreach (Collider collider in colliders) {
+				if (collider.gameObject != gameObject) {
+					NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
+				}
+			}
+		}
 	}
 
 

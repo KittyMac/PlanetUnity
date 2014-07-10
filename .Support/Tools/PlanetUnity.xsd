@@ -55,6 +55,8 @@
 			<enumeration value = "UserCharInput"/>
 			<enumeration value = "UserInputCancelled"/>
 			
+			<enumeration value = "EventWithUnregisteredCollider"/>
+			
 			<enumeration value = "EditorFileDidChange"/>
 		</restriction>
     </simpleType>
