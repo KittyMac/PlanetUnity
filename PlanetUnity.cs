@@ -38,6 +38,7 @@ public class PlanetUnity {
 	public const string USERCHARINPUT = "UserCharInput";
 	public const string USERINPUTCANCELLED = "UserInputCancelled";
 	public const string EVENTWITHUNREGISTEREDCOLLIDER = "EventWithUnregisteredCollider";
+	public const string EVENTWITHNOCOLLIDER = "EventWithNoCollider";
 	public const string EDITORFILEDIDCHANGE = "EditorFileDidChange";
 
 

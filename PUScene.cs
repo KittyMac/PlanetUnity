@@ -180,6 +180,11 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
 			Collider[] colliders = Physics.OverlapSphere (hit.point, 2.0f, ~mask.value);
 
+			if (colliders.Length == 1) {
+				NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));
+				return;
+			}
+
 			// Otherwise, we havd multiple things under me.
 			// We need to figure out who should get the event.
 			if (scene.performOnChildren (val => {
@@ -228,6 +233,11 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
 			Collider[] colliders = Physics.OverlapSphere (hit.point, 2.0f, ~mask.value);
+
+			if (colliders.Length == 1) {
+				NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));
+				return;
+			}
 
 			foreach (Collider collider in colliders) {
 				if (collider.gameObject != gameObject) {
