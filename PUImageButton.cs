@@ -18,7 +18,7 @@ using System.Xml;
 using System;
 using System.Collections;
 
-public enum PlanetUnityButtonState {Normal, Highlighted};
+public enum PlanetUnityButtonState {Normal, Highlighted, Undefined};
 
 public interface IPUButton {
 	void updateButtonToState(PlanetUnityButtonState newState);
@@ -75,7 +75,8 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 
 public partial class PUImageButton : PUImageButtonBase, IPUButton {
 
-	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
+	public PlanetUnityButtonState state = PlanetUnityButtonState.Undefined;
+	private Color savedColor = Color.white;
 
 	public void performTouchUp()
 	{
@@ -93,6 +94,10 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 
 	public void updateButtonToState(PlanetUnityButtonState newState)
 	{
+		if (state == newState) {
+			return;
+		}
+
 		state = newState;
 
 		Texture tex = null;
@@ -101,7 +106,15 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 			tex = (Texture) Resources.Load (normalResourcePath);
 			gameObject.renderer.material.mainTexture = tex;
 
-			if(touchColorExists) {
+			if (touchColorExists) {
+				if (savedColor != null) {
+					gameObject.renderer.material.color = savedColor;
+				} else if (colorExists) {
+					gameObject.renderer.material.color = new Color (color.r, color.g, color.b, color.a);
+				} else {
+					gameObject.renderer.material.color = Color.white;
+				}
+			} else {
 				gameObject.renderer.material.color = Color.white;
 			}
 		}
@@ -112,6 +125,7 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 				gameObject.renderer.material.mainTexture = tex;
 			}
 			if(touchColorExists) {
+				savedColor = gameObject.renderer.material.color;
 				gameObject.renderer.material.color = new Color(touchColor.r, touchColor.g, touchColor.b, touchColor.a);
 			}
 		}
@@ -120,6 +134,10 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 		base.gaxb_load(reader, _parent, args);
+
+		if (colorExists) {
+			savedColor = new Color (color.r, color.g, color.b, color.a);
+		}
 
 		gameCollider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
 		if(touchSizeExists)
