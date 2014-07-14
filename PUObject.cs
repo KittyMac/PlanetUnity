@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
+using UnityEngine;
 
 public partial class PUObject : PUObjectBase {
 
@@ -27,6 +28,35 @@ public partial class PUObject : PUObjectBase {
 	{
 		renderQeueuCount += 10;
 		return renderQeueuCount;
+	}
+
+	public void reclaimRenderQueues()
+	{
+		int maxRenderQueue = 0;
+
+		performOnChildren (val => {
+			PUGameObject oo = val as PUGameObject;
+			if(oo.gameObject != null && oo.gameObject.renderer && oo.gameObject.renderer.material) {
+				int r = oo.gameObject.renderer.material.renderQueue - oo.renderQueueOffset;
+				if( r > maxRenderQueue){
+					maxRenderQueue = r;
+				}
+			}
+			return true;
+		});
+
+		renderQeueuCount = maxRenderQueue;
+
+		/*
+		Renderer[] renderers = GameObject.FindObjectsOfType(typeof(Renderer)) as Renderer[];
+
+		int maxRenderQueue = 0;
+		foreach (Renderer renderer in renderers) {
+			if (renderer.material != null && renderer.material.renderQueue > maxRenderQueue) {
+				maxRenderQueue = renderer.material.renderQueue;
+			}
+		}
+		renderQeueuCount = maxRenderQueue;*/
 	}
 
 	public bool performOnChildren(Func<object, bool> block)

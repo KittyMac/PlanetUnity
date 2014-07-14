@@ -139,6 +139,7 @@ public partial class PUTable : PUTableBase {
 		GameObject content = contentGameObject();
 
 		// 0) Remove all previous content
+		/*
 		for (int i = gameObject.transform.childCount - 1; i >= 0; i--)
 		{
 			GameObject.Destroy(gameObject.transform.GetChild(i).gameObject);
@@ -146,9 +147,15 @@ public partial class PUTable : PUTableBase {
 		for (int i = content.transform.childCount - 1; i > 0; i--)
 		{
 			GameObject.Destroy(content.transform.GetChild(i).gameObject);
+		}*/
+
+		foreach (PUTableCell cell in allCells) {
+			cell.puGameObject.unload ();
 		}
 
 		allCells.Clear ();
+
+		scope ().reclaimRenderQueues ();
 
 		if (allObjects == null || allObjects.Count == 0) {
 			return;

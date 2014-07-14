@@ -192,4 +192,9 @@ public partial class PUGameObject : PUGameObjectBase {
 			gameObject.SetActive (false);
 		}
 	}
+
+	public void unload(){
+		GameObject.Destroy(gameObject);
+		gameObject = null;
+	}
 }
