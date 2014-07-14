@@ -39,7 +39,7 @@ public partial class PUColor : PUColorBase
 		};
 
 		mesh.vertices = vertices;
-		mesh.colors = new Color[4] {a, b, a, b};
+		mesh.colors = new Color[4] {Color.white, Color.white, Color.white, Color.white};
 		mesh.triangles = triangles;
 		mesh.RecalculateNormals ();
 
@@ -53,7 +53,7 @@ public partial class PUColor : PUColorBase
 		var shaderObj = Shader.Find (puGameObject.fullShaderPath(shader));
 		Material mat = new Material (shaderObj);
 		gameObject.renderer.material = mat;
-		gameObject.renderer.material.color = Color.white;
+		gameObject.renderer.material.color = a;
 	}
 
 	public override void gaxb_load (XmlReader reader, object _parent, Hashtable args)

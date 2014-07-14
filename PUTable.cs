@@ -139,7 +139,7 @@ public partial class PUTable : PUTableBase {
 		GameObject content = contentGameObject();
 
 		// 0) Remove all previous content
-		for (int i = gameObject.transform.childCount - 1; i > 0; i--)
+		for (int i = gameObject.transform.childCount - 1; i >= 0; i--)
 		{
 			GameObject.Destroy(gameObject.transform.GetChild(i).gameObject);
 		}
@@ -150,8 +150,7 @@ public partial class PUTable : PUTableBase {
 
 		allCells.Clear ();
 
-		if (allObjects == null) {
-			Debug.Log ("Unable to reload table contents because no data objects were specified");
+		if (allObjects == null || allObjects.Count == 0) {
 			return;
 		}
 

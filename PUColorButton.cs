@@ -21,6 +21,7 @@ using System.Collections;
 
 public partial class PUColorButton : PUColorButtonBase, IPUButton {
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
+	private Color savedColor = Color.white;
 
 	public void performTouchUp()
 	{
@@ -42,13 +43,22 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 
 		if(state == PlanetUnityButtonState.Normal)
 		{
-			if(touchColorExists) {
-				gameObject.renderer.material.color = Color.white;
+			if (touchColorExists) {
+				if (savedColor != null) {
+					gameObject.renderer.material.color = savedColor;
+				} else if (colorExists) {
+					gameObject.renderer.material.color = new Color (color.r, color.g, color.b, color.a);
+				} else {
+					gameObject.renderer.material.color = Color.white;
+				}
+			} else {
+				gameObject.renderer.material.color = savedColor;
 			}
 		}
 		if(state == PlanetUnityButtonState.Highlighted)
 		{
 			if(touchColorExists) {
+				savedColor = gameObject.renderer.material.color;
 				gameObject.renderer.material.color = new Color(touchColor.r, touchColor.g, touchColor.b, touchColor.a);
 			}
 		}
@@ -57,6 +67,12 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 		base.gaxb_load(reader, _parent, args);
+
+		if (colorExists) {
+			savedColor = new Color (color.r, color.g, color.b, color.a);
+		} else {
+			savedColor = new Color (0,0,0,0);
+		}
 
 		gameCollider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
 		if(touchSizeExists)

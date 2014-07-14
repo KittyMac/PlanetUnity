@@ -41,10 +41,12 @@ public partial class PUScroll : PUScrollBase
 		contentObject = new GameObject ("ScrollContent");
 		contentObject.layer = PlanetUnityOverride.puCameraLayer;
 
+		Vector3 savedPos = gameObject.transform.localPosition;
+
 		contentObject.transform.parent = gameObject.transform.parent;
 		gameObject.transform.parent = contentObject.transform;
 
-		contentObject.transform.localPosition = gameObject.transform.localPosition;
+		contentObject.transform.localPosition = savedPos;
 		gameObject.transform.localPosition = Vector3.zero;
 
 		gameCollider = (BoxCollider) contentObject.AddComponent(typeof(BoxCollider));
@@ -110,6 +112,10 @@ public partial class PUScroll : PUScrollBase
 		base.gaxb_loadComplete ();
 	}
 
+	public void ResetScroll()
+	{
+		script.ResetScroll ();
+	}
 }
 
 public class PlanetUnityScrollScript : MonoBehaviour
@@ -882,6 +888,10 @@ public class PlanetUnityScrollScript : MonoBehaviour
 		}
 	}
 
-
+	public void ResetScroll()
+	{
+		entity.gameObject.transform.localPosition = Vector2.zero;
+		scroll = Vector2.zero;
+	}
 
 }

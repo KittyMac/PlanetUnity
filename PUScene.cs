@@ -178,7 +178,7 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 		LayerMask mask = PlanetUnityOverride.puCameraLayer;
 
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
-			Collider[] colliders = Physics.OverlapSphere (hit.point, 2.0f, ~mask.value);
+			Collider[] colliders = Physics.OverlapSphere (hit.point, 12.0f, ~mask.value);
 
 			if (colliders.Length == 1 && colliders[0].gameObject == gameObject) {
 				NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));
@@ -190,7 +190,6 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 			if (scene.performOnChildren (val => {
 				PUGameObject oo = val as PUGameObject;
 				if (oo != null && oo.gameCollider != null) {
-
 					if (Array.IndexOf (colliders, oo.gameCollider) >= 0) {
 
 						if (oo.gameObject.activeInHierarchy) {
@@ -232,7 +231,7 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 		LayerMask mask = PlanetUnityOverride.puCameraLayer;
 
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
-			Collider[] colliders = Physics.OverlapSphere (hit.point, 2.0f, ~mask.value);
+			Collider[] colliders = Physics.OverlapSphere (hit.point, 12.0f, ~mask.value);
 
 			if (colliders.Length == 1 && colliders[0].gameObject == gameObject) {
 				NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));

@@ -1526,7 +1526,14 @@ public static void update() {
 								}else if(trans.gameObject.renderer!=null){
 									tween.from.x = trans.gameObject.renderer.material.color.a;
 								}else{
-									tween.from.x = 1.0f - tween.to.x;
+									// Find some child perhaps?
+									Renderer renderer = trans.gameObject.GetComponentInChildren<Renderer>();
+									if(renderer)
+									{
+										tween.from.x = renderer.material.color.a;
+									} else {
+										tween.from.x = 1.0f - tween.to.x;
+									}
 								}
 								break;
 							#endif
