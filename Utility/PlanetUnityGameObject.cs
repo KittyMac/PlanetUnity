@@ -26,6 +26,8 @@ using System.Diagnostics;
 using UnityEditor;
 #endif
 
+public delegate void Task();
+
 public class PlanetUnityOverride {
 
 	private static Mathos.Parser.MathParser mathParser = new Mathos.Parser.MathParser();
@@ -201,6 +203,12 @@ public class PlanetUnityGameObject : MonoBehaviour {
 			shouldReloadMainXML = false;
 			ReloadScene ();
 		}
+
+		lock (_queueLock)
+		{
+			if (TaskQueue.Count > 0)
+				TaskQueue.Dequeue()();
+		}
 	}
 
 	public void RemoveScene () {
@@ -222,6 +230,27 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		sw.Stop();
 
 		UnityEngine.Debug.Log("["+sw.Elapsed.TotalMilliseconds+"ms] Loading scene "+xmlPath+".xml");
+	}
+
+
+	private Queue<Task> TaskQueue = new Queue<Task>();
+	private object _queueLock = new object();
+
+	public void PrivateScheduleTask(Task newTask) {
+		lock (_queueLock)
+		{
+			if (TaskQueue.Count < 100) {
+				TaskQueue.Enqueue (newTask);
+			}
+		}
+	}
+
+	public static void ScheduleTask(Task newTask)
+	{
+		if (System.Object.ReferenceEquals(currentGameObject, null)) {
+			return;
+		}
+		currentGameObject.PrivateScheduleTask(newTask);
 	}
 }
 
