@@ -19,6 +19,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.IO;
+using UnityEditor.Callbacks;
 
 public class PlanetUnityCameraObject : MonoBehaviour {
 
@@ -164,8 +165,7 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 		AdjustCamera ();
 	}
 }
-
-
+	
 public class PlanetUnityEventMonitor : MonoBehaviour {
 
 	public PUScene scene;
@@ -174,45 +174,61 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 	public void PassMouseMethod(string methodName)
 	{
 		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
 		LayerMask mask = PlanetUnityOverride.puCameraLayer;
 
-		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
-			Collider[] colliders = Physics.OverlapSphere (hit.point, 12.0f, ~mask.value);
+		RaycastHit[] hits = Physics.RaycastAll (ray, Mathf.Infinity, ~mask.value);
+		Collider[] colliders = new Collider[hits.Length];
 
-			if (colliders.Length == 1 && colliders[0].gameObject == gameObject) {
-				NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));
-				return;
-			}
+		for (int i = 0; i < hits.Length; i++){
+			colliders [i] = hits [i].collider;
+		}
 
-			// Otherwise, we havd multiple things under me.
-			// We need to figure out who should get the event.
-			if (scene.performOnChildren (val => {
-				PUGameObject oo = val as PUGameObject;
-				if (oo != null && oo.gameCollider != null) {
-					if (Array.IndexOf (colliders, oo.gameCollider) >= 0) {
+		if (colliders.Length == 1 && colliders[0].gameObject == gameObject) {
+			NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));
+			return;
+		}
 
-						if (oo.gameObject.activeInHierarchy) {
-							oo.gameCollider.gameObject.SendMessage (methodName);
+		// Otherwise, we havd multiple things under me.
+		// We need to figure out who should get the event.
+		if (scene.performOnChildren (val => {
+			PUGameObject oo = val as PUGameObject;
 
-							if (oo.captureMouse ()) {
-								return false;
-							}
+			if (oo != null) {
+
+				if(oo.gameCollider != null){
+					bool hasColliderBeenHit = (Array.IndexOf(colliders, oo.gameCollider) >= 0);
+
+					// If this PlanetUnity object has a collider that has been hit, send it the event
+					if(hasColliderBeenHit && oo.gameObject.activeInHierarchy) {
+						oo.gameCollider.gameObject.SendMessage (methodName);
+						if (oo.captureMouse ()) {
+							return false;
+						}
+					}
+				}else if(oo.children.Count == 0) {
+					// We want to check any child game objects which might have been placed here dynamically.  If do, we bail and send PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER
+					foreach(Collider collider in oo.gameObject.GetComponentsInChildren<Collider>(false)){
+						bool hasColliderBeenHit = (Array.IndexOf(colliders, collider) >= 0);
+						if(hasColliderBeenHit && collider.gameObject.activeInHierarchy){
+							NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
+							return false;
 						}
 					}
 				}
-				return true;
-			})) {
+			}
 
-				// If we get here, no one "captured" the event. Run through colliders and send of notification
-				// for unregistered colliders hit
-				foreach (Collider collider in colliders) {
-					if (collider.gameObject != gameObject) {
-						NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
-					}
+			return true;
+		})) {
+			// If we get here, no one "captured" the event. Run through colliders and send of notification
+			// for unregistered colliders hit
+			foreach (Collider collider in colliders) {
+				if (collider.gameObject != gameObject) {
+					NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
 				}
 			}
 		}
+
+
 	}
 
 	public void PassMouseMethod2(string methodName)
@@ -227,21 +243,17 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 
 		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
 		LayerMask mask = PlanetUnityOverride.puCameraLayer;
 
-		if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
-			Collider[] colliders = Physics.OverlapSphere (hit.point, 12.0f, ~mask.value);
+		RaycastHit[] hits = Physics.RaycastAll (ray, Mathf.Infinity, ~mask.value);
+		if (hits.Length == 1 && hits[0].collider.gameObject == gameObject) {
+			NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));
+			return;
+		}
 
-			if (colliders.Length == 1 && colliders[0].gameObject == gameObject) {
-				NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));
-				return;
-			}
-
-			foreach (Collider collider in colliders) {
-				if (collider.gameObject != gameObject) {
-					NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
-				}
+		foreach (RaycastHit hit in hits) {
+			if (hit.collider.gameObject != gameObject) {
+				NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", hit.collider, "event", methodName));
 			}
 		}
 	}
