@@ -174,8 +174,11 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 		LayerMask mask = PlanetUnityOverride.puCameraLayer;
 
+		RaycastHit closeHit;
 		RaycastHit[] hits = Physics.RaycastAll (ray, Mathf.Infinity, ~mask.value);
 		Collider[] colliders = new Collider[hits.Length];
+
+		Physics.Raycast (ray, out closeHit, Mathf.Infinity, ~mask.value);
 
 		for (int i = 0; i < hits.Length; i++){
 			colliders [i] = hits [i].collider;
@@ -205,11 +208,10 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 					}
 				}else if(oo.children.Count == 0) {
 					if(oo.gameObject != null){
-
+					
 						// We want to check any child game objects which might have been placed here dynamically.  If do, we bail and send PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER
 						foreach(Collider collider in oo.gameObject.GetComponentsInChildren<Collider>(false)){
-							bool hasColliderBeenHit = (Array.IndexOf(colliders, collider) >= 0);
-							if(hasColliderBeenHit && collider.gameObject.activeInHierarchy){
+							if(collider == closeHit.collider){
 								NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
 								return false;
 							}
