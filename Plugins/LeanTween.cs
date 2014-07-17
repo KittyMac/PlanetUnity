@@ -1524,13 +1524,22 @@ public static void update() {
 								if(ren!=null){
 									tween.from.x = ren.color.a;
 								}else if(trans.gameObject.renderer!=null){
-									tween.from.x = trans.gameObject.renderer.material.color.a;
+									if(trans.gameObject.renderer.material.HasProperty("_Alpha")) {
+										tween.from.x = trans.gameObject.renderer.material.GetFloat("_Alpha");
+									}else{
+										tween.from.x = trans.gameObject.renderer.material.color.a;
+									}
+									
 								}else{
 									// Find some child perhaps?
 									Renderer renderer = trans.gameObject.GetComponentInChildren<Renderer>();
 									if(renderer)
 									{
-										tween.from.x = renderer.material.color.a;
+										if(renderer.material.HasProperty("_Alpha")) {
+											tween.from.x = renderer.material.GetFloat("_Alpha");
+										}else{
+											tween.from.x = renderer.material.color.a;
+										}
 									} else {
 										tween.from.x = 1.0f - tween.to.x;
 									}
@@ -1831,21 +1840,24 @@ public static void update() {
 							}else{
 								if(trans.gameObject.renderer!=null){
 									foreach(Material mat in trans.gameObject.renderer.materials){
-		        						mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
+										mat.SetFloat("_Alpha", val);
+		        						//mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
 		    						}
 		    					}
 	    						if(trans.childCount>0){
 	    							foreach (Transform child in trans) {
 	    								if(child.gameObject.renderer!=null){
 		    								foreach(Material mat in child.gameObject.renderer.materials){
-				        						mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
+												mat.SetFloat("_Alpha", val);
+				        						//mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
 				    						}
 				    					}
 
 										foreach (Transform child2 in child.transform) {
 											if(child2.gameObject.renderer!=null){
 												foreach(Material mat in child2.gameObject.renderer.materials){
-													mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
+													mat.SetFloat("_Alpha", val);
+													//mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
 												}
 											}
 										}

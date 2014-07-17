@@ -52,7 +52,7 @@ public partial class PULabel : PULabelBase {
 		ts = new TextSize(gameObject.GetComponent<TextMesh>());
 
 		textMesh.font = PlanetUnityGameObject.FindFontNamed(font);
-		textMesh.text = value;
+		textMesh.text = "";
 
 		textMesh.color = new Color (textColor.r, textColor.g, textColor.b, textColor.a);
 
@@ -89,20 +89,18 @@ public partial class PULabel : PULabelBase {
 		mat.mainTexture.filterMode = FilterMode.Bilinear;
 		meshRendererComponent.materials = new Material[] { mat };
 
-		ts.FitToWidth (bounds.w);
-
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 
-		GenerateShadow ();
+		LoadTextString(value);
 	}
 
 	public void LoadTextString(string value)
 	{
-		textMesh.text = value.Replace ("\\n", "\n");
-
-		ts.FitToWidth (bounds.w);
-
-		GenerateShadow ();
+		if (value != null) {
+			textMesh.text = value.Replace ("\\n", "\n");
+			ts.FitToWidth (bounds.w);
+			GenerateShadow ();
+		}
 	}
 
 	public void GenerateShadow()
