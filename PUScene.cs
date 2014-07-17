@@ -18,8 +18,6 @@ using System.Xml;
 using System;
 using System.Reflection;
 using System.Collections;
-using System.IO;
-using UnityEditor.Callbacks;
 
 public class PlanetUnityCameraObject : MonoBehaviour {
 
@@ -206,12 +204,15 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 						}
 					}
 				}else if(oo.children.Count == 0) {
-					// We want to check any child game objects which might have been placed here dynamically.  If do, we bail and send PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER
-					foreach(Collider collider in oo.gameObject.GetComponentsInChildren<Collider>(false)){
-						bool hasColliderBeenHit = (Array.IndexOf(colliders, collider) >= 0);
-						if(hasColliderBeenHit && collider.gameObject.activeInHierarchy){
-							NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
-							return false;
+					if(oo.gameObject != null){
+
+						// We want to check any child game objects which might have been placed here dynamically.  If do, we bail and send PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER
+						foreach(Collider collider in oo.gameObject.GetComponentsInChildren<Collider>(false)){
+							bool hasColliderBeenHit = (Array.IndexOf(colliders, collider) >= 0);
+							if(hasColliderBeenHit && collider.gameObject.activeInHierarchy){
+								NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHUNREGISTEREDCOLLIDER, NotificationCenter.Args ("sender", collider, "event", methodName));
+								return false;
+							}
 						}
 					}
 				}
