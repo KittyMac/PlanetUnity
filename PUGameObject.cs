@@ -130,6 +130,9 @@ public partial class PUGameObject : PUGameObjectBase {
 
 	public void loadIntoGameObject(GameObject _parent)
 	{
+		depthMaskCounter = 0;
+		stencilMaskCounter = 0;
+
 		gaxb_load (null, null, null);
 
 		Vector3 savedPos = gameObject.transform.localPosition;
