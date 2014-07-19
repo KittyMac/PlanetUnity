@@ -323,6 +323,8 @@ public partial class PUScene : PUSceneBase {
 			cameraObject = (PlanetUnityCameraObject)gameObject.AddComponent (typeof(PlanetUnityCameraObject));
 			cameraObject.scene = this;
 			cameraObject.AdjustCamera ();
+
+
 		}
 
 		eventsObject = new GameObject ("PlanetUnityEvents");
@@ -331,7 +333,10 @@ public partial class PUScene : PUSceneBase {
 
 		eventMonitor = (PlanetUnityEventMonitor)eventsObject.AddComponent (typeof(PlanetUnityEventMonitor));
 		eventMonitor.scene = this;
-		eventMonitor.camera = cameraObject.camera;
+
+		if (cameraObject != null) {
+			eventMonitor.camera = cameraObject.camera;
+		}
 
 		// We use a collider to capture all of our own touches and manually handle touch events
 		var collider = (BoxCollider) eventsObject.AddComponent(typeof(BoxCollider));
