@@ -61,6 +61,8 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 		trackingMouse = true;
 		btnState = PlanetUnityButtonState.Highlighted;
 		entity.updateButtonToState (PlanetUnityButtonState.Highlighted);
+
+		NotificationCenter.postNotification (null, PlanetUnity.BUTTONTOUCHDOWN, NotificationCenter.Args("sender", this));
 	}
 
 	public void OnMouseUp() {
@@ -70,6 +72,8 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 		trackingMouse = false;
 		btnState = PlanetUnityButtonState.Normal;
 		entity.updateButtonToState (PlanetUnityButtonState.Normal);
+
+		NotificationCenter.postNotification (null, PlanetUnity.BUTTONTOUCHUP, NotificationCenter.Args("sender", this));
 	}
 }
 

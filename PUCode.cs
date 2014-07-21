@@ -33,6 +33,11 @@ public partial class PUCode : PUCodeBase {
 		return controller;
 	}
 
+	public void DetachObject()
+	{
+		controller = null;
+	}
+
 	public override void gaxb_unload()
 	{
 		base.gaxb_unload ();
@@ -63,6 +68,12 @@ public partial class PUCode : PUCodeBase {
 					if (field != null)
 					{
 						field.SetValue (controller, scene);
+					}
+
+					field = controller.GetType ().GetField ("puGameObject");
+					if (field != null)
+					{
+						field.SetValue (controller, this);
 					}
 
 					scene.performOnChildren(val =>

@@ -44,10 +44,14 @@ public partial class PUPrefab : PUPrefabBase {
 		clone.transform.localPosition = Vector3.zero;
 		clone.transform.localRotation = Quaternion.identity;
 
-		clone.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
+		if (clone.renderer != null) {
+			clone.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
+		}
 
 		foreach (Transform t in clone.transform) {
-			t.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
+			if (t.renderer != null) {
+				t.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
+			}
 		}
 	}
 }

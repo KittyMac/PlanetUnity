@@ -55,6 +55,9 @@
 			<enumeration value = "UserCharInput"/>
 			<enumeration value = "UserInputCancelled"/>
 			
+			<enumeration value = "ButtonTouchDown"/>
+			<enumeration value = "ButtonTouchUp"/>
+			
 			<enumeration value = "EventWithUnregisteredCollider"/>
 			<enumeration value = "EventWithNoCollider"/>
 			
