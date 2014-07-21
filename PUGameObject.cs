@@ -79,6 +79,25 @@ public partial class PUGameObject : PUGameObjectBase {
 		}
 
 		if (clipDepth) {
+
+			// Remove any existing depth masks
+			GameObject dm1 = null;
+			GameObject dm2 = null;
+			foreach (Transform dm in contentGameObject().transform) {
+				if (dm.gameObject.name.Equals ("Depth Mask 1")) {
+					dm1 = dm.gameObject;
+				}
+				if (dm.name.Equals ("Depth Mask 2")) {
+					dm2 = dm.gameObject;
+				}
+			}
+			if (dm1 != null) {
+				GameObject.Destroy (dm1);
+			}
+			if (dm2 != null) {
+				GameObject.Destroy (dm2);
+			}
+
 			// We need to create a Color to render the DepthMask shader to do depth-based culling
 			PUColor depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), new cVector2 (0, 0), bounds);
 			depthMask1.SetTitle ("Depth Mask 1");
