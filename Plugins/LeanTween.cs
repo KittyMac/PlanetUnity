@@ -1839,25 +1839,22 @@ public static void update() {
 								ren.color = new Color( ren.color.r, ren.color.g, ren.color.b, val);
 							}else{
 								if(trans.gameObject.renderer!=null){
-									foreach(Material mat in trans.gameObject.renderer.materials){
-										mat.SetFloat("_Alpha", val);
-		        						//mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
-		    						}
+									trans.gameObject.renderer.material.SetFloat("_Alpha", val);
 		    					}
 	    						if(trans.childCount>0){
 	    							foreach (Transform child in trans) {
 	    								if(child.gameObject.renderer!=null){
-		    								foreach(Material mat in child.gameObject.renderer.materials){
-												mat.SetFloat("_Alpha", val);
-				        						//mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
-				    						}
+											child.gameObject.renderer.material.SetFloat("_Alpha", val);
 				    					}
 
 										foreach (Transform child2 in child.transform) {
 											if(child2.gameObject.renderer!=null){
-												foreach(Material mat in child2.gameObject.renderer.materials){
-													mat.SetFloat("_Alpha", val);
-													//mat.color = new Color( mat.color.r, mat.color.g, mat.color.b, val);
+												child2.gameObject.renderer.material.SetFloat("_Alpha", val);
+											}
+
+											foreach (Transform child3 in child2.transform) {
+												if(child3.gameObject.renderer!=null){
+													child3.gameObject.renderer.material.SetFloat("_Alpha", val);
 												}
 											}
 										}
