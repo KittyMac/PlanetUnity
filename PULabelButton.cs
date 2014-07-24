@@ -41,7 +41,7 @@ public partial class PULabelButton : PULabelButtonBase, IPUButton {
 		TextMesh textMeshComponent = gameObject.GetComponent(typeof(TextMesh)) as TextMesh;
 		
 		state = newState;
-		
+
 		if(state == PlanetUnityButtonState.Normal)
 		{
 			textMeshComponent.color = new Color (textColor.r, textColor.g, textColor.b, textColor.a);

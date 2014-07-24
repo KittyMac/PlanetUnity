@@ -180,7 +180,7 @@ public class PUGradientBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUGradient ))
+		if(this.GetType().IsSubclassOf(typeof( PUGradient )) || this.GetType() == typeof( PUGradient ))
 		{
 			if(parent != null)
 			{

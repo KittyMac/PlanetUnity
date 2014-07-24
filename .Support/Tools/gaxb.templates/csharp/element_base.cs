@@ -206,7 +206,7 @@ end
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( <%= FULL_NAME_CAMEL_NON_BASE %> ))
+		if(this.GetType().IsSubclassOf(typeof( <%= FULL_NAME_CAMEL_NON_BASE %> )) || this.GetType() == typeof( <%= FULL_NAME_CAMEL_NON_BASE %> ))
 		{
 			if(parent != null)
 			{

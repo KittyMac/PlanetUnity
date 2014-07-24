@@ -210,7 +210,7 @@ public class PUScrollBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUScroll ))
+		if(this.GetType().IsSubclassOf(typeof( PUScroll )) || this.GetType() == typeof( PUScroll ))
 		{
 			if(parent != null)
 			{

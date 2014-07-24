@@ -191,7 +191,7 @@ public class PUColorButtonBase : PUColor {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUColorButton ))
+		if(this.GetType().IsSubclassOf(typeof( PUColorButton )) || this.GetType() == typeof( PUColorButton ))
 		{
 			if(parent != null)
 			{

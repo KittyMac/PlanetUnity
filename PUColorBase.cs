@@ -168,7 +168,7 @@ public class PUColorBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUColor ))
+		if(this.GetType().IsSubclassOf(typeof( PUColor )) || this.GetType() == typeof( PUColor ))
 		{
 			if(parent != null)
 			{

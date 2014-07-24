@@ -219,7 +219,7 @@ public class PUImageButtonBase : PUImage {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUImageButton ))
+		if(this.GetType().IsSubclassOf(typeof( PUImageButton )) || this.GetType() == typeof( PUImageButton ))
 		{
 			if(parent != null)
 			{

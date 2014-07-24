@@ -127,7 +127,7 @@ public class PUObjectBase : IPlanetUnity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUObject ))
+		if(this.GetType().IsSubclassOf(typeof( PUObject )) || this.GetType() == typeof( PUObject ))
 		{
 			if(parent != null)
 			{

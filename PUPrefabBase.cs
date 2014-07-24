@@ -139,7 +139,7 @@ public class PUPrefabBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUPrefab ))
+		if(this.GetType().IsSubclassOf(typeof( PUPrefab )) || this.GetType() == typeof( PUPrefab ))
 		{
 			if(parent != null)
 			{

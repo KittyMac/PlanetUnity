@@ -63,8 +63,7 @@ public partial class PUObject : PUObjectBase {
 	{
 		for (int i = children.Count - 1; i >= 0; i--) {
 			object child = children[i];
-
-
+			
 			if (!block (child)) {
 				return false;
 			}

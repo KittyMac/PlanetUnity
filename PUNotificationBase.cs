@@ -67,7 +67,7 @@ public class PUNotificationBase : IPlanetUnity {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUNotification ))
+		if(this.GetType().IsSubclassOf(typeof( PUNotification )) || this.GetType() == typeof( PUNotification ))
 		{
 			if(parent != null)
 			{

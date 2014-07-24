@@ -143,7 +143,7 @@ public class PUCodeBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUCode ))
+		if(this.GetType().IsSubclassOf(typeof( PUCode )) || this.GetType() == typeof( PUCode ))
 		{
 			if(parent != null)
 			{

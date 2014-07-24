@@ -180,7 +180,7 @@ public class PUImageBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUImage ))
+		if(this.GetType().IsSubclassOf(typeof( PUImage )) || this.GetType() == typeof( PUImage ))
 		{
 			if(parent != null)
 			{

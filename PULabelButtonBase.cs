@@ -216,7 +216,7 @@ public class PULabelButtonBase : PULabel {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PULabelButton ))
+		if(this.GetType().IsSubclassOf(typeof( PULabelButton )) || this.GetType() == typeof( PULabelButton ))
 		{
 			if(parent != null)
 			{

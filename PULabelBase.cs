@@ -232,7 +232,7 @@ public class PULabelBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PULabel ))
+		if(this.GetType().IsSubclassOf(typeof( PULabel )) || this.GetType() == typeof( PULabel ))
 		{
 			if(parent != null)
 			{

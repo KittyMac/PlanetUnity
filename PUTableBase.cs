@@ -149,7 +149,7 @@ public class PUTableBase : PUScroll {
 		
 		parent = _parent;
 		
-		if(this.GetType() == typeof( PUTable ))
+		if(this.GetType().IsSubclassOf(typeof( PUTable )) || this.GetType() == typeof( PUTable ))
 		{
 			if(parent != null)
 			{
