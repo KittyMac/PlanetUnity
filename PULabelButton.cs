@@ -22,14 +22,14 @@ using System.Collections;
 public partial class PULabelButton : PULabelButtonBase, IPUButton {
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
 
-	public void performTouchUp()
+	public virtual void performTouchUp()
 	{
 		if (onTouchUpExists) {
 			NotificationCenter.postNotification (scope (), this.onTouchUp, NotificationCenter.Args("sender", this));
 		}
 	}
 
-	public void performTouchDown()
+	public virtual void performTouchDown()
 	{
 		if (onTouchDownExists) {
 			NotificationCenter.postNotification (scope (), this.onTouchDown, NotificationCenter.Args("sender", this));
