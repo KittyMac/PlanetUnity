@@ -45,6 +45,9 @@ public class PlanetUnityOverride {
 
 	public static string processString(object o, string s)
 	{
+		if (s == null)
+			return null;
+
 		s.Replace("@LANGUAGE", PlanetUnityLanguage.LanguageCode());
 
 		if (s.StartsWith ("@eval(")) {
