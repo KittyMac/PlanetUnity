@@ -64,7 +64,7 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 	}
 
 	public void OnMouseUp() {
-		if (btnState == PlanetUnityButtonState.Highlighted) {
+		if (trackingMouse && btnState == PlanetUnityButtonState.Highlighted) {
 			entity.performTouchUp ();
 		}
 		trackingMouse = false;

@@ -246,8 +246,6 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 	public void PassMouseMethod2(string methodName)
 	{
-		bool localShouldCancelMouse = mouseCancelled;
-
 		if (methodName == "OnMouseCancelled") {
 			mouseCancelled = false;
 		}
@@ -257,8 +255,6 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 			if (oo != null && oo.gameCollider != null && oo.gameObject.activeInHierarchy) {
 				oo.gameCollider.gameObject.SendMessage(methodName);
 			}
-			if(localShouldCancelMouse)
-				return false;
 
 			return true;
 		});
@@ -319,7 +315,7 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 	public void OnMouseCancelled()
 	{
 		mouseCancelled = true;
-		PassMouseMethod ("OnMouseCancelled");
+		PassMouseMethod2 ("OnMouseCancelled");
 	}
 }
 
