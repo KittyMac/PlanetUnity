@@ -193,12 +193,15 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		NotificationCenter.removeObserver (this);
 
-		scene.performOnChildren(val =>
-			{
-				MethodInfo method = val.GetType().GetMethod ("gaxb_unload");
-				if (method != null) { method.Invoke (val, null); }
+		if (scene != null) {
+			scene.performOnChildren (val => {
+				MethodInfo method = val.GetType ().GetMethod ("gaxb_unload");
+				if (method != null) {
+					method.Invoke (val, null);
+				}
 				return true;
 			});
+		}
 	}
 
 	void Update () {

@@ -181,10 +181,13 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private float userTouchScale;
 	private Vector2 velocity;
 	private Vector2 scroll;
+	private Vector2 absScroll;
 	private Vector2 animStartVelocity;
 	private Vector2 animStartScroll;
 	private Vector2 animEndScroll;
 	private Vector2 touchEdgeOffset;
+	private bool shouldCancelTouches;
+	private bool didCancelTouches;
 	private long touchTimestamp;
 
 	private Vector2 previousMousePosition = PlanetUnityGameObject.MousePosition();
@@ -212,12 +215,17 @@ public class PlanetUnityScrollScript : MonoBehaviour
 		if (userTouching == false) {
 			userTouching = true;
 
+			shouldCancelTouches = false;
+			didCancelTouches = false;
 
 			previousMousePosition = PlanetUnityGameObject.MousePosition();
 
 			//we have some touches that will stop this scroll view in it's tracks
 			velocity.x = 0;
 			velocity.y = 0;
+
+			absScroll.x = 0;
+			absScroll.y = 0;
 
 			scrollLockDirection = PlanetScrollDirection.Both;
 
@@ -254,12 +262,25 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			return;
 
 		if (userTouching) {
+		
 			userTouching = false;
-
 
 			//this will reset directional lock only when paging is not enabled
 			if(!pagingEnabled)
 				directionalLockIsSet = false;
+
+			absScroll.x += Mathf.Abs (velocity.x);
+			absScroll.y += Mathf.Abs (velocity.y);
+
+			if (absScroll.x >= kMinCancelTouchesVelocity || absScroll.y >= kMinCancelTouchesVelocity) {
+				shouldCancelTouches = true;
+			}
+
+			if (shouldCancelTouches && didCancelTouches == false) {
+				didCancelTouches = true;
+				Debug.Log("CANCEL");
+				NotificationCenter.postNotification (entity.scope (), "PlanetUnityCancelMouse");
+			}
 
 			//check if we flicked the scroll view
 			if(Mathf.Abs(velocity.x) < kMinCancelTouchesVelocity)
@@ -341,6 +362,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			Vector2 userTouchPosition = PlanetUnityGameObject.MousePosition();
 			Vector2 avgPrevTouchLoc = previousMousePosition;
 
+
 			//calculate the touch velocity
 			Vector2 dLoc = new Vector2(userTouchPosition.x-avgPrevTouchLoc.x, userTouchPosition.y-avgPrevTouchLoc.y);
 			if(((int)scrollDirection & (int)scrollLockDirection & (int)PlanetScrollDirection.Horizontal) != 0)
@@ -353,6 +375,19 @@ public class PlanetUnityScrollScript : MonoBehaviour
 				velocity.y = 0.0f;
 				
 			previousMousePosition = userTouchPosition;
+
+			absScroll.x += Mathf.Abs (velocity.x);
+			absScroll.y += Mathf.Abs (velocity.y);
+
+			if (absScroll.x >= kMinCancelTouchesVelocity || absScroll.y >= kMinCancelTouchesVelocity) {
+				shouldCancelTouches = true;
+			}
+
+			if (shouldCancelTouches && didCancelTouches == false) {
+				Debug.Log("CANCEL");
+				NotificationCenter.postNotification (entity.scope (), "PlanetUnityCancelMouse");
+				didCancelTouches = true;
+			}
 
 			//we might need to cancel touches on inner nodes when we start a scroll, which is expensive. avoid this if we can by not cancelling when the user touches, but doesn't actually scroll
 			if(Mathf.Abs(velocity.x) < kMinCancelTouchesVelocity && Mathf.Abs(velocity.y) < kMinCancelTouchesVelocity)
@@ -378,8 +413,6 @@ public class PlanetUnityScrollScript : MonoBehaviour
 				scroll.x += dLoc.x;
 			if(((int)scrollDirection & (int)scrollLockDirection & (int)PlanetScrollDirection.Vertical) != 0)
 				scroll.y += dLoc.y;
-
-			NotificationCenter.postNotification (entity.scope (), "PlanetUnityCancelMouse");
 
 			// TODO: what to do for this?  I dunno
 			//cancel the touch for any targeted delegates (PlanetX normally wouldn't use any of these)

@@ -168,6 +168,7 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 	public PUScene scene;
 	public Camera camera;
+	private bool mouseCancelled = false;
 
 	public void PassMouseMethod(string methodName)
 	{
@@ -177,6 +178,7 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 		RaycastHit closeHit;
 		RaycastHit[] hits = Physics.RaycastAll (ray, Mathf.Infinity, ~mask.value);
 		Collider[] colliders = new Collider[hits.Length];
+		bool localShouldCancelMouse = mouseCancelled;
 
 		Physics.Raycast (ray, out closeHit, Mathf.Infinity, ~mask.value);
 
@@ -187,6 +189,11 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 		if (colliders.Length == 1 && colliders[0].gameObject == gameObject) {
 			NotificationCenter.postNotification (scene.scope (), PlanetUnity.EVENTWITHNOCOLLIDER, NotificationCenter.Args ("event", methodName));
 			return;
+		}
+
+		if (methodName == "OnMouseCancelled") {
+			mouseCancelled = false;
+			localShouldCancelMouse = false;
 		}
 
 		// Otherwise, we havd multiple things under me.
@@ -220,6 +227,9 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 				}
 			}
 
+			if(localShouldCancelMouse)
+				return false;
+
 			return true;
 		})) {
 			// If we get here, no one "captured" the event. Run through colliders and send of notification
@@ -236,11 +246,20 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 	public void PassMouseMethod2(string methodName)
 	{
+		bool localShouldCancelMouse = mouseCancelled;
+
+		if (methodName == "OnMouseCancelled") {
+			mouseCancelled = false;
+		}
+
 		scene.performOnChildren (val => {
 			PUGameObject oo = val as PUGameObject;
 			if (oo != null && oo.gameCollider != null && oo.gameObject.activeInHierarchy) {
 				oo.gameCollider.gameObject.SendMessage(methodName);
 			}
+			if(localShouldCancelMouse)
+				return false;
+
 			return true;
 		});
 
@@ -264,31 +283,42 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 	public void OnMouseEnter ()
 	{
+		mouseCancelled = false;
 		PassMouseMethod ("OnMouseEnter");
+		mouseCancelled = false;
 	}
 
 	public void OnMouseExit ()
 	{
+		mouseCancelled = false;
 		PassMouseMethod ("OnMouseExit");
+		mouseCancelled = false;
 	}
 
 	public void OnMouseDown ()
 	{
+		mouseCancelled = false;
 		PassMouseMethod ("OnMouseDown");
+		mouseCancelled = false;
 	}
 
 	public void OnMouseUp ()
 	{
+		mouseCancelled = false;
 		PassMouseMethod2 ("OnMouseUp");
+		mouseCancelled = false;
 	}
 
 	public void OnMouseMoved()
 	{
+		mouseCancelled = false;
 		PassMouseMethod ("OnMouseMoved");
+		mouseCancelled = false;
 	}
 
 	public void OnMouseCancelled()
 	{
+		mouseCancelled = true;
 		PassMouseMethod ("OnMouseCancelled");
 	}
 }
