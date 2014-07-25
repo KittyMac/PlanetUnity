@@ -187,7 +187,6 @@ public class PlanetUnityScrollScript : MonoBehaviour
 	private Vector2 animEndScroll;
 	private Vector2 touchEdgeOffset;
 	private bool shouldCancelTouches;
-	private bool didCancelTouches;
 	private long touchTimestamp;
 
 	private Vector2 previousMousePosition = PlanetUnityGameObject.MousePosition();
@@ -216,7 +215,6 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			userTouching = true;
 
 			shouldCancelTouches = false;
-			didCancelTouches = false;
 
 			previousMousePosition = PlanetUnityGameObject.MousePosition();
 
@@ -276,8 +274,7 @@ public class PlanetUnityScrollScript : MonoBehaviour
 				shouldCancelTouches = true;
 			}
 
-			if (shouldCancelTouches && didCancelTouches == false) {
-				didCancelTouches = true;
+			if (shouldCancelTouches) {
 				NotificationCenter.postNotification (entity.scope (), "PlanetUnityCancelMouse");
 			}
 
@@ -382,9 +379,8 @@ public class PlanetUnityScrollScript : MonoBehaviour
 				shouldCancelTouches = true;
 			}
 
-			if (shouldCancelTouches && didCancelTouches == false) {
+			if (shouldCancelTouches) {
 				NotificationCenter.postNotification (entity.scope (), "PlanetUnityCancelMouse");
-				didCancelTouches = true;
 			}
 
 			//we might need to cancel touches on inner nodes when we start a scroll, which is expensive. avoid this if we can by not cancelling when the user touches, but doesn't actually scroll
