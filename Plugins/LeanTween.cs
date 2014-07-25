@@ -1649,8 +1649,10 @@ public static void update() {
 						ratioPassed = 0f;
 					}
 					// Debug.Log("action:"+tweenAction+" ratioPassed:"+ratioPassed + " timeTotal:" + timeTotal + " tween.passed:"+ tween.passed +" dt:"+dt);
-
-					isAnimating = true;
+					
+					if (tween.loopType != LeanTweenType.pingPong) {
+						isAnimating = true;
+					}
 					
 					if(tweenAction>=TweenAction.MOVE_X && tweenAction<=TweenAction.CALLBACK){
 						if(tween.animationCurve!=null){
