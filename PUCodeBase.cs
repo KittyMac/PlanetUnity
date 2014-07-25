@@ -133,6 +133,53 @@ public class PUCodeBase : PUGameObject {
 		base.gaxb_unload();
 
 	}
+	
+	public void gaxb_addToParent()
+	{
+		if(parent != null)
+		{
+			FieldInfo parentField = parent.GetType().GetField("Code");
+			List<object> parentChildren = null;
+			
+			if(parentField != null)
+			{
+				parentField.SetValue(parent, this);
+				
+				parentField = parent.GetType().GetField("CodeExists");
+				parentField.SetValue(parent, true);
+			}
+			else
+			{
+				parentField = parent.GetType().GetField("Codes");
+				
+				if(parentField != null)
+				{
+					parentChildren = (List<object>)(parentField.GetValue(parent));
+				}
+				else
+				{
+					parentField = parent.GetType().GetField("GameObjects");
+					if(parentField != null)
+					{
+						parentChildren = (List<object>)(parentField.GetValue(parent));
+					}
+				}
+				if(parentChildren == null)
+				{
+					FieldInfo childrenField = parent.GetType().GetField("children");
+					if(childrenField != null)
+					{
+						parentChildren = (List<object>)childrenField.GetValue(parent);
+					}
+				}
+				if(parentChildren != null)
+				{
+					parentChildren.Add(this);
+				}
+				
+			}
+		}
+	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
@@ -143,51 +190,9 @@ public class PUCodeBase : PUGameObject {
 		
 		parent = _parent;
 		
-		if(this.GetType().IsSubclassOf(typeof( PUCode )) || this.GetType() == typeof( PUCode ))
+		if(this.GetType() == typeof( PUCode ))
 		{
-			if(parent != null)
-			{
-				FieldInfo parentField = _parent.GetType().GetField("Code");
-				List<object> parentChildren = null;
-				
-				if(parentField != null)
-				{
-					parentField.SetValue(_parent, this);
-					
-					parentField = _parent.GetType().GetField("CodeExists");
-					parentField.SetValue(_parent, true);
-				}
-				else
-				{
-					parentField = _parent.GetType().GetField("Codes");
-					
-					if(parentField != null)
-					{
-						parentChildren = (List<object>)(parentField.GetValue(_parent));
-					}
-					else
-					{
-						parentField = _parent.GetType().GetField("GameObjects");
-						if(parentField != null)
-						{
-							parentChildren = (List<object>)(parentField.GetValue(_parent));
-						}
-					}
-					if(parentChildren == null)
-					{
-						FieldInfo childrenField = _parent.GetType().GetField("children");
-						if(childrenField != null)
-						{
-							parentChildren = (List<object>)childrenField.GetValue(_parent);
-						}
-					}
-					if(parentChildren != null)
-					{
-						parentChildren.Add(this);
-					}
-					
-				}
-			}
+			gaxb_addToParent();
 		}
 		
 		xmlns = reader.GetAttribute("xmlns");

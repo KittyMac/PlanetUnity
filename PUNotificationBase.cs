@@ -58,6 +58,53 @@ public class PUNotificationBase : IPlanetUnity {
 	{
 
 	}
+	
+	public void gaxb_addToParent()
+	{
+		if(parent != null)
+		{
+			FieldInfo parentField = parent.GetType().GetField("Notification");
+			List<object> parentChildren = null;
+			
+			if(parentField != null)
+			{
+				parentField.SetValue(parent, this);
+				
+				parentField = parent.GetType().GetField("NotificationExists");
+				parentField.SetValue(parent, true);
+			}
+			else
+			{
+				parentField = parent.GetType().GetField("Notifications");
+				
+				if(parentField != null)
+				{
+					parentChildren = (List<object>)(parentField.GetValue(parent));
+				}
+				else
+				{
+					parentField = parent.GetType().GetField("PlanetUnitys");
+					if(parentField != null)
+					{
+						parentChildren = (List<object>)(parentField.GetValue(parent));
+					}
+				}
+				if(parentChildren == null)
+				{
+					FieldInfo childrenField = parent.GetType().GetField("children");
+					if(childrenField != null)
+					{
+						parentChildren = (List<object>)childrenField.GetValue(parent);
+					}
+				}
+				if(parentChildren != null)
+				{
+					parentChildren.Add(this);
+				}
+				
+			}
+		}
+	}
 
 	public virtual void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
@@ -67,51 +114,9 @@ public class PUNotificationBase : IPlanetUnity {
 		
 		parent = _parent;
 		
-		if(this.GetType().IsSubclassOf(typeof( PUNotification )) || this.GetType() == typeof( PUNotification ))
+		if(this.GetType() == typeof( PUNotification ))
 		{
-			if(parent != null)
-			{
-				FieldInfo parentField = _parent.GetType().GetField("Notification");
-				List<object> parentChildren = null;
-				
-				if(parentField != null)
-				{
-					parentField.SetValue(_parent, this);
-					
-					parentField = _parent.GetType().GetField("NotificationExists");
-					parentField.SetValue(_parent, true);
-				}
-				else
-				{
-					parentField = _parent.GetType().GetField("Notifications");
-					
-					if(parentField != null)
-					{
-						parentChildren = (List<object>)(parentField.GetValue(_parent));
-					}
-					else
-					{
-						parentField = _parent.GetType().GetField("PlanetUnitys");
-						if(parentField != null)
-						{
-							parentChildren = (List<object>)(parentField.GetValue(_parent));
-						}
-					}
-					if(parentChildren == null)
-					{
-						FieldInfo childrenField = _parent.GetType().GetField("children");
-						if(childrenField != null)
-						{
-							parentChildren = (List<object>)childrenField.GetValue(_parent);
-						}
-					}
-					if(parentChildren != null)
-					{
-						parentChildren.Add(this);
-					}
-					
-				}
-			}
+			gaxb_addToParent();
 		}
 		
 		xmlns = reader.GetAttribute("xmlns");

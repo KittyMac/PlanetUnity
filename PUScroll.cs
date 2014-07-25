@@ -278,7 +278,6 @@ public class PlanetUnityScrollScript : MonoBehaviour
 
 			if (shouldCancelTouches && didCancelTouches == false) {
 				didCancelTouches = true;
-				Debug.Log("CANCEL");
 				NotificationCenter.postNotification (entity.scope (), "PlanetUnityCancelMouse");
 			}
 
@@ -384,7 +383,6 @@ public class PlanetUnityScrollScript : MonoBehaviour
 			}
 
 			if (shouldCancelTouches && didCancelTouches == false) {
-				Debug.Log("CANCEL");
 				NotificationCenter.postNotification (entity.scope (), "PlanetUnityCancelMouse");
 				didCancelTouches = true;
 			}
