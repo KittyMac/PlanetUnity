@@ -64,12 +64,15 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 	}
 
 	public void OnMouseUp() {
-		if (trackingMouse && btnState == PlanetUnityButtonState.Highlighted) {
-			entity.performTouchUp ();
-		}
+		bool shouldCallTouchUp = (trackingMouse && btnState == PlanetUnityButtonState.Highlighted);
+
 		trackingMouse = false;
 		btnState = PlanetUnityButtonState.Normal;
 		entity.updateButtonToState (PlanetUnityButtonState.Normal);
+
+		if (shouldCallTouchUp) {
+			entity.performTouchUp ();
+		}
 
 		NotificationCenter.postNotification (null, PlanetUnity.BUTTONTOUCHUP, NotificationCenter.Args("sender", this));
 	}

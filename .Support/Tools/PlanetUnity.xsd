@@ -262,18 +262,20 @@
 	<complexType name="Notification">
 		<attribute name="name" type="string" use="required" />
 	</complexType>
-
-	<element name="Code">
-		<complexType>
-			<complexContent>
-				<extension base="planet:GameObject">
-					<sequence>
-						<element ref="planet:Notification" minOccurs="0" maxOccurs="unbounded" />
-					</sequence>
-					<attribute name="class" type="string" use="required" />
-				</extension>
-			</complexContent>
-		</complexType>
-	</element>
+	
+	
+	<element name="Code" type="planet:Code" />
+	<complexType name="Code">
+		<complexContent>
+			<extension base="planet:GameObject">
+				<sequence>
+					<element ref="planet:Notification" minOccurs="0" maxOccurs="unbounded" />
+				</sequence>
+				<attribute name="class" type="string" use="required" />
+				<attribute name="singleton" type="boolean" use="optional" default="false" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
 
 </schema>

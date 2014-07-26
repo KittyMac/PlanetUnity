@@ -47,27 +47,27 @@ public partial class <%= FULL_NAME_CAMEL %> : <%= FULL_NAME_CAMEL %>Base {
 					
 					
 					if (typeNameForItem(v)=="bool") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = bool.Parse(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = bool.Parse(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (typeNameForItem(v)=="float") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = float.Parse(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = float.Parse(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (typeNameForItem(v)=="short") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = short.Parse(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = short.Parse(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (typeNameForItem(v)=="int") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = int.Parse(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = int.Parse(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (typeNameForItem(v)=="long") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = long.Parse(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = long.Parse(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (typeNameForItem(v)=="double") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = double.Parse(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = double.Parse(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (typeNameForItem(v)=="char") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = char.Parse(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = char.Parse(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (typeNameForItem(v)=="DateTime") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = DateTime.Parse(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = DateTime.Parse(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (typeNameForItem(v)=="byte[]") then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = Convert.FromBase64String(attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = Convert.FromBase64String(attr); "..cleanedName(v.name).."Exists = true; } \n")
 					elseif (isEnumForItem(v)) then
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = ("..typeForItem(v)..")System.Enum.Parse(typeof("..typeForItem(v).."), attr); "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = ("..typeForItem(v)..")System.Enum.Parse(typeof("..typeForItem(v).."), attr); "..cleanedName(v.name).."Exists = true; } \n")
 					else
-						gaxb_print("\t\tif(attr != null) { "..v.name.." = attr; "..v.name.."Exists = true; } \n")
+						gaxb_print("\t\tif(attr != null) { "..cleanedName(v.name).." = attr; "..cleanedName(v.name).."Exists = true; } \n")
 					end
 					
 					
@@ -84,7 +84,7 @@ public partial class <%= FULL_NAME_CAMEL %> : <%= FULL_NAME_CAMEL %>Base {
 	public <%= FULL_NAME_CAMEL %>(<%
 		gaxb_print("\n");
 		for i,v in ipairs(allRequiredAttributes) do
-			gaxb_print("\t\t\t"..typeForItem(v).." "..v.name);
+			gaxb_print("\t\t\t"..typeForItem(v).." "..cleanedName(v.name));
 			if(i ~= #allRequiredAttributes) then
 				gaxb_print(",\n");
 			end
@@ -92,8 +92,8 @@ public partial class <%= FULL_NAME_CAMEL %> : <%= FULL_NAME_CAMEL %>Base {
 	{
 <%
 		for i,v in ipairs(allRequiredAttributes) do
-			gaxb_print("\t\tthis."..v.name.." = "..v.name..";\n");
-			gaxb_print("\t\tthis."..v.name.."Exists = true;\n");
+			gaxb_print("\t\tthis."..cleanedName(v.name).." = "..cleanedName(v.name)..";\n");
+			gaxb_print("\t\tthis."..cleanedName(v.name).."Exists = true;\n");
 			if(i ~= #allRequiredAttributes) then gaxb_print("\n"); end
 		end%>	}
 <% end %>
@@ -103,7 +103,7 @@ public partial class <%= FULL_NAME_CAMEL %> : <%= FULL_NAME_CAMEL %>Base {
 	public <%= FULL_NAME_CAMEL %>(<%
 		gaxb_print("\n");
 		for i,v in ipairs(allAttributes) do
-			gaxb_print("\t\t\t"..typeForItem(v).." "..v.name);
+			gaxb_print("\t\t\t"..typeForItem(v).." "..cleanedName(v.name));
 			if(i ~= #allAttributes) then
 				gaxb_print(",\n");
 			end
@@ -111,8 +111,8 @@ public partial class <%= FULL_NAME_CAMEL %> : <%= FULL_NAME_CAMEL %>Base {
 	{
 <%
 		for i,v in ipairs(allAttributes) do
-			gaxb_print("\t\tthis."..v.name.." = "..v.name..";\n");
-			gaxb_print("\t\tthis."..v.name.."Exists = true;\n");
+			gaxb_print("\t\tthis."..cleanedName(v.name).." = "..cleanedName(v.name)..";\n");
+			gaxb_print("\t\tthis."..cleanedName(v.name).."Exists = true;\n");
 			if(i ~= #allAttributes) then gaxb_print("\n"); end
 		end%>	}
 <% end %>

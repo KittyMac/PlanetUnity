@@ -16,15 +16,24 @@ public partial class PUCode : PUCodeBase {
 	
 	public PUCode()
 	{
+		string attr;
+
+		attr = "false";
+		if(attr != null) { singleton = bool.Parse(attr); singletonExists = true; } 
+
 	}
 	
 	
 	public PUCode(
 			string _class,
+			bool singleton,
 			cRect bounds ) : this()
 	{
 		this._class = _class;
 		this._classExists = true;
+
+		this.singleton = singleton;
+		this.singletonExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;
@@ -34,6 +43,7 @@ public partial class PUCode : PUCodeBase {
 	
 	public PUCode(
 			string _class,
+			bool singleton,
 			cRect bounds,
 			bool hidden,
 			float lastY,
@@ -52,6 +62,9 @@ public partial class PUCode : PUCodeBase {
 	{
 		this._class = _class;
 		this._classExists = true;
+
+		this.singleton = singleton;
+		this.singletonExists = true;
 
 		this.bounds = bounds;
 		this.boundsExists = true;
@@ -117,6 +130,9 @@ public class PUCodeBase : PUGameObject {
 	public string _class;
 	public bool _classExists;
 
+	public bool singleton;
+	public bool singletonExists;
+
 
 
 
@@ -126,6 +142,7 @@ public class PUCodeBase : PUGameObject {
 
 	
 	public void Set_class(string v) { _class = v; _classExists = true; } 
+	public void SetSingleton(bool v) { singleton = v; singletonExists = true; } 
 
 
 	public override void gaxb_unload()
@@ -203,6 +220,11 @@ public class PUCodeBase : PUGameObject {
 		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { _class = attr; _classExists = true; } 
 		
+		attr = reader.GetAttribute("singleton");
+		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr == null) { attr = "false"; }
+		if(attr != null) { singleton = bool.Parse(attr); singletonExists = true; } 
+		
 
 	}
 	
@@ -217,6 +239,7 @@ public class PUCodeBase : PUGameObject {
 		base.gaxb_appendXMLAttributes(sb);
 
 		if(_classExists) { sb.AppendFormat (" {0}=\"{1}\"", "_class", _class); }
+		if(singletonExists) { sb.AppendFormat (" {0}=\"{1}\"", "singleton", singleton.ToString().ToLower()); }
 
 	}
 	

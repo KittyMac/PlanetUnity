@@ -20,13 +20,15 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Collections;
 
-interface IPUCode {
+public interface IPUCode {
 
 }
 
 public partial class PUCode : PUCodeBase {
 
 	IPUCode controller;
+
+	private static Hashtable instances = new Hashtable ();
 
 	public object GetObject()
 	{
@@ -56,7 +58,17 @@ public partial class PUCode : PUCodeBase {
 
 	public void gaxb_loadComplete()
 	{
-		if (_classExists) {
+		if (singleton) {
+			if (instances[_class] != null && instances[_class] != this) {
+				GameObject.Destroy(this.gameObject);
+
+				MonoBehaviour.DontDestroyOnLoad(this.gameObject);
+				controller = (IPUCode)instances[_class];
+			}
+		}
+
+
+		if (controller == null && _classExists) {
 			// Attach all of the PlanetUnity objects
 			try {
 				controller = (IPUCode)gameObject.AddComponent(Type.GetType (_class, true));
@@ -90,35 +102,37 @@ public partial class PUCode : PUCodeBase {
 							return true;
 						});
 				}
-			}
-			catch(Exception e) {
-				UnityEngine.Debug.Log ("Controller error: " + e);
-			}
 
-			try {
-				// Attach all of the named GameObjects
-				FieldInfo[] fields = controller.GetType().GetFields();
-				foreach (FieldInfo field in fields) {
-					if (field.FieldType == typeof(GameObject)) {
-
-						GameObject[] pAllObjects = (GameObject[])Resources.FindObjectsOfTypeAll(typeof(GameObject));
-
-						foreach (GameObject pObject in pAllObjects) {
-							if(pObject.name.Equals(field.Name)) {
-								field.SetValue(controller, pObject);
-							}
-						}
-					}
-				}
+				instances[_class] = controller;
 			}
 			catch(Exception e) {
 				UnityEngine.Debug.Log ("Controller error: " + e);
 			}
 		}
 
-		foreach(PUNotification subscribe in Notifications)
-		{
-			NotificationCenter.addObserver(controller, subscribe.name, scope(), subscribe.name);
+		if (controller != null) {
+			try {
+				// Attach all of the named GameObjects
+				FieldInfo[] fields = controller.GetType ().GetFields ();
+				foreach (FieldInfo field in fields) {
+					if (field.FieldType == typeof(GameObject)) {
+
+						GameObject[] pAllObjects = (GameObject[])Resources.FindObjectsOfTypeAll (typeof(GameObject));
+
+						foreach (GameObject pObject in pAllObjects) {
+							if (pObject.name.Equals (field.Name)) {
+								field.SetValue (controller, pObject);
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				UnityEngine.Debug.Log ("Controller error: " + e);
+			}
+		
+			foreach (PUNotification subscribe in Notifications) {
+				NotificationCenter.addObserver (controller, subscribe.name, scope (), subscribe.name);
+			}
 		}
 
 		base.gaxb_loadComplete ();
