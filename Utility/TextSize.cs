@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Text;
+using System.Text.RegularExpressions;
 
 /**
  
@@ -88,6 +89,9 @@ public class TextSize {
 
 	public void FitToWidth(float wantedWidth) {
 		string originalString = textMesh.text;
+
+		//originalString = Regex.Replace(originalString, "<[^>]*>", "");
+
 		string[] words = originalString.Split(' ');
 
 		StringBuilder sb = new StringBuilder ();
