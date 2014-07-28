@@ -251,12 +251,25 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		}
 	}
 
+	public bool PrivateHasTasks()
+	{
+		return (TaskQueue.Count > 0);
+	}
+
 	public static void ScheduleTask(Task newTask)
 	{
 		if (System.Object.ReferenceEquals(currentGameObject, null)) {
 			return;
 		}
 		currentGameObject.PrivateScheduleTask(newTask);
+	}
+
+	public static bool HasTasks()
+	{
+		if (System.Object.ReferenceEquals(currentGameObject, null)) {
+			return false;
+		}
+		return currentGameObject.PrivateHasTasks ();
 	}
 }
 
