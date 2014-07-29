@@ -307,8 +307,16 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 	public void OnMouseMoved()
 	{
+		Debug.Log ("OnMouseMoved");
 		mouseCancelled = false;
 		PassMouseMethod ("OnMouseMoved");
+		mouseCancelled = false;
+	}
+		
+	public void OnMouseDrag()
+	{
+		mouseCancelled = false;
+		PassMouseMethod2 ("OnMouseDrag");
 		mouseCancelled = false;
 	}
 

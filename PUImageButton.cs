@@ -22,7 +22,7 @@ public enum PlanetUnityButtonState {Normal, Highlighted, Undefined};
 
 public interface IPUButton {
 	void updateButtonToState(PlanetUnityButtonState newState);
-	void performTouchUp();
+	void performTouchUp(bool isLongPress);
 	void performTouchDown();
 }
 
@@ -32,6 +32,8 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 
 	private bool trackingMouse = false;
 	private PlanetUnityButtonState btnState; 
+	private DateTime mouseDownTime;
+	private Vector3 mouseDownPos;
 
 	public void OnMouseCancelled() {
 		trackingMouse = false;
@@ -56,11 +58,27 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 	public void OnMouseDown() {
 		entity.performTouchDown ();
 
+		mouseDownTime = DateTime.Now;
+		mouseDownPos = Input.mousePosition;
+
 		trackingMouse = true;
 		btnState = PlanetUnityButtonState.Highlighted;
 		entity.updateButtonToState (PlanetUnityButtonState.Highlighted);
 
 		NotificationCenter.postNotification (null, PlanetUnity.BUTTONTOUCHDOWN, NotificationCenter.Args("sender", this));
+	}
+
+	public void OnMouseDrag()
+	{
+		if (trackingMouse) {
+			Vector3 newMousePos = Input.mousePosition;
+			float diffInSeconds = (float)((DateTime.Now - mouseDownTime).TotalSeconds);
+			if (Vector3.Distance (newMousePos, mouseDownPos) > 25.0f) {
+				mouseDownTime = DateTime.Now;
+			} else if(diffInSeconds > 1.0f) {
+				OnMouseUp ();
+			}
+		}
 	}
 
 	public void OnMouseUp() {
@@ -70,8 +88,10 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 		btnState = PlanetUnityButtonState.Normal;
 		entity.updateButtonToState (PlanetUnityButtonState.Normal);
 
+		float diffInSeconds = (float)((DateTime.Now - mouseDownTime).TotalSeconds);
+
 		if (shouldCallTouchUp) {
-			entity.performTouchUp ();
+			entity.performTouchUp ((diffInSeconds > 0.5f));
 		}
 
 		NotificationCenter.postNotification (null, PlanetUnity.BUTTONTOUCHUP, NotificationCenter.Args("sender", this));
@@ -83,10 +103,10 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Undefined;
 	private Color savedColor = Color.white;
 
-	public void performTouchUp()
+	public void performTouchUp(bool isLongPress)
 	{
 		if (onTouchUpExists) {
-			NotificationCenter.postNotification (scope (), this.onTouchUp, NotificationCenter.Args("sender", this));
+			NotificationCenter.postNotification (scope (), this.onTouchUp, NotificationCenter.Args("sender", this, "isLongPress", isLongPress));
 		}
 	}
 

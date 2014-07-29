@@ -22,10 +22,10 @@ using System.Collections;
 public partial class PULabelButton : PULabelButtonBase, IPUButton {
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
 
-	public virtual void performTouchUp()
+	public virtual void performTouchUp(bool isLongPress)
 	{
 		if (onTouchUpExists) {
-			NotificationCenter.postNotification (scope (), this.onTouchUp, NotificationCenter.Args("sender", this));
+			NotificationCenter.postNotification (scope (), this.onTouchUp, NotificationCenter.Args("sender", this, "isLongPress", isLongPress));
 		}
 	}
 

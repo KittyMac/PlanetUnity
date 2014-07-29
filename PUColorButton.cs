@@ -23,10 +23,10 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 	public PlanetUnityButtonState state = PlanetUnityButtonState.Normal;
 	private Color savedColor = Color.white;
 
-	public void performTouchUp()
+	public void performTouchUp(bool isLongPress)
 	{
 		if (onTouchUpExists) {
-			NotificationCenter.postNotification (scope (), this.onTouchUp, NotificationCenter.Args("sender", this));
+			NotificationCenter.postNotification (scope (), this.onTouchUp, NotificationCenter.Args("sender", this, "isLongPress", isLongPress));
 		}
 	}
 
