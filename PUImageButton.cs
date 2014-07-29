@@ -91,7 +91,7 @@ public class PlanetUnityButtonScript : MonoBehaviour {
 		float diffInSeconds = (float)((DateTime.Now - mouseDownTime).TotalSeconds);
 
 		if (shouldCallTouchUp) {
-			entity.performTouchUp ((diffInSeconds > 0.5f));
+			entity.performTouchUp ((diffInSeconds > 1.0f));
 		}
 
 		NotificationCenter.postNotification (null, PlanetUnity.BUTTONTOUCHUP, NotificationCenter.Args("sender", this));

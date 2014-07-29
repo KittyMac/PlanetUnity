@@ -254,6 +254,11 @@ public class PlanetUnityScrollScript : MonoBehaviour
 		}
 	}
 
+	public void OnMouseDrag()
+	{
+
+	}
+
 	public void OnMouseUp ()
 	{
 		if (scrollEnabled == false)
