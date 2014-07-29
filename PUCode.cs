@@ -56,14 +56,19 @@ public partial class PUCode : PUCodeBase {
 		gameObject.name = _class;
 	}
 
+	public static IPUCode GetSingletonByName(string name){
+		return (IPUCode)instances [name];
+	}
+
 	public void gaxb_loadComplete()
 	{
 		if (singleton) {
-			if (instances[_class] != null && instances[_class] != this) {
-				GameObject.Destroy(this.gameObject);
-
-				MonoBehaviour.DontDestroyOnLoad(this.gameObject);
+			if (instances [_class] != null && instances [_class] != this) {
+				GameObject.Destroy (this.gameObject);
 				controller = (IPUCode)instances[_class];
+			} else {
+				MonoBehaviour.DontDestroyOnLoad(this.gameObject);
+				this.gameObject.transform.parent = null;
 			}
 		}
 
@@ -103,7 +108,10 @@ public partial class PUCode : PUCodeBase {
 						});
 				}
 
-				instances[_class] = controller;
+				if(singleton){
+					Debug.Log("Saving instance class for: "+_class);
+					instances[_class] = controller;
+				}
 			}
 			catch(Exception e) {
 				UnityEngine.Debug.Log ("Controller error: " + e);
