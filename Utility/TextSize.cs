@@ -65,9 +65,23 @@ public class TextSize {
 		float w = 0;
 		char c;
 		string oldText = textMesh.text;
+		bool insideMarkup = false;
 
 		for (int i=0; i<charList.Length; i++){
 			c = charList[i];
+
+			if (c == '<') {
+				insideMarkup = true;
+				continue;
+			}
+			if (c == '>') {
+				insideMarkup = false;
+				continue;
+			}
+
+			if (insideMarkup) {
+				continue;
+			}
 
 			if (dict.ContainsKey(c)){
 				w += (float)dict[c];
@@ -103,7 +117,7 @@ public class TextSize {
 			int idx = sb.Length;
 			sb.Append (word);
 
-			textMesh.text = sb.ToString();
+			textMesh.text = Regex.Replace(sb.ToString(), "<[^>]*>", "");
 			stringWidth = renderer.bounds.size.x;
 
 			if (stringWidth > wantedWidth) {
@@ -119,7 +133,7 @@ public class TextSize {
 		sb2.Append (sb.ToString ());
 
 		// 2) break on chars
-		textMesh.text = sb2.ToString();
+		textMesh.text = sb2.ToString ();
 		stringWidth = renderer.bounds.size.x;
 		if (stringWidth > wantedWidth) {
 			char[] chars = originalString.ToCharArray();
@@ -132,7 +146,7 @@ public class TextSize {
 				int idx = sb.Length;
 				sb.Append (word);
 
-				textMesh.text = sb.ToString();
+				textMesh.text = Regex.Replace(sb2.ToString(), "<[^>]*>", "");
 				stringWidth = renderer.bounds.size.x;
 
 				if (stringWidth > wantedWidth) {
