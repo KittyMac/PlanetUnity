@@ -67,7 +67,7 @@ public class PUTableCell {
 		table = parent;
 		cellData = data;
 
-		TextAsset stringData = Resources.Load (XmlPath ()) as TextAsset;
+		TextAsset stringData = Resources.Load (PlanetUnityOverride.processXMLPath (XmlPath ())) as TextAsset;
 		puGameObject = (PUGameObject)PlanetUnity.loadXML (stringData.text, parent, NotificationCenter.Args ("baseRenderQueue", baseRenderQueue));
 
 		// Attach all of the PlanetUnity objects

@@ -43,6 +43,10 @@ public class PlanetUnityOverride {
 	public static int minFPS = 10;
 	public static int maxFPS = 60;
 
+	public static Func<string, string> processXMLPath = (path) => path;
+	//public static Func<string, string> processResourcePath = (path) => path;
+
+
 	public static string processString(object o, string s)
 	{
 		if (s == null)
@@ -230,7 +234,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		Stopwatch sw = Stopwatch.StartNew();
 
-		TextAsset stringData = Resources.Load(xmlPath) as TextAsset;
+		TextAsset stringData = Resources.Load(PlanetUnityOverride.processXMLPath (xmlPath)) as TextAsset;
 		scene = (PUScene)PlanetUnity.loadXML(stringData.text, gameObject, null);
 
 		sw.Stop();
