@@ -128,15 +128,20 @@ public class PlanetUnityLanguage
 			return Translate(key, "en");
 		}
 
-		string value = languageDict[key];
-		if(value == null)
-		{
-			if(code.Equals("en"))
-				return key;
-			return Translate(key, "en");
+		try{
+			string value = languageDict[key];
+			if(value == null)
+			{
+				if(code.Equals("en"))
+					return key;
+				return Translate(key, "en");
+			}
+			return value;
+		}catch{
+			Debug.Log ("Language key " + key + " does not exist");
 		}
 
-		return value;
+		return key;
 	}
 
 	static public string Translate(string key)

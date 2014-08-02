@@ -18,6 +18,11 @@ using System.Xml;
 using System.Reflection;
 using System;
 using System.Collections;
+using System.Text;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public partial class PUGameObject : PUGameObjectBase {
 
@@ -27,6 +32,26 @@ public partial class PUGameObject : PUGameObjectBase {
 	public BoxCollider gameCollider;
 
 	public GameObject gameObject;
+
+	public string XmlBounds()
+	{
+		// This method attempts to convert the current transform into a bounds string
+		// suitable for using in the XML
+		PUGameObject parentObj = parent as PUGameObject;
+		if (parentObj != null) {
+			return string.Format ("{0},{1},{2},{3}",
+				gameObject.transform.localPosition.x,
+				(parentObj.bounds.h-gameObject.transform.localPosition.y)-bounds.h,
+				bounds.w,
+				bounds.h);
+		}
+
+		return string.Format ("{0},{1},{2},{3}",
+			gameObject.transform.localPosition.x,
+			(Screen.height-gameObject.transform.localPosition.y)-bounds.h,
+			bounds.w,
+			bounds.h);
+	}
 
 	public virtual bool captureMouse()
 	{
@@ -74,6 +99,12 @@ public partial class PUGameObject : PUGameObjectBase {
 
 	public void gaxb_loadComplete()
 	{
+
+		#if UNITY_EDITOR
+		PUGameObjectEditor editorScript = (PUGameObjectEditor)gameObject.AddComponent(typeof(PUGameObjectEditor));
+		editorScript.entity = this;
+		#endif
+
 		if (clipDepth) {
 			depthMaskCounter--;
 		}
@@ -220,3 +251,32 @@ public partial class PUGameObject : PUGameObjectBase {
 		gameObject = null;
 	}
 }
+
+#if UNITY_EDITOR
+
+public class PUGameObjectEditor : MonoBehaviour
+{
+	public PUGameObject entity;
+	public void CopyBoundsToClipboard()
+	{
+		UnityEngine.Debug.Log ("Bounds copied to clipboard");
+		EditorGUIUtility.systemCopyBuffer = string.Format("@{0}_BOUNDS={1}\n", entity.title.ToUpper(), entity.XmlBounds());
+	}
+}
+
+[CustomEditor(typeof(PUGameObjectEditor))]
+public class PUGameObjectEditor2 : Editor
+{
+	public override void OnInspectorGUI()
+	{
+		DrawDefaultInspector();
+
+		PUGameObjectEditor myScript = (PUGameObjectEditor)target;
+		if(GUILayout.Button("Copy Bounds To Clipboard"))
+		{
+			myScript.CopyBoundsToClipboard();
+		}
+	}
+}
+	
+#endif

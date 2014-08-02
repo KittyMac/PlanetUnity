@@ -43,7 +43,10 @@ public class PlanetUnityOverride {
 	public static int minFPS = 10;
 	public static int maxFPS = 60;
 
-	public static Func<string, string> processXMLPath = (path) => path;
+	public static Func<string, string> xmlFromPath = (path) => { 
+		TextAsset stringData = Resources.Load (path) as TextAsset;
+		return stringData.text;
+	};
 	//public static Func<string, string> processResourcePath = (path) => path;
 
 
@@ -234,8 +237,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		Stopwatch sw = Stopwatch.StartNew();
 
-		TextAsset stringData = Resources.Load(PlanetUnityOverride.processXMLPath (xmlPath)) as TextAsset;
-		scene = (PUScene)PlanetUnity.loadXML(stringData.text, gameObject, null);
+		scene = (PUScene)PlanetUnity.loadXML(PlanetUnityOverride.xmlFromPath(xmlPath), gameObject, null);
 
 		sw.Stop();
 
@@ -275,9 +277,44 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		}
 		return currentGameObject.PrivateHasTasks ();
 	}
+
+	public void PrintAllBounds()
+	{
+		if (scene == null) {
+			UnityEngine.Debug.Log ("You need to press this button while in play mode");
+		} else {
+			StringBuilder sb = new StringBuilder ();
+
+			scene.performOnChildren( val => {
+				PUGameObject oo = val as PUGameObject;
+				if (oo != null && oo.title != null) {
+					sb.AppendFormat("@{0}_BOUNDS={1}\n", oo.title.ToUpper(), oo.XmlBounds());
+				}
+				return true;
+			});
+
+			UnityEngine.Debug.Log ("Bounds copied to clipboard");
+			EditorGUIUtility.systemCopyBuffer = sb.ToString ();
+		}
+	}
 }
 
 #if UNITY_EDITOR
+
+[CustomEditor(typeof(PlanetUnityGameObject))]
+public class PlanetUnityGameObjectEditor : Editor
+{
+	public override void OnInspectorGUI()
+	{
+		DrawDefaultInspector();
+
+		PlanetUnityGameObject myScript = (PlanetUnityGameObject)target;
+		if(GUILayout.Button("Copy All Bounds To Clipboard"))
+		{
+			myScript.PrintAllBounds();
+		}
+	}
+}
 
 public class CustomPostprocessor : AssetPostprocessor
 {
