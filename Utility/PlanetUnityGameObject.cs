@@ -277,7 +277,8 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		}
 		return currentGameObject.PrivateHasTasks ();
 	}
-
+	
+#if UNITY_EDITOR
 	public void PrintAllBounds()
 	{
 		if (scene == null) {
@@ -297,6 +298,7 @@ public class PlanetUnityGameObject : MonoBehaviour {
 			EditorGUIUtility.systemCopyBuffer = sb.ToString ();
 		}
 	}
+#endif
 }
 
 #if UNITY_EDITOR
