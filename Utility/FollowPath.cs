@@ -2,6 +2,8 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Resources;
+using System.Security.Permissions;
 
 public class FollowPath : MonoBehaviour {
 
@@ -46,11 +48,18 @@ public class FollowPath : MonoBehaviour {
 	}
 
 	void Start() {
+		Reset(false);
+	}
 
+	public void Reset(bool useCurrentPosition) {
 		// Parse the pathPoints string.  it is comma-delimited list of floats, we need to separate into vec3 list
 		points = new List<Vector3>();
 
 		var elements = pathPoints.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+
+		if (useCurrentPosition) {
+			points.Add (gameObject.transform.localPosition);
+		}
 
 		float x = 0, y = 0, z = 0;
 		int idx = 0;
@@ -72,14 +81,22 @@ public class FollowPath : MonoBehaviour {
 
 			idx++;
 		}
+
+		anim = 0;
 	}
 
 	void Update() {
 
 		anim += Time.deltaTime;
 
-		while (anim > rate) {
-			anim -= rate;
+		if (loop == false) {
+			if (anim > rate) {
+				anim = rate - 0.01f;
+			}
+		} else {
+			while (anim > rate) {
+				anim -= rate;
+			}
 		}
 
 		// Find the correct position for the camera...
