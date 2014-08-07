@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
+using System;
 
 /**
  
@@ -133,6 +134,7 @@ public class TextSize {
 		sb2.Append (sb.ToString ());
 
 		// 2) break on chars
+		/*
 		textMesh.text = sb2.ToString ();
 		stringWidth = renderer.bounds.size.x;
 		if (stringWidth > wantedWidth) {
@@ -157,11 +159,18 @@ public class TextSize {
 					sb.Append (word);
 				}
 				sb.Append (" ");
+
+				Debug.Log (":: " + sb.ToString ());
 			}
 
 			sb2.Append (sb.ToString ());
 			textMesh.text = sb2.ToString();
-		}
+
+			Debug.Log (":: " + sb.ToString ());
+			Debug.Log (":: " + sb2.ToString ());
+		}*/
+
+		textMesh.text = sb2.ToString();
 
 	}
 
