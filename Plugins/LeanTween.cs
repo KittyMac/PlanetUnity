@@ -1440,7 +1440,7 @@ public static void update() {
 
 		dtEstimated = Time.realtimeSinceStartup - previousRealTime;
 		if(dtEstimated>0.2f) // a catch put in, when at the start sometimes this number can grow unrealistically large
-			dtEstimated = 0.2f;
+			dtEstimated = 0.0f;
 		previousRealTime = Time.realtimeSinceStartup;
 		dtActual = Time.deltaTime*Time.timeScale;
 
