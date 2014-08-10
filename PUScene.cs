@@ -330,8 +330,8 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 public partial class PUScene : PUSceneBase {
 
-	private PlanetUnityCameraObject cameraObject = null;
-	private PlanetUnityEventMonitor eventMonitor = null;
+	public PlanetUnityCameraObject cameraObject = null;
+	public PlanetUnityEventMonitor eventMonitor = null;
 	private GameObject eventsObject = null;
 
 	public void gaxb_loadComplete()
