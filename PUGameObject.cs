@@ -19,6 +19,7 @@ using System.Reflection;
 using System;
 using System.Collections;
 using System.Text;
+using System.IO;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,10 +36,14 @@ public partial class PUGameObject : PUGameObjectBase {
 
 	public string XmlBounds()
 	{
+		if (bounds == null) {
+			return "0,0,0,0";
+		}
+
 		// This method attempts to convert the current transform into a bounds string
 		// suitable for using in the XML
 		PUGameObject parentObj = parent as PUGameObject;
-		if (parentObj != null) {
+		if (parentObj != null && gameObject != null && gameObject.transform != null) {
 			return string.Format ("{0},{1},{2},{3}",
 				gameObject.transform.localPosition.x,
 				(parentObj.bounds.h-gameObject.transform.localPosition.y)-bounds.h,
