@@ -103,6 +103,10 @@ public class PlanetUnityLanguage
 
 		if (!allLanguages.TryGetValue (code, out languageDict)) {
 			TextAsset stringData = Resources.Load("languages/"+code+"/Localizable.strings") as TextAsset;
+			if (stringData == null) {
+				// default to English in cases where
+				stringData = Resources.Load("languages/en/Localizable.strings") as TextAsset;
+			}
 			string stringsFile = stringData.text;
 
 			Dictionary<string,string> currentLanguage = new Dictionary<string,string> ();
