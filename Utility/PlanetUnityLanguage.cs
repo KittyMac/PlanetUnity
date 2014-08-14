@@ -102,12 +102,11 @@ public class PlanetUnityLanguage
 		} catch {}
 
 		if (!allLanguages.TryGetValue (code, out languageDict)) {
-			TextAsset stringData = Resources.Load("languages/"+code+"/Localizable.strings") as TextAsset;
-			if (stringData == null) {
+			string stringsFile = PlanetUnityResourceCache.GetTextFile ("languages/" + code + "/Localizable.strings");
+			if (stringsFile == null) {
 				// default to English in cases where
-				stringData = Resources.Load("languages/en/Localizable.strings") as TextAsset;
+				stringsFile = PlanetUnityResourceCache.GetTextFile ("languages/en/Localizable.strings");
 			}
-			string stringsFile = stringData.text;
 
 			Dictionary<string,string> currentLanguage = new Dictionary<string,string> ();
 			MatchCollection matches = Regex.Matches (stringsFile, "\"([^\"]+)\"\\s*=\\s*\"([^\"]+)\"");

@@ -121,7 +121,8 @@ public partial class PUScene : PUSceneBase {
 public class PUSceneBase : PUGameObject {
 
 
-	private Type planetOverride = Type.GetType("PlanetUnityOverride");
+	private static Type planetOverride = Type.GetType("PlanetUnityOverride");
+	private static MethodInfo processStringMethod = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static);
 
 
 
@@ -213,12 +214,12 @@ public class PUSceneBase : PUGameObject {
 
 		string attr;
 		attr = reader.GetAttribute("adjustCamera");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "true"; }
 		if(attr != null) { adjustCamera = bool.Parse(attr); adjustCameraExists = true; } 
 		
 		attr = reader.GetAttribute("fps");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { fps = int.Parse(attr); fpsExists = true; } 
 		
 

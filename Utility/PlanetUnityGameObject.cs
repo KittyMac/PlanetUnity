@@ -43,9 +43,8 @@ public class PlanetUnityOverride {
 	public static int minFPS = 10;
 	public static int maxFPS = 60;
 
-	public static Func<string, string> xmlFromPath = (path) => { 
-		TextAsset stringData = Resources.Load (path) as TextAsset;
-		return stringData.text;
+	public static Func<string, string> xmlFromPath = (path) => {
+		return PlanetUnityResourceCache.GetTextFile(path);
 	};
 	//public static Func<string, string> processResourcePath = (path) => path;
 
@@ -62,7 +61,8 @@ public class PlanetUnityOverride {
 			string evalListString = s.Substring(6, s.Length-7);
 
 			var parts = evalListString.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
-			List<string> results = new List<string> ();
+			string[] results = new string[12];
+			int nresults = 0;
 
 			if (o is GameObject) {
 				// Use the size of the display
@@ -100,17 +100,18 @@ public class PlanetUnityOverride {
 			}
 
 			foreach (string part in parts) {
-				results.Add (mathParser.Parse(part).ToString());
+				results [nresults] = mathParser.Parse (part).ToString ();
+				nresults++;
 			}
 
-			if(results.Count == 4 && o is PUGameObject)
+			if(nresults == 4 && o is PUGameObject)
 			{
 				PUGameObject entity = (PUGameObject)o;
 				entity.lastY = float.Parse (results [1]) + float.Parse (results [3]);
 				entity.lastX = float.Parse (results [0]) + float.Parse (results [2]);
 			}
 
-			return string.Join(",", results.ToArray());
+			return string.Join (",", results, 0, nresults);
 
 		} else if(s.StartsWith("@")) {
 
@@ -120,7 +121,7 @@ public class PlanetUnityOverride {
 				return localizedString;
 			}
 		}
-		
+
 		return s;
 	}
 
@@ -179,7 +180,9 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		currentGameObject = this;
 
+		#if UNITY_EDITOR
 		NotificationCenter.addObserver (this, "PlanetUnityReloadScene", null, "ReloadScene");
+		#endif
 
 		ReloadScene ();
 
@@ -196,25 +199,24 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		#endif
 	}
 
+	void DeviceWillRotate(string msg)
+	{
+		ReloadScene ();
+	}
+
 	void OnDestroy () {
 
 		NotificationCenter.removeObserver (this);
 
-		if (scene != null) {
-			scene.performOnChildren (val => {
-				MethodInfo method = val.GetType ().GetMethod ("gaxb_unload");
-				if (method != null) {
-					method.Invoke (val, null);
-				}
-				return true;
-			});
-		}
+		RemoveScene ();
 	}
 
 	void Update () {
 		if (shouldReloadMainXML) {
 			shouldReloadMainXML = false;
+			#if UNITY_EDITOR
 			ReloadScene ();
+			#endif
 		}
 
 		lock (_queueLock)
@@ -226,6 +228,16 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 	public void RemoveScene () {
 		if (scene != null) {
+			scene.performOnChildren (val => {
+				MethodInfo method = val.GetType ().GetMethod ("gaxb_unload");
+				if (method != null) {
+					method.Invoke (val, null);
+				}
+				return true;
+			});
+
+			scene.gaxb_unload ();
+
 			Destroy (scene.gameObject);
 			scene = null;
 		}
@@ -235,15 +247,17 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		RemoveScene ();
 
-		Stopwatch sw = Stopwatch.StartNew();
+		Stopwatch sw = Stopwatch.StartNew ();
 
-		scene = (PUScene)PlanetUnity.loadXML(PlanetUnityOverride.xmlFromPath(xmlPath), gameObject, null);
+		scene = (PUScene)PlanetUnity.loadXML (PlanetUnityOverride.xmlFromPath (xmlPath), gameObject, null);
 
-		sw.Stop();
+		sw.Stop ();
 
-		UnityEngine.Debug.Log("["+sw.Elapsed.TotalMilliseconds+"ms] Loading scene "+xmlPath+".xml");
+		UnityEngine.Debug.Log ("[" + sw.Elapsed.TotalMilliseconds + "ms] Loading scene " + xmlPath + ".xml");
+
+		Profile.PrintResults ();
+		Profile.Reset ();
 	}
-
 
 	private Queue<Task> TaskQueue = new Queue<Task>();
 	private object _queueLock = new object();

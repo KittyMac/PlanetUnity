@@ -131,7 +131,8 @@ public partial class PUGameObject : PUGameObjectBase {
 public class PUGameObjectBase : PUObject {
 
 
-	private Type planetOverride = Type.GetType("PlanetUnityOverride");
+	private static Type planetOverride = Type.GetType("PlanetUnityOverride");
+	private static MethodInfo processStringMethod = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static);
 
 
 
@@ -243,32 +244,32 @@ public class PUGameObjectBase : PUObject {
 
 		string attr;
 		attr = reader.GetAttribute("bounds");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { bounds = attr; boundsExists = true; } 
 		
 		attr = reader.GetAttribute("hidden");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { hidden = bool.Parse(attr); hiddenExists = true; } 
 		
 		attr = reader.GetAttribute("lastY");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { lastY = float.Parse(attr); lastYExists = true; } 
 		
 		attr = reader.GetAttribute("lastX");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { lastX = float.Parse(attr); lastXExists = true; } 
 		
 		attr = reader.GetAttribute("renderQueueOffset");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { renderQueueOffset = int.Parse(attr); renderQueueOffsetExists = true; } 
 		
 		attr = reader.GetAttribute("clipDepth");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "false"; }
 		if(attr != null) { clipDepth = bool.Parse(attr); clipDepthExists = true; } 
 		
 		attr = reader.GetAttribute("clipStencil");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "false"; }
 		if(attr != null) { clipStencil = bool.Parse(attr); clipStencilExists = true; } 
 		

@@ -274,6 +274,7 @@ public class LTDescr{
 		this.onCompleteObject = null;
 		this.onCompleteParam = null;
 		this.point = Vector3.zero;
+		this.useFrames = true;
 		global_counter++;
 	}
 
@@ -1456,13 +1457,16 @@ public static void update() {
 				trans = tween.trans;
 				timeTotal = tween.time;
 				tweenAction = tween.type;
+
+				tween.useFrames = true;
+				tween.useEstimatedTime = false;
 				
 				dt = dtActual;
 				if( tween.useEstimatedTime ){
 					dt = dtEstimated;
 					timeTotal = tween.time;
 				}else if( tween.useFrames ){
-					dt = 1;
+					dt = 1.0f / PlanetUnityOverride.maxFPS;
 				}else if(tween.direction==0f){
 					dt = 0f;
 				}
@@ -3096,6 +3100,7 @@ private static int pushNewTween( GameObject gameObject, Vector3 to, float time, 
 	tween.time = time;
 	tween.type = tweenAction;
 	tween.optional = optional;
+	tween.useFrames = true;
 	tween.setId( (uint)i );
 	//tween.hasPhysics = gameObject.rigidbody!=null;
 

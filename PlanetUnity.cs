@@ -77,13 +77,14 @@ public class PlanetUnity {
 					xmlNamespace = Path.GetFileName (reader.NamespaceURI);
 					try
 					{
+
 						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
 
 						object entityObject = (Activator.CreateInstance (entityClass));						
-						
+
 						MethodInfo method = entityClass.GetMethod ("gaxb_load");
 						method.Invoke (entityObject, new[] { reader, rootEntity, args });
-						
+
 						if (reader.IsEmptyElement == false) {
 							rootEntity = entityObject;
 						} else {
@@ -137,7 +138,7 @@ public class PlanetUnity {
 					try{
 						xmlNamespace = Path.GetFileName (reader.NamespaceURI);
 						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
-						
+
 						MethodInfo method = entityClass.GetMethod ("gaxb_loadComplete");
 						if(method != null) { method.Invoke (rootEntity, null); }
 
@@ -152,6 +153,7 @@ public class PlanetUnity {
 					}catch(TypeLoadException) { }
 					break;
 				}
+
 			}
 		}
 

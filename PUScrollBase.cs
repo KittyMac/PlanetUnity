@@ -159,7 +159,8 @@ public partial class PUScroll : PUScrollBase {
 public class PUScrollBase : PUGameObject {
 
 
-	private Type planetOverride = Type.GetType("PlanetUnityOverride");
+	private static Type planetOverride = Type.GetType("PlanetUnityOverride");
+	private static MethodInfo processStringMethod = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static);
 
 
 
@@ -267,30 +268,30 @@ public class PUScrollBase : PUGameObject {
 
 		string attr;
 		attr = reader.GetAttribute("contentSize");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "0,0"; }
 		if(attr != null) { contentSize = attr; contentSizeExists = true; } 
 		
 		attr = reader.GetAttribute("bounces");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "true"; }
 		if(attr != null) { bounces = bool.Parse(attr); bouncesExists = true; } 
 		
 		attr = reader.GetAttribute("pagingEnabled");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { pagingEnabled = bool.Parse(attr); pagingEnabledExists = true; } 
 		
 		attr = reader.GetAttribute("scrollEnabled");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "true"; }
 		if(attr != null) { scrollEnabled = bool.Parse(attr); scrollEnabledExists = true; } 
 		
 		attr = reader.GetAttribute("scrollDirection");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { scrollDirection = (PlanetUnity.ScrollDirection)System.Enum.Parse(typeof(PlanetUnity.ScrollDirection), attr); scrollDirectionExists = true; } 
 		
 		attr = reader.GetAttribute("directionalLockEnabled");
-		if(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "false"; }
 		if(attr != null) { directionalLockEnabled = bool.Parse(attr); directionalLockEnabledExists = true; } 
 		

@@ -128,7 +128,7 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 		Texture tex = null;
 		if(state == PlanetUnityButtonState.Normal)
 		{
-			tex = (Texture) Resources.Load (normalResourcePath);
+			tex = PlanetUnityResourceCache.GetTexture (normalResourcePath);
 			gameObject.renderer.material.mainTexture = tex;
 
 			if (touchColorExists) {
@@ -146,7 +146,7 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 		if(state == PlanetUnityButtonState.Highlighted)
 		{
 			if (highlightedResourcePathExists) {
-				tex = (Texture)Resources.Load (highlightedResourcePath);
+				tex = PlanetUnityResourceCache.GetTexture (highlightedResourcePath);
 				gameObject.renderer.material.mainTexture = tex;
 			}
 			if(touchColorExists) {

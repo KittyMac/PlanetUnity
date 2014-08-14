@@ -141,7 +141,8 @@ end
 public class <%= FULL_NAME_CAMEL %> : <%= superclassForItem(this) %> {
 
 <%  if (# this.attributes > 0) then %>
-	private Type planetOverride = Type.GetType("PlanetUnityOverride");
+	private static Type planetOverride = Type.GetType("PlanetUnityOverride");
+	private static MethodInfo processStringMethod = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static);
 <% end %>
 
 <%	if(hasSuperclass(this) == false) then
@@ -267,7 +268,7 @@ end
 		for k,v in pairs(this.attributes) do
 			gaxb_print("\t\tattr = reader.GetAttribute(\""..v.originalName.."\");\n")
 			
-			gaxb_print('\t\tif(attr != null && planetOverride != null) { attr = planetOverride.GetMethod("processString", BindingFlags.Public | BindingFlags.Static).Invoke(null, new [] {_parent, attr}).ToString(); }\n');
+			gaxb_print('\t\tif(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }\n');
 			
 			if (v.default ~= nil) then
 				gaxb_print("\t\tif(attr == null) { attr = \""..v.default.."\"; }\n")

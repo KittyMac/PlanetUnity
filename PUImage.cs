@@ -72,9 +72,8 @@ public partial class PUImage : PUImageBase {
 		filter.mesh = CreateMesh();
 
 		// Set texture
-		Texture2D tex = (Texture2D)Resources.Load (resourcePath);
+		Texture2D tex = PlanetUnityResourceCache.GetTexture (resourcePath);
 		if (tex != null) {
-			tex.filterMode = FilterMode.Bilinear;
 			gameObject.renderer.material.mainTexture = tex;
 		}
 

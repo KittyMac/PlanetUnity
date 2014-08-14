@@ -19,6 +19,23 @@ using System;
 using System.Reflection;
 using System.Collections;
 
+public class PlanetUnityCameraShim : MonoBehaviour {
+
+	public PlanetUnityCameraObject cameraObject;
+
+	void OnPreRender() {
+		if (cameraObject != null) {
+			cameraObject.OnPreRender ();
+		}
+	}
+
+	void OnPostRender() {
+		if (cameraObject != null) {
+			cameraObject.OnPostRender ();
+		}
+	}
+}
+
 public class PlanetUnityCameraObject : MonoBehaviour {
 
 	public PUScene scene;
@@ -26,14 +43,13 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 	protected float currentAspectRatio;
 
+	const float depth = 1024;
+
 	float timeSinceLastFPSChange = 0;
 	int newDesiredFPSRate = 0;
 
-	public void AdjustCamera() {
-		const float depth = 1024;
-
-		// TODO: put in a timer before we drop to a lower FPS from a higher FPS
-
+	public void HandleDynamicFPS()
+	{
 		if (scene.fps > 0) {
 			Application.targetFrameRate = scene.fps;
 		} else {
@@ -56,7 +72,11 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 			PlanetUnityGameObject.desiredFPS = PlanetUnityOverride.minFPS;
 		}
+	}
+		
+	public void AdjustCamera() {
 
+		PlanetUnityCameraShim shim;
 		if (camera == null) {
 			var original = GameObject.FindWithTag ("MainCamera");
 
@@ -71,7 +91,6 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 			original.camera.cullingMask = 0x0FFFFFFF;
 
-
 			foreach (Component comp in camera.GetComponents(typeof(Component))) {
 				if (comp is Transform)
 					continue;
@@ -79,12 +98,20 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 					continue;
 				Destroy (comp);
 			}
+
+			camera.gameObject.AddComponent (typeof(PlanetUnityCameraShim));
 		} else {
 			// Force the scene to reload so we can easily test different screen resolutions
 			if (camera.aspect != currentAspectRatio)
 			{
 				NotificationCenter.postNotification (null, "PlanetUnityReloadScene");
+				return;
 			}
+		}
+
+		shim = camera.gameObject.GetComponent (typeof(PlanetUnityCameraShim)) as PlanetUnityCameraShim;
+		if (shim != null) {
+			shim.cameraObject = this;
 		}
 
 		if (camera.aspect == currentAspectRatio)
@@ -155,12 +182,12 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 		}
 	}
 
-	void Awake() {
-
+	public void OnPreRender() {
+		AdjustCamera ();
 	}
 
-	void Update () {
-		AdjustCamera ();
+	public void OnPostRender () {
+		HandleDynamicFPS ();
 	}
 }
 	
@@ -307,7 +334,6 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 
 	public void OnMouseMoved()
 	{
-		Debug.Log ("OnMouseMoved");
 		mouseCancelled = false;
 		PassMouseMethod ("OnMouseMoved");
 		mouseCancelled = false;
@@ -347,6 +373,17 @@ public partial class PUScene : PUSceneBase {
 		});
 
 		base.gaxb_loadComplete ();
+	}
+
+	public override void gaxb_unload()
+	{
+		base.gaxb_unload ();
+
+		GameObject.Destroy(cameraObject);
+		cameraObject = null;
+
+		GameObject.Destroy(eventMonitor);
+		eventMonitor = null;
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
