@@ -104,8 +104,9 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 			// Force the scene to reload so we can easily test different screen resolutions
 			if (camera.aspect != currentAspectRatio)
 			{
-				NotificationCenter.postNotification (null, "PlanetUnityReloadScene");
-				return;
+				if (PlanetUnityOverride.orientationDidChange (scene)) {
+					return;
+				}
 			}
 		}
 

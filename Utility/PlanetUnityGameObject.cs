@@ -46,6 +46,12 @@ public class PlanetUnityOverride {
 	public static Func<string, string> xmlFromPath = (path) => {
 		return PlanetUnityResourceCache.GetTextFile(path);
 	};
+
+	public static Func<PUScene, bool> orientationDidChange = (scene) => {
+		PlanetUnityGameObject.currentGameObject.ReloadScene();
+		return true;
+	};
+
 	//public static Func<string, string> processResourcePath = (path) => path;
 
 
@@ -180,10 +186,6 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		currentGameObject = this;
 
-		#if UNITY_EDITOR
-		NotificationCenter.addObserver (this, "PlanetUnityReloadScene", null, "ReloadScene");
-		#endif
-
 		ReloadScene ();
 
 		#if UNITY_EDITOR
@@ -197,11 +199,6 @@ public class PlanetUnityGameObject : MonoBehaviour {
 			}
 		});
 		#endif
-	}
-
-	void DeviceWillRotate(string msg)
-	{
-		ReloadScene ();
 	}
 
 	void OnDestroy () {
