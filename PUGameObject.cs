@@ -191,12 +191,14 @@ public partial class PUGameObject : PUGameObjectBase {
 		gaxb_load (null, null, null);
 
 		Vector3 savedPos = gameObject.transform.localPosition;
+		Vector3 savedScale = gameObject.transform.localScale;
 		Quaternion savedRot = gameObject.transform.localRotation;
 
 		gameObject.transform.parent = _parent.transform;
 
 		gameObject.transform.localPosition = savedPos;
 		gameObject.transform.localRotation = savedRot;
+		gameObject.transform.localScale = savedScale;
 
 		gameObject.layer = PlanetUnityOverride.puCameraLayer;
 

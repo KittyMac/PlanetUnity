@@ -84,8 +84,7 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 		buttonScript.entity = this;
 	}
 
-	public void SetColor(cColor c) {
+	public void SetSavedColor(cColor c) {
 		savedColor = new Color (c.r, c.g, c.b, c.a);
-		gameObject.renderer.material.color = savedColor;
 	}
 }
