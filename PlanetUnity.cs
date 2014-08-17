@@ -59,7 +59,7 @@ public class PlanetUnity {
 		return sb.ToString();
 	}
 
-	static public object loadXML(string xmlString, object parentObject, Hashtable args, bool fullLoad)
+	static public object loadXML(string xmlString, object parentObject, Hashtable args, Action<object,object,XmlReader> customBlock)
 	{
 		object rootEntity = parentObject;
 		object returnEntity = null;
@@ -81,15 +81,17 @@ public class PlanetUnity {
 						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
 						object entityObject = (Activator.CreateInstance (entityClass));						
 						
-						if(fullLoad){
+						if(customBlock == null){
 							method = entityClass.GetMethod ("gaxb_load");
 							method.Invoke (entityObject, new[] { reader, rootEntity, args });
+						}else{
+							customBlock(entityObject, rootEntity, reader);
 						}
 						
 						if (reader.IsEmptyElement == false) {
 							rootEntity = entityObject;
 						} else {
-							if(fullLoad){
+							if(customBlock == null){
 								method = entityClass.GetMethod ("gaxb_loadComplete");
 								if(method != null) { method.Invoke (entityObject, null); }
 							}
@@ -142,7 +144,7 @@ public class PlanetUnity {
 						xmlNamespace = Path.GetFileName (reader.NamespaceURI);
 						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
 						
-						if(fullLoad) {
+						if(customBlock == null) {
 							method = entityClass.GetMethod ("gaxb_loadComplete");
 							if(method != null) { method.Invoke (rootEntity, null); }
 						}
@@ -166,6 +168,6 @@ public class PlanetUnity {
 	
 	static public object loadXML(string xmlString, object parentObject, Hashtable args)
 	{
-		return loadXML(xmlString, parentObject, args, true);
+		return loadXML(xmlString, parentObject, args, null);
 	}
 }

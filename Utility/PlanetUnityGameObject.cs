@@ -239,6 +239,10 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		}
 	}
 
+	public PUScene Scene() {
+		return scene;
+	}
+
 	public void ReloadScene () {
 
 		RemoveScene ();

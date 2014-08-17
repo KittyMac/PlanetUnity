@@ -69,26 +69,31 @@ public partial class PUScroll : PUScrollBase
 		script.directionalLockEnabled = directionalLockEnabled;
 	}
 
+	public void CalculateContentSize()
+	{
+		float minX = 999999, maxX = -999999;
+		float minY = 999999, maxY = -999999;
+
+		foreach (PUGameObject go in children) {
+			if (go.bounds.x < minX)
+				minX = go.bounds.x;
+			if (go.bounds.y < minY)
+				minY = go.bounds.y;
+
+			if ((go.bounds.x+go.bounds.w) > maxX)
+				maxX = (go.bounds.x+go.bounds.w);
+			if ((go.bounds.y+go.bounds.h) > maxY)
+				maxY = (go.bounds.y+go.bounds.h);
+		}
+
+		contentSize = new cVector2 (maxX - minX, maxY - minY);
+	}
+
 	public void gaxb_loadComplete()
 	{
 		// if contentSize does not exist, run through planet children and calculate a content size
 		if ((int)contentSize.x == 0  || (int)contentSize.y == 0) {
-			float minX = 999999, maxX = -999999;
-			float minY = 999999, maxY = -999999;
-
-			foreach (PUGameObject go in children) {
-				if (go.bounds.x < minX)
-					minX = go.bounds.x;
-				if (go.bounds.y < minY)
-					minY = go.bounds.y;
-
-				if ((go.bounds.x+go.bounds.w) > maxX)
-					maxX = (go.bounds.x+go.bounds.w);
-				if ((go.bounds.y+go.bounds.h) > maxY)
-					maxY = (go.bounds.y+go.bounds.h);
-			}
-
-			contentSize = new cVector2 (maxX - minX, maxY - minY);
+			CalculateContentSize ();
 		}
 
 		if (scrollDirectionExists == false) {
