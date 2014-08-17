@@ -54,9 +54,9 @@ public partial class PULabelButton : PULabelButtonBase, IPUButton {
 
 	public override void UpdateGeometry()
 	{
-		CreateCollider ();
-
 		base.UpdateGeometry ();
+
+		CreateCollider ();
 	}
 
 	private void CreateCollider(){

@@ -16,6 +16,7 @@
 using UnityEngine;
 using System.Xml;
 using System.Collections;
+using System;
 
 public partial class PULabel : PULabelBase {
 
@@ -36,6 +37,34 @@ public partial class PULabel : PULabelBase {
 		}
 
 		return Vector3.zero;
+	}
+
+	public override void UpdateGeometry()
+	{
+		base.UpdateGeometry ();
+
+		LoadTextString (value);
+
+		CreateGeometry ();
+	}
+
+	private void CreateGeometry()
+	{
+		if (this.alignment == PlanetUnity.LabelAlignment.left) {
+			textMesh.alignment = TextAlignment.Left;
+			textMesh.anchor = TextAnchor.UpperLeft;
+			gameObject.transform.localPosition += new Vector3(0, bounds.h, 0);
+		}
+		if (this.alignment == PlanetUnity.LabelAlignment.center) {
+			textMesh.alignment = TextAlignment.Center;
+			textMesh.anchor = TextAnchor.UpperCenter;
+			gameObject.transform.localPosition += new Vector3(bounds.w/2, bounds.h, 0);
+		}
+		if (this.alignment == PlanetUnity.LabelAlignment.right) {
+			textMesh.alignment = TextAlignment.Right;
+			textMesh.anchor = TextAnchor.UpperRight;
+			gameObject.transform.localPosition += new Vector3(bounds.w, bounds.h, 0);
+		}
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
@@ -62,21 +91,7 @@ public partial class PULabel : PULabelBase {
 
 		textMesh.lineSpacing = 0.93f;
 
-		if (this.alignment == PlanetUnity.LabelAlignment.left) {
-			textMesh.alignment = TextAlignment.Left;
-			textMesh.anchor = TextAnchor.UpperLeft;
-			gameObject.transform.localPosition += new Vector3(0, bounds.h, 0);
-		}
-		if (this.alignment == PlanetUnity.LabelAlignment.center) {
-			textMesh.alignment = TextAlignment.Center;
-			textMesh.anchor = TextAnchor.UpperCenter;
-			gameObject.transform.localPosition += new Vector3(bounds.w/2, bounds.h, 0);
-		}
-		if (this.alignment == PlanetUnity.LabelAlignment.right) {
-			textMesh.alignment = TextAlignment.Right;
-			textMesh.anchor = TextAnchor.UpperRight;
-			gameObject.transform.localPosition += new Vector3(bounds.w, bounds.h, 0);
-		}
+		CreateGeometry ();
 		
 		if (shaderExists == false) {
 			shader = "PlanetUnity/Label";
@@ -97,6 +112,8 @@ public partial class PULabel : PULabelBase {
 	public void LoadTextString(string value)
 	{
 		if (value != null) {
+			this.value = String.Copy (value);
+			Debug.Log ("bounds.w: " + bounds.w + " [[ " + value + " ]] ");
 			textMesh.text = value.Replace ("\\n", "\n");
 			ts.FitToWidth (bounds.w);
 			GenerateShadow ();

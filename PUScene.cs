@@ -391,9 +391,9 @@ public partial class PUScene : PUSceneBase {
 
 	public override void UpdateGeometry()
 	{
-		UpdateCollider ();
-
 		base.UpdateGeometry ();
+
+		UpdateCollider ();
 	}
 
 	private void UpdateCollider() {

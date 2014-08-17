@@ -109,9 +109,9 @@ public partial class PUColor : PUColorBase
 
 	public override void UpdateGeometry()
 	{
-		CreateGeometry ();
-
 		base.UpdateGeometry ();
+
+		CreateGeometry ();
 	}
 
 	private void CreateGeometry()

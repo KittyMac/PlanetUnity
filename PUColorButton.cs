@@ -66,12 +66,15 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 
 	public override void UpdateGeometry()
 	{
-		if(touchSizeExists)
-			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
-		else
-			gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
-
 		base.UpdateGeometry ();
+
+		if (touchSizeExists) {
+			gameCollider.center = new Vector3 ((touchSize.x != 0 ? touchSize.x : bounds.w)/2, (touchSize.y != 0 ? touchSize.y : bounds.h)/2, 1.0f);
+			gameCollider.size = new Vector3 ((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+		} else {
+			gameCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
+			gameCollider.size = new Vector3 (bounds.w, bounds.h, 1.0f);
+		}
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)

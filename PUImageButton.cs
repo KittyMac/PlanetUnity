@@ -158,12 +158,12 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 
 	public override void UpdateGeometry()
 	{
+		base.UpdateGeometry ();
+
 		if(touchSizeExists)
 			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
 			gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
-
-		base.UpdateGeometry ();
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)

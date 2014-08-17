@@ -78,6 +78,7 @@ public partial class PUGameObject : PUGameObjectBase {
 	public virtual void UpdateGeometry()
 	{
 		// Overridden by subclasses to rejigger meshes / colliders after a bounds change
+		gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0);
 	}
 
 	public string fullShaderPath (string shaderPath)

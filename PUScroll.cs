@@ -35,9 +35,9 @@ public partial class PUScroll : PUScrollBase
 
 	public override void UpdateGeometry()
 	{
-		UpdateCollider ();
-
 		base.UpdateGeometry ();
+
+		UpdateCollider ();
 	}
 
 	private void UpdateCollider() {

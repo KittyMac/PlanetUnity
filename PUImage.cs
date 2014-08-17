@@ -55,8 +55,9 @@ public partial class PUImage : PUImageBase {
 
 	public override void UpdateGeometry()
 	{
-		CreateGeometry ();
 		base.UpdateGeometry ();
+
+		CreateGeometry ();
 	}
 
 	private void CreateGeometry()
