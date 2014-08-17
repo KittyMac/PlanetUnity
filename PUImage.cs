@@ -53,6 +53,18 @@ public partial class PUImage : PUImageBase {
 		return mesh;
 	}
 
+	public override void UpdateGeometry()
+	{
+		CreateGeometry ();
+		base.UpdateGeometry ();
+	}
+
+	private void CreateGeometry()
+	{
+		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
+		filter.mesh = CreateMesh();
+	}
+
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 		// Create our specific GameObject, set any defaults
@@ -68,8 +80,7 @@ public partial class PUImage : PUImageBase {
 			gameObject.name = title;
 		}
 
-		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
-		filter.mesh = CreateMesh();
+		CreateGeometry ();
 
 		// Set texture
 		Texture2D tex = PlanetUnityResourceCache.GetTexture (resourcePath);

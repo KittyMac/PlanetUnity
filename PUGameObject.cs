@@ -75,6 +75,11 @@ public partial class PUGameObject : PUGameObjectBase {
 		return Vector3.zero;
 	}
 
+	public virtual void UpdateGeometry()
+	{
+		// Overridden by subclasses to rejigger meshes / colliders after a bounds change
+	}
+
 	public string fullShaderPath (string shaderPath)
 	{
 		if (shaderPath.StartsWith ("PlanetUnity/DepthMask")) {

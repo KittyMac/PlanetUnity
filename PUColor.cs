@@ -107,6 +107,32 @@ public partial class PUColor : PUColorBase
 		gameObject.renderer.material.color = a;
 	}
 
+	public override void UpdateGeometry()
+	{
+		CreateGeometry ();
+
+		base.UpdateGeometry ();
+	}
+
+	private void CreateGeometry()
+	{
+		Color c = Color.white;
+
+		if (colorExists) {
+			c = new Color (color.r, color.g, color.b, color.a);
+		}
+
+		int oldRenderQueue = gameObject.renderer.material.renderQueue;
+
+		if (mesh != null) {
+			PUColor.CreateGradient (gameObject, this, mesh, bounds, anchor, c, c, shader);
+		} else {
+			PUColor.CreateGradient (gameObject, this, bounds, anchor, c, c, shader);
+		}
+
+		gameObject.renderer.material.renderQueue = oldRenderQueue;
+	}
+
 	public override void gaxb_load (XmlReader reader, object _parent, Hashtable args)
 	{
 		if(gameObject == null)
@@ -117,22 +143,12 @@ public partial class PUColor : PUColorBase
 		if (titleExists) {
 			gameObject.name = title;
 		}
-
-		Color c = Color.white;
-
-		if (colorExists) {
-			c = new Color (color.r, color.g, color.b, color.a);
-		}
-
+			
 		if (anchorExists == false) {
 			anchor = new cVector2 (0, 0);
 		}
 
-		if (mesh != null) {
-			PUColor.CreateGradient (gameObject, this, mesh, bounds, anchor, c, c, shader);
-		} else {
-			PUColor.CreateGradient (gameObject, this, bounds, anchor, c, c, shader);
-		}
+		CreateGeometry ();
 
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}

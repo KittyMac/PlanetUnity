@@ -33,6 +33,18 @@ public partial class PUScroll : PUScrollBase
 		return contentObject;
 	}
 
+	public override void UpdateGeometry()
+	{
+		UpdateCollider ();
+
+		base.UpdateGeometry ();
+	}
+
+	private void UpdateCollider() {
+		gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+		gameCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
+	}
+
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 		base.gaxb_load(reader, _parent, args);
@@ -50,8 +62,7 @@ public partial class PUScroll : PUScrollBase
 		gameObject.transform.localPosition = Vector3.zero;
 
 		gameCollider = (BoxCollider) contentObject.AddComponent(typeof(BoxCollider));
-		gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
-		gameCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
+		UpdateCollider ();
 
 		script = (PlanetUnityScrollScript) contentObject.AddComponent(typeof(PlanetUnityScrollScript));
 		script.entity = this;
@@ -71,6 +82,7 @@ public partial class PUScroll : PUScrollBase
 
 	public void CalculateContentSize()
 	{
+		// if contentSize does not exist, run through planet children and calculate a content size
 		float minX = 999999, maxX = -999999;
 		float minY = 999999, maxY = -999999;
 
@@ -87,14 +99,6 @@ public partial class PUScroll : PUScrollBase
 		}
 
 		contentSize = new cVector2 (maxX - minX, maxY - minY);
-	}
-
-	public void gaxb_loadComplete()
-	{
-		// if contentSize does not exist, run through planet children and calculate a content size
-		if ((int)contentSize.x == 0  || (int)contentSize.y == 0) {
-			CalculateContentSize ();
-		}
 
 		if (scrollDirectionExists == false) {
 
@@ -112,6 +116,13 @@ public partial class PUScroll : PUScrollBase
 				script.scrollDirection = PlanetUnityScrollScript.PlanetScrollDirection.Vertical;
 				script.scrollEnabled = true;
 			}
+		}
+	}
+
+	public void gaxb_loadComplete()
+	{
+		if ((int)contentSize.x == 0 || (int)contentSize.y == 0) {
+			CalculateContentSize ();
 		}
 
 		base.gaxb_loadComplete ();

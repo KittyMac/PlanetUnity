@@ -389,6 +389,18 @@ public partial class PUScene : PUSceneBase {
 		eventMonitor = null;
 	}
 
+	public override void UpdateGeometry()
+	{
+		UpdateCollider ();
+
+		base.UpdateGeometry ();
+	}
+
+	private void UpdateCollider() {
+		gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+		gameCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
+	}
+
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 		base.gaxb_load(reader, _parent, args);
@@ -413,10 +425,8 @@ public partial class PUScene : PUSceneBase {
 		}
 
 		// We use a collider to capture all of our own touches and manually handle touch events
-		var collider = (BoxCollider) eventsObject.AddComponent(typeof(BoxCollider));
-		collider.size = new Vector3(bounds.w, bounds.h, 1.0f);
-		collider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
-
+		gameCollider = (BoxCollider) eventsObject.AddComponent(typeof(BoxCollider));
+		UpdateCollider ();
 
 	}
 

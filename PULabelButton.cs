@@ -52,11 +52,14 @@ public partial class PULabelButton : PULabelButtonBase, IPUButton {
 		}
 	}
 
-	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
+	public override void UpdateGeometry()
 	{
-		base.gaxb_load(reader, _parent, args);
+		CreateCollider ();
 
-		gameCollider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
+		base.UpdateGeometry ();
+	}
+
+	private void CreateCollider(){
 		if(touchSizeExists)
 			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
@@ -71,6 +74,14 @@ public partial class PULabelButton : PULabelButtonBase, IPUButton {
 		if (this.alignment == PlanetUnity.LabelAlignment.right) {
 			gameCollider.center = new Vector3 (-bounds.w / 2, -bounds.h / 2, 0.0f);
 		}
+	}
+
+	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
+	{
+		base.gaxb_load(reader, _parent, args);
+
+		gameCollider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
+		CreateCollider ();
 
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;
