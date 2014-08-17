@@ -30,6 +30,11 @@ public partial class PUObject : PUObjectBase {
 		return renderQeueuCount;
 	}
 
+	public void clearRenderQueue()
+	{
+		renderQeueuCount = 0;
+	}
+
 	public void reclaimRenderQueues()
 	{
 		int maxRenderQueue = 0;
@@ -69,6 +74,27 @@ public partial class PUObject : PUObjectBase {
 			}
 
 			MethodInfo method = child.GetType().GetMethod ("performOnChildren");
+			if (method != null) {
+				bool shouldContinue = Convert.ToBoolean(method.Invoke (child, new[] { block }));
+				if (!shouldContinue) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public bool performOnChildrenForward(Func<object, bool> block)
+	{
+		for (int i = 0; i < children.Count; i++) {
+			object child = children[i];
+
+			if (!block (child)) {
+				return false;
+			}
+
+			MethodInfo method = child.GetType().GetMethod ("performOnChildrenForward");
 			if (method != null) {
 				bool shouldContinue = Convert.ToBoolean(method.Invoke (child, new[] { block }));
 				if (!shouldContinue) {

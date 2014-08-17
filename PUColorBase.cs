@@ -27,6 +27,7 @@ public partial class PUColor : PUColorBase {
 	public PUColor(
 			string shader,
 			cColor color,
+			string mesh,
 			cVector2 anchor,
 			cRect bounds ) : this()
 	{
@@ -35,6 +36,9 @@ public partial class PUColor : PUColorBase {
 
 		this.color = color;
 		this.colorExists = true;
+
+		this.mesh = mesh;
+		this.meshExists = true;
 
 		this.anchor = anchor;
 		this.anchorExists = true;
@@ -48,6 +52,7 @@ public partial class PUColor : PUColorBase {
 	public PUColor(
 			string shader,
 			cColor color,
+			string mesh,
 			cVector2 anchor,
 			cRect bounds,
 			bool hidden,
@@ -70,6 +75,9 @@ public partial class PUColor : PUColorBase {
 
 		this.color = color;
 		this.colorExists = true;
+
+		this.mesh = mesh;
+		this.meshExists = true;
 
 		this.anchor = anchor;
 		this.anchorExists = true;
@@ -142,6 +150,9 @@ public class PUColorBase : PUGameObject {
 	public cColor color;
 	public bool colorExists;
 
+	public string mesh;
+	public bool meshExists;
+
 	public cVector2 anchor;
 	public bool anchorExists;
 
@@ -151,6 +162,7 @@ public class PUColorBase : PUGameObject {
 	
 	public void SetShader(string v) { shader = v; shaderExists = true; } 
 	public void SetColor(cColor v) { color = v; colorExists = true; } 
+	public void SetMesh(string v) { mesh = v; meshExists = true; } 
 	public void SetAnchor(cVector2 v) { anchor = v; anchorExists = true; } 
 
 
@@ -233,6 +245,10 @@ public class PUColorBase : PUGameObject {
 		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { color = attr; colorExists = true; } 
 		
+		attr = reader.GetAttribute("mesh");
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { mesh = attr; meshExists = true; } 
+		
 		attr = reader.GetAttribute("anchor");
 		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr == null) { attr = "0,0"; }
@@ -253,6 +269,7 @@ public class PUColorBase : PUGameObject {
 
 		if(shaderExists) { sb.AppendFormat (" {0}=\"{1}\"", "shader", shader); }
 		if(colorExists) { sb.AppendFormat (" {0}=\"{1}\"", "color", color); }
+		if(meshExists) { sb.AppendFormat (" {0}=\"{1}\"", "mesh", mesh); }
 		if(anchorExists) { sb.AppendFormat (" {0}=\"{1}\"", "anchor", anchor); }
 
 	}

@@ -56,6 +56,57 @@ public partial class PUColor : PUColorBase
 		gameObject.renderer.material.color = a;
 	}
 
+	public static void CreateGradient (GameObject gameObject, PUGameObject puGameObject, string meshName, cRect bounds, cVector2 anchor, Color a, Color b, string shader)
+	{
+		Transform model = Resources.Load<GameObject> (meshName).transform;
+		Mesh mesh = null;
+		foreach (Transform t in model.transform) {
+			MeshFilter loadedFilter = (MeshFilter)t.GetComponent (typeof(MeshFilter));
+			if (loadedFilter != null) {
+				mesh = loadedFilter.mesh;
+				break;
+			}
+		}
+
+
+		mesh = (Mesh)Mesh.Instantiate(mesh);
+
+		/*
+		// Scale the mesh by the width and the height...
+		Vector3[] vertices = new Vector3[mesh.vertexCount];
+		for(int i = 0; i < mesh.vertexCount; i++){
+			Vector3 v = mesh.vertices [i];
+			v.x *= bounds.w;
+			v.y *= bounds.h;
+			vertices [i] = v;
+		}
+		mesh.vertices = vertices;*/
+
+
+		Vector3[] vertices = mesh.vertices;
+		int i = 0;
+		while (i < vertices.Length) {
+			vertices [i].x *= bounds.w;
+			vertices [i].y *= bounds.h;
+			i++;
+		}
+		mesh.vertices = vertices;
+
+		mesh.RecalculateBounds ();
+
+		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
+		filter.mesh = mesh;
+
+		if (shader == null) {
+			shader = "PlanetUnity/Color";
+		}
+
+		var shaderObj = Shader.Find (puGameObject.fullShaderPath(shader));
+		Material mat = new Material (shaderObj);
+		gameObject.renderer.material = mat;
+		gameObject.renderer.material.color = a;
+	}
+
 	public override void gaxb_load (XmlReader reader, object _parent, Hashtable args)
 	{
 		if(gameObject == null)
@@ -77,7 +128,11 @@ public partial class PUColor : PUColorBase
 			anchor = new cVector2 (0, 0);
 		}
 
-		PUColor.CreateGradient (gameObject, this, bounds, anchor, c, c, shader);
+		if (mesh != null) {
+			PUColor.CreateGradient (gameObject, this, mesh, bounds, anchor, c, c, shader);
+		} else {
+			PUColor.CreateGradient (gameObject, this, bounds, anchor, c, c, shader);
+		}
 
 		gameObject.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 	}

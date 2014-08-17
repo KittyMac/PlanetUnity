@@ -83,4 +83,9 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;
 	}
+
+	public void SetColor(cColor c) {
+		savedColor = new Color (c.r, c.g, c.b, c.a);
+		gameObject.renderer.material.color = savedColor;
+	}
 }

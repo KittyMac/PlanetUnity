@@ -135,7 +135,7 @@ public partial class PUGameObject : PUGameObjectBase {
 			}
 
 			// We need to create a Color to render the DepthMask shader to do depth-based culling
-			PUColor depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), new cVector2 (0, 0), bounds);
+			PUColor depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), null, new cVector2 (0, 0), bounds);
 			depthMask1.SetTitle ("Depth Mask 1");
 			depthMask1.loadIntoPUGameObject (this);
 			depthMask1.gameObject.transform.localPosition = maskOffset ();
@@ -154,7 +154,7 @@ public partial class PUGameObject : PUGameObjectBase {
 				depthMask1.gameObject.renderer.material.renderQueue = minRenderQueue - 1;
 			}
 
-			PUColor depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), new cVector2 (0, 0), bounds);
+			PUColor depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), null, new cVector2 (0, 0), bounds);
 			depthMask2.SetTitle ("Depth Mask 2");
 			depthMask2.loadIntoPUGameObject (this);
 			depthMask2.gameObject.transform.localPosition = maskOffset ();
@@ -208,6 +208,7 @@ public partial class PUGameObject : PUGameObjectBase {
 	public void loadIntoPUGameObject(PUGameObject _parent)
 	{
 		parent = _parent;
+		_parent.children.Add (this);
 		loadIntoGameObject (_parent.contentGameObject());
 	}
 

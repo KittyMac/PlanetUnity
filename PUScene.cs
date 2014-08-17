@@ -101,6 +101,8 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 			camera.gameObject.AddComponent (typeof(PlanetUnityCameraShim));
 		} else {
+			camera.aspect = Camera.main.aspect;
+
 			// Force the scene to reload so we can easily test different screen resolutions
 			if (camera.aspect != currentAspectRatio)
 			{
@@ -115,6 +117,7 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 			shim.cameraObject = this;
 		}
 
+		camera.aspect = Camera.main.aspect;
 		if (camera.aspect == currentAspectRatio)
 			return;
 
@@ -230,7 +233,6 @@ public class PlanetUnityEventMonitor : MonoBehaviour {
 			PUGameObject oo = val as PUGameObject;
 
 			if (oo != null) {
-
 				if(oo.gameCollider != null){
 					bool hasColliderBeenHit = (Array.IndexOf(colliders, oo.gameCollider) >= 0);
 
@@ -421,6 +423,26 @@ public partial class PUScene : PUSceneBase {
 	public override bool isScopeContainer()
 	{
 		return true;
+	}
+
+	public void ResetRenderQueues()
+	{
+		clearRenderQueue ();
+
+		this.performOnChildrenForward (v => {
+			PUGameObject oo = v as PUGameObject;
+			if(oo != null){
+				if(oo.gameObject.renderer != null) {
+					oo.gameObject.renderer.material.renderQueue = oo.scope().getRenderQueue() + oo.renderQueueOffset;
+				}
+				foreach(Transform t in oo.gameObject.transform){
+					if(t.renderer != null){
+						t.renderer.material.renderQueue = oo.scope().getRenderQueue() + oo.renderQueueOffset;
+					}
+				}
+			}
+			return true;
+		});
 	}
 
 	public bool TestUserTouch (Vector3 touchPos)

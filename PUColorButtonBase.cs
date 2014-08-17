@@ -55,6 +55,7 @@ public partial class PUColorButton : PUColorButtonBase {
 			string onTouchDown,
 			string shader,
 			cColor color,
+			string mesh,
 			cVector2 anchor,
 			cRect bounds,
 			bool hidden,
@@ -89,6 +90,9 @@ public partial class PUColorButton : PUColorButtonBase {
 
 		this.color = color;
 		this.colorExists = true;
+
+		this.mesh = mesh;
+		this.meshExists = true;
 
 		this.anchor = anchor;
 		this.anchorExists = true;

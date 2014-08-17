@@ -45,10 +45,12 @@ public partial class PUPrefab : PUPrefabBase {
 		clone.transform.localRotation = Quaternion.identity;
 
 		if (clone.renderer != null) {
+			clone.gameObject.layer = PlanetUnityOverride.puCameraLayer;
 			clone.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 		}
 
 		foreach (Transform t in clone.transform) {
+			t.gameObject.layer = PlanetUnityOverride.puCameraLayer;
 			if (t.renderer != null) {
 				t.renderer.material.renderQueue = scope ().getRenderQueue () + renderQueueOffset;
 			}
