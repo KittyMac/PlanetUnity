@@ -117,7 +117,6 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 			shim.cameraObject = this;
 		}
 
-		camera.aspect = Camera.main.aspect;
 		if (camera.aspect == currentAspectRatio)
 			return;
 
@@ -187,6 +186,7 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 	}
 
 	public void OnPreRender() {
+		camera.aspect = Camera.main.aspect;
 		AdjustCamera ();
 	}
 

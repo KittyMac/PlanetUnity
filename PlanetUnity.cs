@@ -59,11 +59,12 @@ public class PlanetUnity {
 		return sb.ToString();
 	}
 
-	static public object loadXML(string xmlString, object parentObject, Hashtable args)
+	static public object loadXML(string xmlString, object parentObject, Hashtable args, bool fullLoad)
 	{
 		object rootEntity = parentObject;
 		object returnEntity = null;
 		string xmlNamespace;
+		MethodInfo method;
 
 		// Create an XmlReader
 		using (XmlReader reader = XmlReader.Create(new System.IO.StringReader(xmlString)))
@@ -78,17 +79,20 @@ public class PlanetUnity {
 					try
 					{
 						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
-
 						object entityObject = (Activator.CreateInstance (entityClass));						
 						
-						MethodInfo method = entityClass.GetMethod ("gaxb_load");
-						method.Invoke (entityObject, new[] { reader, rootEntity, args });
+						if(fullLoad){
+							method = entityClass.GetMethod ("gaxb_load");
+							method.Invoke (entityObject, new[] { reader, rootEntity, args });
+						}
 						
 						if (reader.IsEmptyElement == false) {
 							rootEntity = entityObject;
 						} else {
-							method = entityClass.GetMethod ("gaxb_loadComplete");
-							if(method != null) { method.Invoke (entityObject, null); }
+							if(fullLoad){
+								method = entityClass.GetMethod ("gaxb_loadComplete");
+								if(method != null) { method.Invoke (entityObject, null); }
+							}
 						}
 
 						if (rootEntity == null) {
@@ -138,8 +142,10 @@ public class PlanetUnity {
 						xmlNamespace = Path.GetFileName (reader.NamespaceURI);
 						Type entityClass = Type.GetType (ConvertClassName(xmlNamespace, reader.Name), true);
 						
-						MethodInfo method = entityClass.GetMethod ("gaxb_loadComplete");
-						if(method != null) { method.Invoke (rootEntity, null); }
+						if(fullLoad) {
+							method = entityClass.GetMethod ("gaxb_loadComplete");
+							if(method != null) { method.Invoke (rootEntity, null); }
+						}
 
 						if(entityClass != null)
 						{
@@ -156,5 +162,10 @@ public class PlanetUnity {
 		}
 
 		return returnEntity;
+	}
+	
+	static public object loadXML(string xmlString, object parentObject, Hashtable args)
+	{
+		return loadXML(xmlString, parentObject, args, true);
 	}
 }

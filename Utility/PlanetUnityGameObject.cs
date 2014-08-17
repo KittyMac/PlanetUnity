@@ -150,7 +150,6 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 	private PUScene scene;
 
-	private static FileSystemWatcher watcher;
 	private bool shouldReloadMainXML = false;
 
 	static public PlanetUnityGameObject currentGameObject = null;
