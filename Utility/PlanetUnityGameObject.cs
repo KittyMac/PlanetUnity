@@ -249,16 +249,16 @@ public class PlanetUnityGameObject : MonoBehaviour {
 
 		RemoveScene ();
 
-		Stopwatch sw = Stopwatch.StartNew ();
+		//Stopwatch sw = Stopwatch.StartNew ();
 
 		scene = (PUScene)PlanetUnity.loadXML (PlanetUnityOverride.xmlFromPath (xmlPath), gameObject, null);
 
-		sw.Stop ();
+		//sw.Stop ();
 
-		UnityEngine.Debug.Log ("[" + sw.Elapsed.TotalMilliseconds + "ms] Loading scene " + xmlPath + ".xml");
+		//UnityEngine.Debug.Log ("[" + sw.Elapsed.TotalMilliseconds + "ms] Loading scene " + xmlPath + ".xml");
 
-		Profile.PrintResults ();
-		Profile.Reset ();
+		//Profile.PrintResults ();
+		//Profile.Reset ();
 	}
 
 	private Queue<Task> TaskQueue = new Queue<Task>();
