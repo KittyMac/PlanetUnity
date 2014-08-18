@@ -34,6 +34,9 @@ public partial class PUGameObject : PUGameObjectBase {
 
 	public GameObject gameObject;
 
+	private PUColor depthMask1;
+	private PUColor depthMask2;
+
 	public string XmlBounds()
 	{
 		if (bounds == null) {
@@ -79,6 +82,8 @@ public partial class PUGameObject : PUGameObjectBase {
 	{
 		// Overridden by subclasses to rejigger meshes / colliders after a bounds change
 		gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0);
+
+		gaxb_loadComplete ();
 	}
 
 	public string fullShaderPath (string shaderPath)
@@ -141,9 +146,9 @@ public partial class PUGameObject : PUGameObjectBase {
 			}
 
 			// We need to create a Color to render the DepthMask shader to do depth-based culling
-			PUColor depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), null, new cVector2 (0, 0), bounds);
+			depthMask1 = new PUColor("PlanetUnity/DepthMask/Set", new cColor(0,0,0,1), null, new cVector2 (0, 0), bounds);
 			depthMask1.SetTitle ("Depth Mask 1");
-			depthMask1.loadIntoPUGameObject (this);
+			depthMask1.loadIntoGameObject (contentGameObject());
 			depthMask1.gameObject.transform.localPosition = maskOffset ();
 
 			if (gameObject.renderer) {
@@ -160,9 +165,9 @@ public partial class PUGameObject : PUGameObjectBase {
 				depthMask1.gameObject.renderer.material.renderQueue = minRenderQueue - 1;
 			}
 
-			PUColor depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), null, new cVector2 (0, 0), bounds);
+			depthMask2 = new PUColor("PlanetUnity/DepthMask/Clear", new cColor(0,0,0,1), null, new cVector2 (0, 0), bounds);
 			depthMask2.SetTitle ("Depth Mask 2");
-			depthMask2.loadIntoPUGameObject (this);
+			depthMask2.loadIntoGameObject (contentGameObject());
 			depthMask2.gameObject.transform.localPosition = maskOffset ();
 
 			// Get the renderQueue of the last child and make sure we render after that

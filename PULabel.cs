@@ -26,6 +26,8 @@ public partial class PULabel : PULabelBase {
 	public GameObject shadowObject;
 	public TextMesh shadowTextMesh;
 
+	public float textWidth, textHeight;
+
 	public override Vector3 maskOffset() 
 	{
 		// Fix positioning manually to match the label
@@ -112,10 +114,13 @@ public partial class PULabel : PULabelBase {
 	public void LoadTextString(string value)
 	{
 		if (value != null) {
-			this.value = String.Copy (value);
-			Debug.Log ("bounds.w: " + bounds.w + " [[ " + value + " ]] ");
+			this.value = value;
 			textMesh.text = value.Replace ("\\n", "\n");
 			ts.FitToWidth (bounds.w);
+
+			textWidth = ts.width;
+			textHeight = ts.height;
+
 			GenerateShadow ();
 		}
 	}

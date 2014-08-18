@@ -38,6 +38,9 @@ public partial class PUScroll : PUScrollBase
 		base.UpdateGeometry ();
 
 		UpdateCollider ();
+
+		// we need to copy our localPos to the contentObject
+		contentObject.transform.localPosition = gameObject.transform.localPosition;
 	}
 
 	private void UpdateCollider() {
@@ -100,6 +103,11 @@ public partial class PUScroll : PUScrollBase
 
 		contentSize = new cVector2 (maxX - minX, maxY - minY);
 
+		CalculateScrollDirection ();
+	}
+
+	public void CalculateScrollDirection()
+	{
 		if (scrollDirectionExists == false) {
 
 			script.scrollEnabled = false;
@@ -124,6 +132,8 @@ public partial class PUScroll : PUScrollBase
 		if ((int)contentSize.x == 0 || (int)contentSize.y == 0) {
 			CalculateContentSize ();
 		}
+
+		CalculateScrollDirection ();
 
 		base.gaxb_loadComplete ();
 	}

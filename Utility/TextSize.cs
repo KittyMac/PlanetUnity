@@ -99,7 +99,7 @@ public class TextSize {
 		return w;
 	}
 
-	public float width { get { return GetTextWidth(textMesh.text); } }
+	public float width { get { return renderer.bounds.size.x; } }
 	public float height { get { return renderer.bounds.size.y; } }
 
 	public void FitToWidth(float wantedWidth) {
