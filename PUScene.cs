@@ -185,6 +185,26 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 		}
 	}
 
+
+
+	#if UNITY_WEBPLAYER
+
+	// The web player gets all messed up when switching to fullscreen if we do this stuff in OnPreRender/OnPostRender
+	public void LateUpdate()
+	{
+		camera.aspect = Camera.main.aspect;
+		AdjustCamera ();
+		HandleDynamicFPS ();
+	}
+	public void OnPreRender() {
+
+	}
+
+	public void OnPostRender () {
+
+	}
+	#else
+
 	public void OnPreRender() {
 		camera.aspect = Camera.main.aspect;
 		AdjustCamera ();
@@ -193,6 +213,8 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 	public void OnPostRender () {
 		HandleDynamicFPS ();
 	}
+
+	#endif
 }
 	
 public class PlanetUnityEventMonitor : MonoBehaviour {
