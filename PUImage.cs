@@ -101,7 +101,7 @@ public partial class PUImage : PUImageBase {
 
 	public void LoadImageResource(string path)
 	{
-		Texture2D tex = (Texture2D)Resources.Load (path);
+		Texture2D tex = PlanetUnityResourceCache.GetTexture (path);
 		if (tex != null) {
 			tex.filterMode = FilterMode.Bilinear;
 			gameObject.renderer.material.mainTexture = tex;
