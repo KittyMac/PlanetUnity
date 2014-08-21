@@ -274,7 +274,7 @@ public class LTDescr{
 		this.onCompleteObject = null;
 		this.onCompleteParam = null;
 		this.point = Vector3.zero;
-		this.useFrames = true;
+		this.useEstimatedTime = true;
 		global_counter++;
 	}
 
@@ -1445,6 +1445,10 @@ public static void update() {
 		previousRealTime = Time.realtimeSinceStartup;
 		dtActual = Time.deltaTime*Time.timeScale;
 
+			if (dtActual > (1.0f / 15.0f)) {
+				dtActual = (1.0f / 15.0f);
+			}
+
 			bool isAnimating = false;
 		
 		// if(tweenMaxSearch>1500)
@@ -1457,10 +1461,7 @@ public static void update() {
 				trans = tween.trans;
 				timeTotal = tween.time;
 				tweenAction = tween.type;
-
-				tween.useFrames = true;
-				tween.useEstimatedTime = false;
-				
+								
 				dt = dtActual;
 				if( tween.useEstimatedTime ){
 					dt = dtEstimated;
@@ -3100,7 +3101,6 @@ private static int pushNewTween( GameObject gameObject, Vector3 to, float time, 
 	tween.time = time;
 	tween.type = tweenAction;
 	tween.optional = optional;
-	tween.useFrames = true;
 	tween.setId( (uint)i );
 	//tween.hasPhysics = gameObject.rigidbody!=null;
 

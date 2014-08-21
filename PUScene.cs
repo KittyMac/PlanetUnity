@@ -18,23 +18,7 @@ using System.Xml;
 using System;
 using System.Reflection;
 using System.Collections;
-
-public class PlanetUnityCameraShim : MonoBehaviour {
-
-	public PlanetUnityCameraObject cameraObject;
-
-	void OnPreRender() {
-		if (cameraObject != null) {
-			cameraObject.OnPreRender ();
-		}
-	}
-
-	void OnPostRender() {
-		if (cameraObject != null) {
-			cameraObject.OnPostRender ();
-		}
-	}
-}
+using System.Text;
 
 public class PlanetUnityCameraObject : MonoBehaviour {
 
@@ -47,6 +31,23 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 
 	float timeSinceLastFPSChange = 0;
 	int newDesiredFPSRate = 0;
+
+	public void Update() {
+		HandleDynamicFPS ();
+
+		if (Time.frameCount % 30 == 0)
+		{
+			GC.Collect();
+		}
+	}
+
+	public void OnPreCull() {
+		camera.ResetAspect ();
+		camera.ResetWorldToCameraMatrix ();
+		camera.ResetProjectionMatrix ();
+
+		AdjustCamera ();
+	}
 
 	public void HandleDynamicFPS()
 	{
@@ -75,51 +76,19 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 	}
 		
 	public void AdjustCamera() {
-
-		PlanetUnityCameraShim shim;
-		if (camera == null) {
-			var original = GameObject.FindWithTag ("MainCamera");
-
-			camera = (Camera)Camera.Instantiate (
-				original.camera, 
-				new Vector3 (0, 0, 0), 
-				Quaternion.FromToRotation (new Vector3 (0, 0, 0), new Vector3 (0, 0, 1)));
-
-			camera.name = "PlanetUnityCamera";
-			camera.transform.parent = scene.gameObject.transform;
-			camera.eventMask = 0;
-
-			original.camera.cullingMask = 0x0FFFFFFF;
-
-			foreach (Component comp in camera.GetComponents(typeof(Component))) {
-				if (comp is Transform)
-					continue;
-				if (comp is Camera)
-					continue;
-				Destroy (comp);
-			}
-
-			camera.gameObject.AddComponent (typeof(PlanetUnityCameraShim));
-		} else {
-			camera.aspect = Camera.main.aspect;
-
-			// Force the scene to reload so we can easily test different screen resolutions
-			if (camera.aspect != currentAspectRatio)
-			{
-				if (PlanetUnityOverride.orientationDidChange (scene)) {
-					return;
-				}
+		// Force the scene to reload so we can easily test different screen resolutions
+		if (camera.aspect != currentAspectRatio && currentAspectRatio != 0)
+		{
+			if (PlanetUnityOverride.orientationDidChange (scene)) {
+				return;
 			}
 		}
 
-		shim = camera.gameObject.GetComponent (typeof(PlanetUnityCameraShim)) as PlanetUnityCameraShim;
-		if (shim != null) {
-			shim.cameraObject = this;
-		}
+		UpdateCameraForNewAspectRatio ();
+	}
 
-		if (camera.aspect == currentAspectRatio)
-			return;
-
+	public void UpdateCameraForNewAspectRatio()
+	{
 		camera.transform.position = new Vector3 (scene.bounds.w / 2, scene.bounds.h / 2, -depth);
 
 		float screenW = camera.pixelRect.width;
@@ -184,37 +153,6 @@ public class PlanetUnityCameraObject : MonoBehaviour {
 			}
 		}
 	}
-
-
-
-	#if UNITY_WEBPLAYER
-
-	// The web player gets all messed up when switching to fullscreen if we do this stuff in OnPreRender/OnPostRender
-	public void LateUpdate()
-	{
-		camera.aspect = Camera.main.aspect;
-		AdjustCamera ();
-		HandleDynamicFPS ();
-	}
-	public void OnPreRender() {
-
-	}
-
-	public void OnPostRender () {
-
-	}
-	#else
-
-	public void OnPreRender() {
-		camera.aspect = Camera.main.aspect;
-		AdjustCamera ();
-	}
-
-	public void OnPostRender () {
-		HandleDynamicFPS ();
-	}
-
-	#endif
 }
 	
 public class PlanetUnityEventMonitor : MonoBehaviour {
@@ -385,6 +323,8 @@ public partial class PUScene : PUSceneBase {
 	public PlanetUnityEventMonitor eventMonitor = null;
 	private GameObject eventsObject = null;
 
+	public Camera sceneCamera;
+
 	public void gaxb_loadComplete()
 	{
 		foreach (Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
@@ -423,16 +363,38 @@ public partial class PUScene : PUSceneBase {
 		gameCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
 	}
 
+	private void CreateSceneCamera() {
+		sceneCamera = (Camera)Camera.Instantiate (
+			Camera.main, 
+			new Vector3 (0, 0, 0), 
+			Quaternion.FromToRotation (new Vector3 (0, 0, 0), new Vector3 (0, 0, 1)));
+
+		sceneCamera.name = "PlanetUnityCamera";
+		sceneCamera.transform.parent = gameObject.transform;
+		sceneCamera.eventMask = 0;
+
+		Camera.main.cullingMask = 0x0FFFFFFF;
+
+		foreach (Component comp in sceneCamera.GetComponents(typeof(Component))) {
+			if (comp is Transform)
+				continue;
+			if (comp is Camera)
+				continue;
+			GameObject.Destroy (comp);
+		}
+	}
+
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
 		base.gaxb_load(reader, _parent, args);
 
 		if (adjustCamera) {
-			cameraObject = (PlanetUnityCameraObject)gameObject.AddComponent (typeof(PlanetUnityCameraObject));
+			CreateSceneCamera ();
+
+			cameraObject = (PlanetUnityCameraObject)sceneCamera.gameObject.AddComponent (typeof(PlanetUnityCameraObject));
 			cameraObject.scene = this;
+			cameraObject.camera = sceneCamera;
 			cameraObject.AdjustCamera ();
-
-
 		}
 
 		eventsObject = new GameObject ("PlanetUnityEvents");
@@ -442,8 +404,8 @@ public partial class PUScene : PUSceneBase {
 		eventMonitor = (PlanetUnityEventMonitor)eventsObject.AddComponent (typeof(PlanetUnityEventMonitor));
 		eventMonitor.scene = this;
 
-		if (cameraObject != null) {
-			eventMonitor.camera = cameraObject.camera;
+		if (sceneCamera != null) {
+			eventMonitor.camera = sceneCamera;
 		}
 
 		// We use a collider to capture all of our own touches and manually handle touch events
@@ -455,6 +417,13 @@ public partial class PUScene : PUSceneBase {
 	public override bool isScopeContainer()
 	{
 		return true;
+	}
+
+	public void UpdateCameraForNewAspectRatio()
+	{
+		if (cameraObject != null) {
+			cameraObject.UpdateCameraForNewAspectRatio ();
+		}
 	}
 
 	public void ResetRenderQueues()

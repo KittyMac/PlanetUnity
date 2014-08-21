@@ -95,7 +95,7 @@ public partial class PUColor : PUColorBase
 		mesh.RecalculateBounds ();
 
 		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
-		filter.mesh = mesh;
+		filter.sharedMesh = mesh;
 
 		if (shader == null) {
 			shader = "PlanetUnity/Color";

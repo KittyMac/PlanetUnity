@@ -63,7 +63,7 @@ public partial class PUImage : PUImageBase {
 	private void CreateGeometry()
 	{
 		MeshFilter filter = (MeshFilter)gameObject.GetComponent (typeof(MeshFilter));
-		filter.mesh = CreateMesh();
+		filter.sharedMesh = CreateMesh();
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
