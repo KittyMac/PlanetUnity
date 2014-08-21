@@ -209,6 +209,16 @@
 		</complexContent>
 	</complexType>
 	
+	<element name="Sprite" type="planet:Sprite"/>
+	<complexType name="Sprite">
+		<complexContent>
+			<extension base="planet:GameObject">
+				<attribute name="resourcePath" type="string" use="required" />
+				<attribute name="position" type="planet:vec3" use="optional" />
+				<attribute name="scale" type="float" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
 	
 	<simpleType name="LabelAlignment">
 		<annotation>
