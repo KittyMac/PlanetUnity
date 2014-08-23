@@ -67,6 +67,7 @@ public partial class PULabelButton : PULabelButtonBase {
 			cVector2 shadowOffset,
 			cColor shadowColor,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -120,6 +121,9 @@ public partial class PULabelButton : PULabelButtonBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;

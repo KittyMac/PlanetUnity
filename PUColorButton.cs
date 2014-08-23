@@ -68,12 +68,13 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 	{
 		base.UpdateGeometry ();
 
+		BoxCollider boxCollider = gameCollider as BoxCollider;
 		if (touchSizeExists) {
-			gameCollider.center = new Vector3 ((touchSize.x != 0 ? touchSize.x : bounds.w)/2, (touchSize.y != 0 ? touchSize.y : bounds.h)/2, 1.0f);
-			gameCollider.size = new Vector3 ((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+			boxCollider.center = new Vector3 ((touchSize.x != 0 ? touchSize.x : bounds.w)/2, (touchSize.y != 0 ? touchSize.y : bounds.h)/2, 1.0f);
+			boxCollider.size = new Vector3 ((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		} else {
-			gameCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
-			gameCollider.size = new Vector3 (bounds.w, bounds.h, 1.0f);
+			boxCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
+			boxCollider.size = new Vector3 (bounds.w, bounds.h, 1.0f);
 		}
 	}
 
@@ -88,10 +89,11 @@ public partial class PUColorButton : PUColorButtonBase, IPUButton {
 		}
 
 		gameCollider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
+		BoxCollider boxCollider = gameCollider as BoxCollider;
 		if(touchSizeExists)
-			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+			boxCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
-			gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+			boxCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;

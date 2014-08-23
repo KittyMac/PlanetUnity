@@ -14,12 +14,13 @@
  */
 
 using UnityEngine;
-using System.Net;
 using System.Collections.Generic;
+using System.IO;
 
 public class PlanetUnityResourceCache
 {
 	static private Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+	static private Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
 	static private Dictionary<string, string> stringFiles = new Dictionary<string, string>();
 
 	static public Texture2D GetTexture(string s)
@@ -41,6 +42,26 @@ public class PlanetUnityResourceCache
 		textures [s] = t;
 		#endif
 		return t;
+	}
+
+	static public Sprite GetSprite(string s)
+	{
+		if (s == null) {
+			return null;
+		}
+
+		string spriteName = Path.GetFileName (s);
+		if (textures.ContainsKey(spriteName)) {
+			return sprites [spriteName];
+		}
+
+		Sprite[] allSprites = Resources.LoadAll<Sprite>(Path.GetDirectoryName(s));
+
+		foreach(Sprite sprite in allSprites) {
+			sprites [sprite.name] = sprite;
+		}
+			
+		return sprites [spriteName];
 	}
 
 	static public string GetTextFile(string s)

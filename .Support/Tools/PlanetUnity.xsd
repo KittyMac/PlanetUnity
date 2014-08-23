@@ -87,6 +87,7 @@
 		<complexContent>
 			<extension base="planet:Object">
 				<attribute name="bounds" type="planet:rect" use="required" />
+				<attribute name="rotation" type="planet:vec3" use="optional" />
 				<attribute name="hidden" type="boolean" use="optional" />
 				<attribute name="lastY" type="float" use="optional" />
 		        <attribute name="lastX" type="float" use="optional" />

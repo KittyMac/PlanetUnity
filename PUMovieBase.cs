@@ -65,6 +65,7 @@ public partial class PUMovie : PUMovieBase {
 			cVector2 anchor,
 			cColor color,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -100,6 +101,9 @@ public partial class PUMovie : PUMovieBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;

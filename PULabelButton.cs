@@ -60,19 +60,22 @@ public partial class PULabelButton : PULabelButtonBase, IPUButton {
 	}
 
 	private void CreateCollider(){
+
+
+		BoxCollider boxCollider = gameCollider as BoxCollider;
 		if(touchSizeExists)
-			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+			boxCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
-			gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+			boxCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 
 		if (this.alignment == PlanetUnity.LabelAlignment.left) {
-			gameCollider.center = new Vector3 (bounds.w / 2, -bounds.h / 2, 0.0f);
+			boxCollider.center = new Vector3 (bounds.w / 2, -bounds.h / 2, 0.0f);
 		}
 		if (this.alignment == PlanetUnity.LabelAlignment.center) {
-			gameCollider.center = new Vector3 (0.0f, -bounds.h / 2, 0.0f);
+			boxCollider.center = new Vector3 (0.0f, -bounds.h / 2, 0.0f);
 		}
 		if (this.alignment == PlanetUnity.LabelAlignment.right) {
-			gameCollider.center = new Vector3 (-bounds.w / 2, -bounds.h / 2, 0.0f);
+			boxCollider.center = new Vector3 (-bounds.w / 2, -bounds.h / 2, 0.0f);
 		}
 	}
 

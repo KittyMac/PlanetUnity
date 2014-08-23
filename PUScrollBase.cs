@@ -71,6 +71,7 @@ public partial class PUScroll : PUScrollBase {
 			PlanetUnity.ScrollDirection scrollDirection,
 			bool directionalLockEnabled,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -106,6 +107,9 @@ public partial class PUScroll : PUScrollBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;

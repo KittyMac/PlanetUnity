@@ -12,6 +12,7 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+using UnityEngine;
 
 public class cVector3 {
 
@@ -36,5 +37,9 @@ public class cVector3 {
 	public override string ToString ()
 	{
 		return string.Format ("{0},{1},{2}", x, y, z);
+	}
+
+	public Vector3 ToVector3 (){
+		return new Vector3 (x, y, z);
 	}
 }

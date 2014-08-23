@@ -8,12 +8,9 @@ using System.Collections;
 public partial class PUSprite : PUSpriteBase {
 
 	public SpriteRenderer spriteRenderer = null;
-	public Sprite[] allSprites = null;
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
 	{
-		allSprites = Resources.LoadAll<Sprite>(resourcePath);
-
 		gameObject = new GameObject("<Sprite />");
 		gameObject.AddComponent<SpriteRenderer>();
 
@@ -24,7 +21,7 @@ public partial class PUSprite : PUSpriteBase {
 		base.gaxb_load(reader, _parent, args);
 
 		spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
-		gameObject.GetComponent<SpriteRenderer>().sprite = allSprites[0];
+		gameObject.GetComponent<SpriteRenderer> ().sprite = PlanetUnityResourceCache.GetSprite (resourcePath);
 
 		if (scaleExists) {
 			gameObject.transform.localScale = new Vector3 (scale, scale, 1);

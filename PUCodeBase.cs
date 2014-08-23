@@ -45,6 +45,7 @@ public partial class PUCode : PUCodeBase {
 			string _class,
 			bool singleton,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -68,6 +69,9 @@ public partial class PUCode : PUCodeBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;

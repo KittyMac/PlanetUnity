@@ -68,6 +68,7 @@ public partial class PUImageButton : PUImageButtonBase {
 			cVector2 anchor,
 			cColor color,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -115,6 +116,9 @@ public partial class PUImageButton : PUImageButtonBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;

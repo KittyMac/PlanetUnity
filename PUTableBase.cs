@@ -36,6 +36,7 @@ public partial class PUTable : PUTableBase {
 			PlanetUnity.ScrollDirection scrollDirection,
 			bool directionalLockEnabled,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -71,6 +72,9 @@ public partial class PUTable : PUTableBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;

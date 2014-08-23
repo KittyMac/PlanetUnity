@@ -30,7 +30,11 @@ public partial class PUGameObject : PUGameObjectBase {
 	static public int depthMaskCounter = 0;
 	static public int stencilMaskCounter = 0;
 
-	public BoxCollider gameCollider;
+	public Collider gameCollider;
+	public Collider2D gameCollider2D;
+
+	public Rigidbody rigidBody;
+	public Rigidbody2D rigidBody2D;
 
 	public GameObject gameObject;
 
@@ -256,6 +260,10 @@ public partial class PUGameObject : PUGameObjectBase {
 			}
 		} else if (_parent == null) {
 			gameObject.transform.localPosition = new Vector3 (bounds.x, bounds.y, 0.0f);
+		}
+
+		if (rotationExists) {
+			gameObject.transform.localEulerAngles = new Vector3 (rotation.x, rotation.y, rotation.z);
 		}
 
 		if (reader != null) {

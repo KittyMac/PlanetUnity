@@ -35,6 +35,7 @@ public partial class PUPrefab : PUPrefabBase {
 	public PUPrefab(
 			string name,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -55,6 +56,9 @@ public partial class PUPrefab : PUPrefabBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;

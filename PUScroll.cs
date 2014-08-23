@@ -44,8 +44,9 @@ public partial class PUScroll : PUScrollBase
 	}
 
 	private void UpdateCollider() {
-		gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
-		gameCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
+		BoxCollider boxCollider = gameCollider as BoxCollider;
+		boxCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+		boxCollider.center = new Vector3 (bounds.w/2.0f, bounds.h/2.0f, 0.0f);
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)

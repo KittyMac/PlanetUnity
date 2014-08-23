@@ -28,6 +28,7 @@ public partial class PUGameObject : PUGameObjectBase {
 	
 	public PUGameObject(
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -37,6 +38,9 @@ public partial class PUGameObject : PUGameObjectBase {
 	{
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;
@@ -61,6 +65,7 @@ public partial class PUGameObject : PUGameObjectBase {
 	
 	public PUGameObject(
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -78,6 +83,9 @@ public partial class PUGameObject : PUGameObjectBase {
 	{
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;
@@ -141,6 +149,9 @@ public class PUGameObjectBase : PUObject {
 	public cRect bounds;
 	public bool boundsExists;
 
+	public cVector3 rotation;
+	public bool rotationExists;
+
 	public bool hidden;
 	public bool hiddenExists;
 
@@ -164,6 +175,7 @@ public class PUGameObjectBase : PUObject {
 
 	
 	public void SetBounds(cRect v) { bounds = v; boundsExists = true; } 
+	public void SetRotation(cVector3 v) { rotation = v; rotationExists = true; } 
 	public void SetHidden(bool v) { hidden = v; hiddenExists = true; } 
 	public void SetLastY(float v) { lastY = v; lastYExists = true; } 
 	public void SetLastX(float v) { lastX = v; lastXExists = true; } 
@@ -247,6 +259,10 @@ public class PUGameObjectBase : PUObject {
 		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { bounds = attr; boundsExists = true; } 
 		
+		attr = reader.GetAttribute("rotation");
+		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
+		if(attr != null) { rotation = attr; rotationExists = true; } 
+		
 		attr = reader.GetAttribute("hidden");
 		if(attr != null && planetOverride != null) { attr = processStringMethod.Invoke(null, new [] {_parent, attr}).ToString(); }
 		if(attr != null) { hidden = bool.Parse(attr); hiddenExists = true; } 
@@ -287,6 +303,7 @@ public class PUGameObjectBase : PUObject {
 		base.gaxb_appendXMLAttributes(sb);
 
 		if(boundsExists) { sb.AppendFormat (" {0}=\"{1}\"", "bounds", bounds); }
+		if(rotationExists) { sb.AppendFormat (" {0}=\"{1}\"", "rotation", rotation); }
 		if(hiddenExists) { sb.AppendFormat (" {0}=\"{1}\"", "hidden", hidden.ToString().ToLower()); }
 		if(lastYExists) { sb.AppendFormat (" {0}=\"{1}\"", "lastY", lastY.ToString ("0.##")); }
 		if(lastXExists) { sb.AppendFormat (" {0}=\"{1}\"", "lastX", lastX.ToString ("0.##")); }

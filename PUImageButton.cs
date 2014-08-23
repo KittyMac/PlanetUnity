@@ -160,10 +160,11 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 	{
 		base.UpdateGeometry ();
 
+		BoxCollider boxCollider = gameCollider as BoxCollider;
 		if(touchSizeExists)
-			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+			boxCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
-			gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+			boxCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 	}
 
 	public override void gaxb_load(XmlReader reader, object _parent, Hashtable args)
@@ -175,10 +176,11 @@ public partial class PUImageButton : PUImageButtonBase, IPUButton {
 		}
 
 		gameCollider = (BoxCollider) gameObject.AddComponent(typeof(BoxCollider));
+		BoxCollider boxCollider = gameCollider as BoxCollider;
 		if(touchSizeExists)
-			gameCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
+			boxCollider.size = new Vector3((touchSize.x != 0 ? touchSize.x : bounds.w), (touchSize.y != 0 ? touchSize.y : bounds.h), 1.0f);
 		else
-			gameCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
+			boxCollider.size = new Vector3(bounds.w, bounds.h, 1.0f);
 
 		PlanetUnityButtonScript buttonScript = (PlanetUnityButtonScript)gameObject.AddComponent(typeof(PlanetUnityButtonScript));
 		buttonScript.entity = this;

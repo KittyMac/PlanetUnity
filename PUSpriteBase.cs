@@ -45,6 +45,7 @@ public partial class PUSprite : PUSpriteBase {
 			cVector3 position,
 			float scale,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -71,6 +72,9 @@ public partial class PUSprite : PUSpriteBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;

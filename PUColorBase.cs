@@ -55,6 +55,7 @@ public partial class PUColor : PUColorBase {
 			string mesh,
 			cVector2 anchor,
 			cRect bounds,
+			cVector3 rotation,
 			bool hidden,
 			float lastY,
 			float lastX,
@@ -84,6 +85,9 @@ public partial class PUColor : PUColorBase {
 
 		this.bounds = bounds;
 		this.boundsExists = true;
+
+		this.rotation = rotation;
+		this.rotationExists = true;
 
 		this.hidden = hidden;
 		this.hiddenExists = true;
