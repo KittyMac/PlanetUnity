@@ -446,20 +446,35 @@ public partial class PUScene : PUSceneBase {
 		});
 	}
 
-	public bool TestUserTouch (Vector3 touchPos)
+
+	public bool TestUserTouch (Vector3 touchPos, out RaycastHit hit)
 	{
+		hit = new RaycastHit();
+
 		// If we have a custom camera, we need to ray cast against it
 		if (cameraObject != null) {
-			Ray ray = cameraObject.camera.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
+			Ray ray = cameraObject.camera.ScreenPointToRay(touchPos);
 			LayerMask mask = PlanetUnityOverride.puCameraLayer;
 
-			if (Physics.Raycast (ray, out hit, Mathf.Infinity, ~mask.value)) {
-
+			RaycastHit[] hits = Physics.RaycastAll (ray, Mathf.Infinity, ~mask.value);
+			if (hits.Length > 1) {
+				foreach (RaycastHit rayHit in hits) {
+					// send back something other than the main event capture collider
+					if (rayHit.collider.gameObject.layer != PlanetUnityOverride.puEventLayer) {
+						hit = rayHit;
+						break;
+					}
+				}
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public bool TestUserTouch (Vector3 touchPos)
+	{
+		RaycastHit hit;
+		return TestUserTouch (touchPos, out hit);
 	}
 
 
