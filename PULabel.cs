@@ -114,9 +114,12 @@ public partial class PULabel : PULabelBase {
 	public bool LoadTextString(string value)
 	{
 		if (value != null) {
-			if (this.value == null || this.value.Equals (value) == false) {
-				this.value = value;
-				textMesh.text = value.Replace ("\\n", "\n");
+			this.value = value;
+
+			string newValue = value.Replace ("\\n", "\n");
+
+			if (textMesh.text.Equals (newValue) == false) {
+				textMesh.text = newValue;
 				ts.FitToWidth (bounds.w);
 
 				textWidth = ts.width;
