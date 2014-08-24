@@ -33,6 +33,10 @@ public partial class PUSprite : PUSpriteBase {
 			}
 		}
 
+
+		var shaderObj = Shader.Find(fullShaderPath("PlanetUnity/Image"));
+		gameObject.renderer.material.shader = shaderObj;
+
 		gameObject.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
 	}
 

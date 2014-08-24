@@ -51,7 +51,7 @@ public class PlanetUnityResourceCache
 		}
 
 		string spriteName = Path.GetFileName (s);
-		if (textures.ContainsKey(spriteName)) {
+		if (sprites.ContainsKey(spriteName)) {
 			return sprites [spriteName];
 		}
 
