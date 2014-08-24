@@ -111,18 +111,22 @@ public partial class PULabel : PULabelBase {
 		LoadTextString(value);
 	}
 
-	public void LoadTextString(string value)
+	public bool LoadTextString(string value)
 	{
 		if (value != null) {
-			this.value = value;
-			textMesh.text = value.Replace ("\\n", "\n");
-			ts.FitToWidth (bounds.w);
+			if (this.value == null || this.value.Equals (value) == false) {
+				this.value = value;
+				textMesh.text = value.Replace ("\\n", "\n");
+				ts.FitToWidth (bounds.w);
 
-			textWidth = ts.width;
-			textHeight = ts.height;
+				textWidth = ts.width;
+				textHeight = ts.height;
 
-			GenerateShadow ();
+				GenerateShadow ();
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public void GenerateShadow()
