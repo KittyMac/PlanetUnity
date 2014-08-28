@@ -165,8 +165,11 @@ public class PlanetUnityGameObject : MonoBehaviour {
 		pos.x /= Screen.width;
 		pos.y /= Screen.height;
 
-		pos.x *= currentGameObject.scene.bounds.w;
-		pos.y *= currentGameObject.scene.bounds.h;
+		pos.x *= PlanetUnityOverride.sceneRight - PlanetUnityOverride.sceneLeft;
+		pos.y *= PlanetUnityOverride.sceneBottom - PlanetUnityOverride.sceneTop;
+
+		pos.x += PlanetUnityOverride.sceneLeft;
+		pos.y += PlanetUnityOverride.sceneTop;
 
 		return pos;
 	}
