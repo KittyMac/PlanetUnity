@@ -85,12 +85,18 @@ public partial class PUMovie : PUMovieBase {
 
 		CreateGeometry ();
 
+
+		// Why, oh why are movie textures not supported in iOS?
+		#if UNITY_IOS
+
+		#else
 		// Set texture
 		MovieTexture tex = Resources.Load (resourcePath) as MovieTexture;
 		if (tex != null) {
 			tex.filterMode = FilterMode.Bilinear;
 			gameObject.renderer.material.mainTexture = tex;
 		}
+		#endif
 
 		var shaderObj = Shader.Find(fullShaderPath(shader));
 		if (colorExists) {
@@ -101,16 +107,24 @@ public partial class PUMovie : PUMovieBase {
 		gameObject.renderer.material.shader = shaderObj;
 		gameObject.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
 
+		#if UNITY_IOS
+
+		#else
 		tex.Play ();
 		tex.loop = looping;
+		#endif
 	}
 
 	public void LoadImageResource(string path)
 	{
+		#if UNITY_IOS
+
+		#else
 		MovieTexture tex = Resources.Load (resourcePath) as MovieTexture;
 		if (tex != null) {
 			tex.filterMode = FilterMode.Bilinear;
 			gameObject.renderer.material.mainTexture = tex;
 		}
+		#endif
 	}
 }
