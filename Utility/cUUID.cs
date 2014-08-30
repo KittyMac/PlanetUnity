@@ -19,7 +19,11 @@ public class cUUID {
 
 	public cUUID(string s)
 	{
-		uuidString = s;
+		if (s.Equals ("register")) {
+			uuidString = System.Guid.NewGuid ().ToString ();
+		} else {
+			uuidString = s;
+		}
 	}
 
 	public static implicit operator cUUID(string value)
