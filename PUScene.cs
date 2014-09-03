@@ -434,12 +434,14 @@ public partial class PUScene : PUSceneBase {
 		this.performOnChildrenForward (v => {
 			PUGameObject oo = v as PUGameObject;
 			if(oo != null){
+				int rq = oo.scope().getRenderQueue() + oo.renderQueueOffset;
+
 				if(oo.gameObject.renderer != null) {
-					oo.gameObject.renderer.material.renderQueue = oo.scope().getRenderQueue() + oo.renderQueueOffset;
+					oo.gameObject.renderer.material.renderQueue = rq;
 				}
 				foreach(Transform t in oo.gameObject.transform){
 					if(t.renderer != null){
-						t.renderer.material.renderQueue = oo.scope().getRenderQueue() + oo.renderQueueOffset;
+						t.renderer.material.renderQueue = rq;
 					}
 				}
 			}
