@@ -87,7 +87,7 @@ public partial class PUMovie : PUMovieBase {
 
 
 		// Why, oh why are movie textures not supported in iOS?
-		#if UNITY_IOS
+		#if (UNITY_IOS || UNITY_ANDROID)
 
 		#else
 		// Set texture
@@ -107,7 +107,7 @@ public partial class PUMovie : PUMovieBase {
 		gameObject.renderer.material.shader = shaderObj;
 		gameObject.renderer.material.renderQueue = scope().getRenderQueue()+renderQueueOffset;
 
-		#if UNITY_IOS
+		#if UNITY_IOS || UNITY_ANDROID
 
 		#else
 		tex.Play ();
@@ -117,7 +117,7 @@ public partial class PUMovie : PUMovieBase {
 
 	public void LoadImageResource(string path)
 	{
-		#if UNITY_IOS
+		#if UNITY_IOS || UNITY_ANDROID
 
 		#else
 		MovieTexture tex = Resources.Load (resourcePath) as MovieTexture;
